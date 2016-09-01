@@ -14,28 +14,64 @@
 * limitations under the License.
 *
 */
-
 using IBM.Watson.DeveloperCloud.Utilities;
+using IBM.Watson.DeveloperCloud.Logging;
+using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
-namespace IBM.Watson.DeveloperCloud.Services.VisualRecognition.Utilities
+
+//public static byte[] CreateZip()
+//{
+//    Stream stream = new Stream();
+//    GZipStream zipStream = new GZipStream(stream, CompressionLevel.Fastest);
+
+
+//}
+
+
+//  Set apiKey
+public class Credentials
 {
-    //public static byte[] CreateZip()
-    //{
-    //    Stream stream = new Stream();
-    //    GZipStream zipStream = new GZipStream(stream, CompressionLevel.Fastest);
+    VisualRecognition m_VisualRecognition = new VisualRecognition();
+    void Start()
+    {
 
+    }
 
-    //}
+    public void SetVisualRecognitionAPIKey(string apiKey)
+    {
+        Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
 
-
-    //  Set apiKey
-    //public class Credentials
-    //{
-    //    public void SetCredential()
-    //    {
+        visualRecognitionCredentials.m_ServiceID = "VisualRecognitionV3";
+        visualRecognitionCredentials.m_Apikey = apiKey;
+        visualRecognitionCredentials.m_URL = "https://console.ng.bluemix.net/catalog/services/visual-recognition/";
+        visualRecognitionCredentials.m_Note = "This ApiKey was added at runtime.";
             
-    //    }
-    //}
+        for (int i = 0; i < Config.Instance.Credentials.Count; i++)
+        {
+            if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
+            {
+                if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
+                {
+                    Config.Instance.Credentials.RemoveAt(i);
+                }
+                else
+                {
+                    Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
+                }
+            }
+        }
 
-    //
+        Config.Instance.Credentials.Add(visualRecognitionCredentials);
+    }
+
+    public void GetClassifiers()
+    {
+    if (!m_VisualRecognition.GetClassifiers(OnGetClassifiers))
+        Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
+    }
+
+    public void OnGetClassifiers(GetClassifiersTopLevelBrief classifiers, string data)
+    {
+
+    }
 }
