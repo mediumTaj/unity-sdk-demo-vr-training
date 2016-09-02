@@ -20,6 +20,7 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using System.IO;
 using UnityEngine;
 using IBM.Watson.DeveloperCloud.Connection;
+using System;
 
 
 //public static byte[] CreateZip()
@@ -34,37 +35,40 @@ using IBM.Watson.DeveloperCloud.Connection;
 //  Set apiKey
 public class VRCredentials
 {
-    VisualRecognition m_VisualRecognition = new VisualRecognition();
-    void Start()
-    {
+	VisualRecognition m_VisualRecognition = new VisualRecognition();
+	void Start()
+	{
 
-    }
+	}
 
-    public void SetVisualRecognitionAPIKey(string apiKey)
-    {
-        Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
+	public void SetVisualRecognitionAPIKey(string apiKey)
+	{
+		if (string.IsNullOrEmpty(apiKey))
+			throw new ArgumentNullException("apiKey");
 
-        visualRecognitionCredentials.m_ServiceID = "VisualRecognitionV3";
-        visualRecognitionCredentials.m_Apikey = apiKey;
-        visualRecognitionCredentials.m_URL = "https://gateway-a.watsonplatform.net/visual-recognition/api";
-        visualRecognitionCredentials.m_Note = "This ApiKey was added at runtime.";
-            
-        for (int i = 0; i < Config.Instance.Credentials.Count; i++)
-        {
-            if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
-            {
-                if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
-                {
+		Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
+
+		visualRecognitionCredentials.m_ServiceID = "VisualRecognitionV3";
+		visualRecognitionCredentials.m_Apikey = apiKey;
+		visualRecognitionCredentials.m_URL = "https://gateway-a.watsonplatform.net/visual-recognition/api";
+		visualRecognitionCredentials.m_Note = "This ApiKey was added at runtime.";
+
+		for (int i = 0; i < Config.Instance.Credentials.Count; i++)
+		{
+			if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
+			{
+				if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
+				{
 					Log.Debug("VisualRecognitionUtilities", "Deleting existing visual recognition APIKEY");
-                    Config.Instance.Credentials.RemoveAt(i);
-                }
-                else
-                {
-                    Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
+					Config.Instance.Credentials.RemoveAt(i);
+				}
+				else
+				{
+					Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
 					return;
-                }
-            }
-        }
+				}
+			}
+		}
 
 		Log.Debug("VisualRecognitionUtilities", "Adding visual recognition APIKEY | serviceID: {0} | APIKey: {1} | URL: {2} | Note: {3}", visualRecognitionCredentials.m_ServiceID, visualRecognitionCredentials.m_Apikey, visualRecognitionCredentials.m_URL, visualRecognitionCredentials.m_Note);
 
@@ -76,14 +80,42 @@ public class VRCredentials
 		RESTConnector.FlushConnectors();
 	}
 
-    public void GetClassifiers()
-    {
-    if (!m_VisualRecognition.GetClassifiers(OnGetClassifiers))
-        Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
-    }
+	public void GetClassifiers()
+	{
+		if (!m_VisualRecognition.GetClassifiers(OnGetClassifiers))
+			Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
+	}
 
-    public void OnGetClassifiers(GetClassifiersTopLevelBrief classifiers, string data)
-    {
+	private void OnGetClassifiers(GetClassifiersTopLevelBrief classifiers, string data)
+	{
+		if (classifiers != null)
+		{
+			Log.Debug("VisualRecognitionUtilities", "GetClassifiers succeeded!");
+			foreach (GetClassifiersPerClassifierBrief classifier in classifiers.classifiers)
+			{
+				Log.Debug("VisualRecognitionUtilities", "ID: {0} | Name: {1}", classifier.classifier_id, classifier.name);
+			}
+		}
+		else
+		{
+			Log.Debug("VisualRecognitionUtilities", "GetClassifiers failed!");
+		}
+	}
 
-    }
+	public void DeleteClassifier(string classifierID)
+	{
+		if (string.IsNullOrEmpty(classifierID))
+			throw new ArgumentNullException("ClassifierID");
+
+		if (!m_VisualRecognition.DeleteClassifier(OnDeleteClassifier, classifierID))
+			Log.Debug("VisualRecognitionUtilities", "Failed to delete classifier!");
+	}
+
+	private void OnDeleteClassifier(bool success, string data)
+	{
+		if(success)
+			Log.Debug("VisualRecognitionUtilities", "Deleted classifier!");
+		else
+			Log.Debug("VisualRecognitionUtilities", "Failed to delete classifier!");
+	}
 }
