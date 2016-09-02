@@ -17,6 +17,9 @@
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
+using System.IO;
+using UnityEngine;
+using IBM.Watson.DeveloperCloud.Connection;
 
 
 //public static byte[] CreateZip()
@@ -29,7 +32,7 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 
 //  Set apiKey
-public class Credentials
+public class VRCredentials
 {
     VisualRecognition m_VisualRecognition = new VisualRecognition();
     void Start()
@@ -43,7 +46,7 @@ public class Credentials
 
         visualRecognitionCredentials.m_ServiceID = "VisualRecognitionV3";
         visualRecognitionCredentials.m_Apikey = apiKey;
-        visualRecognitionCredentials.m_URL = "https://console.ng.bluemix.net/catalog/services/visual-recognition/";
+        visualRecognitionCredentials.m_URL = "https://gateway-a.watsonplatform.net/visual-recognition/api";
         visualRecognitionCredentials.m_Note = "This ApiKey was added at runtime.";
             
         for (int i = 0; i < Config.Instance.Credentials.Count; i++)
@@ -52,17 +55,26 @@ public class Credentials
             {
                 if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
                 {
+					Log.Debug("VisualRecognitionUtilities", "Deleting existing visual recognition APIKEY");
                     Config.Instance.Credentials.RemoveAt(i);
                 }
                 else
                 {
                     Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
+					return;
                 }
             }
         }
 
-        Config.Instance.Credentials.Add(visualRecognitionCredentials);
-    }
+		Log.Debug("VisualRecognitionUtilities", "Adding visual recognition APIKEY | serviceID: {0} | APIKey: {1} | URL: {2} | Note: {3}", visualRecognitionCredentials.m_ServiceID, visualRecognitionCredentials.m_Apikey, visualRecognitionCredentials.m_URL, visualRecognitionCredentials.m_Note);
+
+		Config.Instance.Credentials.Add(visualRecognitionCredentials);
+
+		if (!Directory.Exists(Application.streamingAssetsPath))
+			Directory.CreateDirectory(Application.streamingAssetsPath);
+		File.WriteAllText(Application.streamingAssetsPath + "/Config.json", Config.Instance.SaveConfig());
+		RESTConnector.FlushConnectors();
+	}
 
     public void GetClassifiers()
     {
