@@ -20,7 +20,7 @@ using System.Collections;
 using IBM.Watson.DeveloperCloud.Widgets;
 using UnityEngine.UI;
 
-namespace IBM.Watson.DeveloperCloud.Demos.VRTraining
+namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
     public class MatchCameraAspectRatio : MonoBehaviour
     {

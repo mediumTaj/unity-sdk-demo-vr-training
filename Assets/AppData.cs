@@ -16,33 +16,26 @@
 */
 
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
-	public class AppController : MonoBehaviour
+	public class AppData
 	{
-		private VRCredentials m_VRCredentials = new VRCredentials();
+		/// <summary>
+		/// Returns the singleton instance.
+		/// </summary>
+		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
 
-		[SerializeField]
-		private InputField m_APIKeyField;
+		public VRClass[] VRClasses { get; set; }
 
-		[SerializeField]
-		private InputField m_DeleteClassifierIDField;
-
-		public void ChangeCredentials()
+		public class VRClass
 		{
-			m_VRCredentials.SetVisualRecognitionAPIKey(m_APIKeyField.text);
+			public string className { get; set; }
+			public string classifierID { get; set; }
+			public byte[] images { get; set; }
 		}
 
-		public void GetClassifiers()
-		{
-			m_VRCredentials.GetClassifiers();
-		}
-
-		public void DeleteClassifier()
-		{
-			m_VRCredentials.DeleteClassifier(m_DeleteClassifierIDField.text);
-		}
 	}
 }
