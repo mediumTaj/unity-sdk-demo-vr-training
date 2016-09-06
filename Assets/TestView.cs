@@ -1,4 +1,7 @@
-﻿/**
+﻿
+
+using IBM.Watson.DeveloperCloud.Logging;
+/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +17,12 @@
 * limitations under the License.
 *
 */
-
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
-	public class AppController : MonoBehaviour
+	public class TestView : MonoBehaviour
 	{
 		private VRCredentials m_VRCredentials = new VRCredentials();
 

@@ -39,11 +39,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		private VisualRecognition m_VisualRecognition = new VisualRecognition();
 
-		void Start()
-		{
-
-		}
-
 		public void SetVisualRecognitionAPIKey(string apiKey)
 		{
 			if (string.IsNullOrEmpty(apiKey))
@@ -94,10 +89,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (classifiers != null)
 			{
 				Log.Debug("VisualRecognitionUtilities", "GetClassifiers succeeded!");
-				foreach (GetClassifiersPerClassifierBrief classifier in classifiers.classifiers)
-				{
-					Log.Debug("VisualRecognitionUtilities", "ID: {0} | Name: {1}", classifier.classifier_id, classifier.name);
-				}
+				AppData.Instance.ClassifiersBrief = classifiers;
 			}
 			else
 			{

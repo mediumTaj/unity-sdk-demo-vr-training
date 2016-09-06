@@ -18,6 +18,8 @@
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable 0067
+
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	[Serializable]
