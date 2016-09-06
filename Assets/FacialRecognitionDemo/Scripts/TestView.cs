@@ -24,7 +24,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	public class TestView : MonoBehaviour
 	{
-		private VRCredentials m_VRCredentials = new VRCredentials();
+		private VisualRecognitionController m_VisualRecognitionController = new VisualRecognitionController();
 
 		[SerializeField]
 		private InputField m_APIKeyField;
@@ -34,17 +34,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		public void ChangeCredentials()
 		{
-			m_VRCredentials.SetVisualRecognitionAPIKey(m_APIKeyField.text);
+			m_VisualRecognitionController.SetVisualRecognitionAPIKey(m_APIKeyField.text);
 		}
 
 		public void GetClassifiers()
 		{
-			m_VRCredentials.GetClassifiers();
+			m_VisualRecognitionController.GetClassifiers();
 		}
 
 		public void DeleteClassifier()
 		{
-			m_VRCredentials.DeleteClassifier(m_DeleteClassifierIDField.text);
+			m_VisualRecognitionController.DeleteClassifier(m_DeleteClassifierIDField.text);
 		}
+
+
 	}
 }

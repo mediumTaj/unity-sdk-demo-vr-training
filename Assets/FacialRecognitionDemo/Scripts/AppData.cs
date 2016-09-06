@@ -1,4 +1,7 @@
-﻿/**
+﻿
+
+using IBM.Watson.DeveloperCloud.Connection;
+/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +17,28 @@
 * limitations under the License.
 *
 */
-
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
+using System;
+using System.IO;
+using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	public class AppData
 	{
-		#region Constructor and Destructor
-		/// <summary>
-		/// AppData Constructor
-		/// </summary>
-		public AppData()
+        #region Private Data
+        private string m_VisualRecognitionServiceID = "VisualRecognitionV3";
+        private string m_VisualRecognitionServiceURL = "https://gateway-a.watsonplatform.net/visual-recognition/api";
+        private string m_VisualRecognitionServiceNote = "This ApiKey was added at runtime.";
+        #endregion
+
+        #region Constructor and Destructor
+        /// <summary>
+        /// AppData Constructor
+        /// </summary>
+        public AppData()
 		{
 			ClassifierIDs.Added += OnClassifierIDAdded;
 			ClassifierIDs.Removed += OnClassifierIDRemoved;
@@ -114,17 +125,58 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			set
 			{
 				m_APIKey = value;
-				EventManager.Instance.SendEvent(Constants.ON_UPDATE_API_KEY);
+                if (!SetAPIKey(APIKey))
+                    Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
+                else
+                    EventManager.Instance.SendEvent(Constants.ON_UPDATE_API_KEY);
 			}
 		}
 		private string m_APIKey;
-		#endregion
 
-		#region Classifier IDs
-		/// <summary>
-		/// List of Classifier IDs
-		/// </summary>
-		public ObservedList<string> ClassifierIDs = new ObservedList<string>();
+		private bool SetAPIKey(string apiKey)
+        {
+            Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
+
+            visualRecognitionCredentials.m_ServiceID = m_VisualRecognitionServiceID;
+            visualRecognitionCredentials.m_Apikey = apiKey;
+            visualRecognitionCredentials.m_URL = m_VisualRecognitionServiceURL;
+            visualRecognitionCredentials.m_Note = m_VisualRecognitionServiceNote;
+
+            for (int i = 0; i < Config.Instance.Credentials.Count; i++)
+            {
+                if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
+                {
+                    if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
+                    {
+                        Log.Debug("VisualRecognitionUtilities", "Deleting existing visual recognition APIKEY");
+                        Config.Instance.Credentials.RemoveAt(i);
+                    }
+                    else
+                    {
+                        Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
+                        return false;
+                    }
+                }
+            }
+
+            Log.Debug("VisualRecognitionUtilities", "Adding visual recognition APIKEY | serviceID: {0} | APIKey: {1} | URL: {2} | Note: {3}", visualRecognitionCredentials.m_ServiceID, visualRecognitionCredentials.m_Apikey, visualRecognitionCredentials.m_URL, visualRecognitionCredentials.m_Note);
+
+            Config.Instance.Credentials.Add(visualRecognitionCredentials);
+
+            if (!Directory.Exists(Application.streamingAssetsPath))
+                Directory.CreateDirectory(Application.streamingAssetsPath);
+            File.WriteAllText(Application.streamingAssetsPath + "/Config.json", Config.Instance.SaveConfig());
+            RESTConnector.FlushConnectors();
+
+            return true;
+        }
+        #endregion
+
+        #region Classifier IDs
+        /// <summary>
+        /// List of Classifier IDs
+        /// </summary>
+        public ObservedList<string> ClassifierIDs = new ObservedList<string>();
 
 		private void OnClassifierIDAdded()
 		{
