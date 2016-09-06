@@ -32,21 +32,39 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		[SerializeField]
 		private InputField m_DeleteClassifierIDField;
 
+        [SerializeField]
+        private InputField m_GetClassiferIDField;
+
+        /// <summary>
+        /// Change credentials to the apikey input field.
+        /// </summary>
 		public void ChangeCredentials()
 		{
 			m_VisualRecognitionController.SetVisualRecognitionAPIKey(m_APIKeyField.text);
 		}
 
+        /// <summary>
+        /// Get all classifiers (brief).
+        /// </summary>
 		public void GetClassifiers()
 		{
 			m_VisualRecognitionController.GetClassifiers();
 		}
 
+        /// <summary>
+        /// Delete classifier in the delete input field.
+        /// </summary>
 		public void DeleteClassifier()
 		{
 			m_VisualRecognitionController.DeleteClassifier(m_DeleteClassifierIDField.text);
 		}
 
-
+        /// <summary>
+        /// Gets verbose data from the classifier identifer in the input field.
+        /// </summary>
+        public void GetClassifierVerbose()
+        {
+            m_VisualRecognitionController.GetClassifier(m_GetClassiferIDField.text);
+        }
 	}
 }
