@@ -103,13 +103,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			private void OnImageAdded()
 			{
-				Log.Debug("AppData", "Image added!");
 				EventManager.Instance.SendEvent(Constants.ON_IMAGE_ADDED);
 			}
 
 			private void OnImageRemoved()
 			{
-				Log.Debug("AppData", "Image removed!");
 				EventManager.Instance.SendEvent(Constants.ON_IMAGE_REMOVED);
 			}
 		}
@@ -128,7 +126,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 if (!SetAPIKey(APIKey))
                     Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
                 else
-                    EventManager.Instance.SendEvent(Constants.ON_UPDATE_API_KEY);
+                    EventManager.Instance.SendEvent(Constants.ON_API_KEY_UPDATED);
 			}
 		}
 		private string m_APIKey;
@@ -180,13 +178,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassifierIDAdded()
 		{
-			Log.Debug("AppData", "Classifier added!");
 			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED);
 		}
 
 		private void OnClassifierIDRemoved()
 		{
-			Log.Debug("AppData", "Classifier removed!");
 			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED);
 		}
 		#endregion
@@ -221,13 +217,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassiferVerboseAdded()
 		{
-			Log.Debug("AppData", "ClassifierVerbose added!");
 			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_ADDED);
 		}
 
 		private void OnClassifierVerboseRemoved()
 		{
-			Log.Debug("AppData", "ClassifierVerbose removed!");
 			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_REMOVED);
 		}
 		#endregion

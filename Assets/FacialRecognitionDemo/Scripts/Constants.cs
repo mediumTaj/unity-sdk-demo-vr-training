@@ -23,7 +23,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_CLASSIFIER_REMOVED = "OnClassifierRemoved";
 		public const string ON_IMAGE_ADDED = "OnImageAdded";
 		public const string ON_IMAGE_REMOVED = "OnImageRemoved";
-		public const string ON_UPDATE_API_KEY = "OnUpdateAPIKey";
+		public const string ON_API_KEY_UPDATED = "OnUpdateAPIKey";
 		public const string ON_CLASSIFIERS_UPDATED = "OnClassifiersUpdated";
 		public const string ON_CLASSIFIER_VERBOSE_ADDED = "OnClassiferVerboseAdded";
 		public const string ON_CLASSIFIER_VERBOSE_REMOVED = "OnClassiferVerboseRemoved";

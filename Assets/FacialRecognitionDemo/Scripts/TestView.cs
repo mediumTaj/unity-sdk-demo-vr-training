@@ -1,6 +1,8 @@
 ﻿
 
+using System;
 using IBM.Watson.DeveloperCloud.Logging;
+using IBM.Watson.DeveloperCloud.Utilities;
 /**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
@@ -35,9 +37,36 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         [SerializeField]
         private InputField m_GetClassiferIDField;
 
-        /// <summary>
-        /// Change credentials to the apikey input field.
-        /// </summary>
+		#region Enable and Disable
+		void OnEnable()
+		{
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_CLASSIFIER_ADDED, OnClassifierAdded);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_CLASSIFIER_REMOVED, OnClassiferRemoved);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_IMAGE_ADDED, OnImageAdded);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_IMAGE_REMOVED, OnImageRemoved);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_CLASSIFIERS_UPDATED, OnClassifiersUpdated);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
+			EventManager.Instance.RegisterEventReceiver(Constants.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
+		}
+
+		void OnDisable()
+		{
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_CLASSIFIER_ADDED, OnClassifierAdded);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_CLASSIFIER_REMOVED, OnClassiferRemoved);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_IMAGE_ADDED, OnImageAdded);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_IMAGE_REMOVED, OnImageRemoved);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_CLASSIFIERS_UPDATED, OnClassifiersUpdated);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
+			EventManager.Instance.UnregisterEventReceiver(Constants.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
+		}
+		#endregion
+
+		#region UI Event Handlers
+		/// <summary>
+		/// Change credentials to the apikey input field.
+		/// </summary>
 		public void ChangeCredentials()
 		{
 			m_VisualRecognitionController.SetVisualRecognitionAPIKey(m_APIKeyField.text);
@@ -66,5 +95,57 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         {
             m_VisualRecognitionController.GetClassifier(m_GetClassiferIDField.text);
         }
+
+		/// <summary>
+		/// Gets all verbose data from all classifiers.
+		/// </summary>
+		public void GetAllClassifierData()
+		{
+			Log.Debug("TestView", "Attempting to get all classifier data!");
+			m_VisualRecognitionController.GetAllClassifierData();
+		}
+		#endregion
+
+		#region Event Handlers
+		private void OnClassifierVerboseRemoved(object[] args)
+		{
+			Log.Debug("TestView", "Verbose classifier was removed.");
+		}
+
+		private void OnClassifierVerboseAdded(object[] args)
+		{
+			Log.Debug("TestView", "Verbose classifier was added.");
+		}
+
+		private void OnClassifiersUpdated(object[] args)
+		{
+			Log.Debug("TestView", "Classifier was updated.");
+		}
+
+		private void OnAPIKeyUpdated(object[] args)
+		{
+			Log.Debug("TestView", "API Key was updated");
+		}
+
+		private void OnImageRemoved(object[] args)
+		{
+			Log.Debug("TestView", "Image was removed.");
+		}
+
+		private void OnImageAdded(object[] args)
+		{
+			Log.Debug("TestView", "Image was added.");
+		}
+
+		private void OnClassiferRemoved(object[] args)
+		{
+			Log.Debug("TestView", "Classifier was removed.");
+		}
+
+		private void OnClassifierAdded(object[] args)
+		{
+			Log.Debug("TestView", "Classifier was added.");
+		}
+		#endregion
 	}
 }

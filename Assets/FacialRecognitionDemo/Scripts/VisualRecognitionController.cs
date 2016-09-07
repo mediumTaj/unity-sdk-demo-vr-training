@@ -55,6 +55,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				Log.Debug("VisualRecognitionUtilities", "GetClassifiers succeeded!");
 				AppData.Instance.ClassifiersBrief = classifiers;
+
+				if (!string.IsNullOrEmpty(data))
+					Log.Debug("VisualRecognitionController | OnGetClassifiers();", "data: {0}", data);
 			}
 			else
 			{
@@ -80,7 +83,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private void OnDeleteClassifier(bool success, string data)
 		{
 			if (success)
+			{
 				Log.Debug("VisualRecognitionUtilities", "Deleted classifier!");
+
+				if (!string.IsNullOrEmpty(data))
+					Log.Debug("VisualRecognitionController | OnDeleteClassifier();", "data: {0}", data);
+			}
 			else
 				Log.Debug("VisualRecognitionUtilities", "Failed to delete classifier!");
 		}
@@ -128,11 +136,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                     AppData.Instance.ClassifiersVerbose.RemoveAt(classifierIndexToRemove);
                     AppData.Instance.ClassifiersVerbose.Add(classifier);
                 }
-            }
-        }
+
+				if (!string.IsNullOrEmpty(data))
+					Log.Debug("VisualRecognitionController | OnGetClassifier();", "data: {0}", data);
+			}
+			else
+			{
+				Log.Warning("VisualRecognitionUtilities", "Failed to get classifier!");
+			}
+		}
         #endregion
 
-        #region
+        #region Get Classifiers Verbose
         /// <summary>
         /// Gets verbose data from all classifiers.
         /// </summary>
@@ -146,6 +161,39 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 if (!m_VisualRecognition.GetClassifier(OnGetClassifier, classifier.classifier_id))
                     Log.Debug("VisualRecognitionUtilities", "Failed to get classifier {0}!", classifier.classifier_id);
         }
-        #endregion
-    }
+		#endregion
+
+		#region Get All Classifier Data
+		/// <summary>
+		/// Retrieves all classifierIDs and then gets all classifier data from each classifierID.
+		/// </summary>
+		public void GetAllClassifierData()
+		{
+			if (!m_VisualRecognition.GetClassifiers(OnGetAllClassifierData))
+				Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
+		}
+
+		private void OnGetAllClassifierData(GetClassifiersTopLevelBrief classifiers, string data)
+		{
+			if (classifiers != null)
+			{
+				int numClassifiers = classifiers.classifiers.Length;
+				Log.Debug("VisualRecogntionController", "Classifier data received. NumClassifiers: {0}", numClassifiers);
+				AppData.Instance.ClassifiersBrief = classifiers;
+
+				if (!string.IsNullOrEmpty(data))
+					Log.Debug("VisualRecognitionController | OnGetAllClassifierData();", "data: {0}", data);
+
+				for (int i = 0; i < numClassifiers; i++)
+					if (!string.IsNullOrEmpty(classifiers.classifiers[i].classifier_id))
+						if (!m_VisualRecognition.GetClassifier(OnGetClassifier, classifiers.classifiers[i].classifier_id, string.Format("classifier{0}/{1}", i, numClassifiers)))
+							Log.Debug("VisualRecognitionUtilities", "Failed to get classifier {0}!", classifiers.classifiers[i].classifier_id);
+			}
+			else
+			{
+				Log.Warning("VisualRecognitionUtilities", "Failed to get all classifier data!");
+			}
+		}
+		#endregion
+	}
 }
