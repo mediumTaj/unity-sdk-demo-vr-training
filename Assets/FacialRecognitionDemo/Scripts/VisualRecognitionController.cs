@@ -25,7 +25,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		private VisualRecognition m_VisualRecognition = new VisualRecognition();
 
-        #region API Key
+        #region Update API Key
         /// <summary>
         /// Sets the APIKey in the Data.
         /// </summary>
@@ -46,14 +46,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         public void GetClassifiers()
 		{
 			if (!m_VisualRecognition.GetClassifiers(OnGetClassifiers))
-				Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
+				Log.Debug("VisualRecognitionController", "Failed to get classifiers!");
 		}
 
 		private void OnGetClassifiers(GetClassifiersTopLevelBrief classifiers, string data)
 		{
 			if (classifiers != null)
 			{
-				Log.Debug("VisualRecognitionUtilities", "GetClassifiers succeeded!");
+				Log.Debug("VisualRecognitionController", "GetClassifiers succeeded!");
 				AppData.Instance.ClassifiersBrief = classifiers;
 
 				if (!string.IsNullOrEmpty(data))
@@ -61,7 +61,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 			else
 			{
-				Log.Debug("VisualRecognitionUtilities", "GetClassifiers failed!");
+				Log.Debug("VisualRecognitionController", "GetClassifiers failed!");
 			}
 		}
         #endregion
@@ -77,20 +77,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				throw new ArgumentNullException("ClassifierID");
 
 			if (!m_VisualRecognition.DeleteClassifier(OnDeleteClassifier, classifierID))
-				Log.Debug("VisualRecognitionUtilities", "Failed to delete classifier!");
+				Log.Debug("VisualRecognitionController", "Failed to delete classifier!");
 		}
 
 		private void OnDeleteClassifier(bool success, string data)
 		{
 			if (success)
 			{
-				Log.Debug("VisualRecognitionUtilities", "Deleted classifier!");
+				Log.Debug("VisualRecognitionController", "Deleted classifier!");
 
 				if (!string.IsNullOrEmpty(data))
 					Log.Debug("VisualRecognitionController | OnDeleteClassifier();", "data: {0}", data);
 			}
 			else
-				Log.Debug("VisualRecognitionUtilities", "Failed to delete classifier!");
+				Log.Debug("VisualRecognitionController", "Failed to delete classifier!");
 		}
         #endregion
 
@@ -105,7 +105,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 throw new ArgumentNullException("ClassifierID");
 
             if (!m_VisualRecognition.GetClassifier(OnGetClassifier, classifierID))
-                Log.Debug("VisualRecognitionUtilities", "Failed to get classifier!");
+                Log.Debug("VisualRecognitionController", "Failed to get classifier!");
         }
 
         private void OnGetClassifier(GetClassifiersPerClassifierVerbose classifier, string data)
@@ -142,7 +142,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 			else
 			{
-				Log.Warning("VisualRecognitionUtilities", "Failed to get classifier!");
+				Log.Warning("VisualRecognitionController", "Failed to get classifier!");
 			}
 		}
         #endregion
@@ -159,7 +159,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
             foreach(GetClassifiersPerClassifierBrief classifier in classifiers.classifiers)
                 if (!m_VisualRecognition.GetClassifier(OnGetClassifier, classifier.classifier_id))
-                    Log.Debug("VisualRecognitionUtilities", "Failed to get classifier {0}!", classifier.classifier_id);
+                    Log.Debug("VisualRecognitionController", "Failed to get classifier {0}!", classifier.classifier_id);
         }
 		#endregion
 
@@ -170,7 +170,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public void GetAllClassifierData()
 		{
 			if (!m_VisualRecognition.GetClassifiers(OnGetAllClassifierData))
-				Log.Debug("VisualRecognitionUtilities", "Failed to get classifiers!");
+				Log.Debug("VisualRecognitionController", "Failed to get classifiers!");
 		}
 
 		private void OnGetAllClassifierData(GetClassifiersTopLevelBrief classifiers, string data)
@@ -187,11 +187,49 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				for (int i = 0; i < numClassifiers; i++)
 					if (!string.IsNullOrEmpty(classifiers.classifiers[i].classifier_id))
 						if (!m_VisualRecognition.GetClassifier(OnGetClassifier, classifiers.classifiers[i].classifier_id, string.Format("classifier{0}/{1}", i, numClassifiers)))
-							Log.Debug("VisualRecognitionUtilities", "Failed to get classifier {0}!", classifiers.classifiers[i].classifier_id);
+							Log.Debug("VisualRecognitionController", "Failed to get classifier {0}!", classifiers.classifiers[i].classifier_id);
 			}
 			else
 			{
-				Log.Warning("VisualRecognitionUtilities", "Failed to get all classifier data!");
+				Log.Warning("VisualRecognitionController", "Failed to get all classifier data!");
+			}
+		}
+		#endregion
+
+		#region Classify
+		/// <summary>
+		/// Classifies an image by ByteArray.
+		/// </summary>
+		/// <param name="imageData">Byte array of image data.</param>
+		/// <param name="classifierIDs">Array of classifier identifiers to use.</param>
+		/// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
+		/// <param name="threshold">Threshold for omitting classification results.</param>
+		public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
+		{
+			if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
+				Log.Warning("VisualRecognitionController", "Failed to classify image!");
+		}
+
+		private void OnClassify(ClassifyTopLevelMultiple classify, string data)
+		{
+			if(classify != null)
+			{
+				foreach (ClassifyTopLevelSingle image in classify.images)
+					foreach (ClassifyPerClassifier classifier in image.classifiers)
+					{
+						Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
+						foreach (ClassResult classResult in classifier.classes)
+						{
+						
+						Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
+							if (!string.IsNullOrEmpty(classResult.type_hierarchy))
+								Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
+						}
+					}
+			}
+			else
+			{
+				Log.Debug("VisualRecognitionController", "Failed to classify image!");
 			}
 		}
 		#endregion
