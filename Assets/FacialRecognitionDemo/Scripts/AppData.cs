@@ -1,7 +1,4 @@
-﻿
-
-using IBM.Watson.DeveloperCloud.Connection;
-/**
+﻿/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +14,11 @@ using IBM.Watson.DeveloperCloud.Connection;
 * limitations under the License.
 *
 */
+
+using IBM.Watson.DeveloperCloud.Connection;
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
-using System;
 using System.IO;
 using UnityEngine;
 
@@ -40,18 +38,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public AppData()
 		{
-			ClassifierIDs.Added += OnClassifierIDAdded;
-			ClassifierIDs.Removed += OnClassifierIDRemoved;
-			ClassifiersVerbose.Added += OnClassiferVerboseAdded;
-			ClassifiersVerbose.Removed += OnClassifierVerboseRemoved;
+			ClassifierIDs.OnAdded += OnClassifierIDAdded;
+			ClassifierIDs.OnRemoved += OnClassifierIDRemoved;
+			ClassifiersVerbose.OnAdded += OnClassiferVerboseAdded;
+			ClassifiersVerbose.OnRemoved += OnClassifierVerboseRemoved;
 		}
 
 		~AppData()
 		{
-			ClassifierIDs.Added -= OnClassifierIDAdded;
-			ClassifierIDs.Removed -= OnClassifierIDRemoved;
-			ClassifiersVerbose.Added -= OnClassiferVerboseAdded;
-			ClassifiersVerbose.Removed -= OnClassifierVerboseRemoved;
+			ClassifierIDs.OnAdded -= OnClassifierIDAdded;
+			ClassifierIDs.OnRemoved -= OnClassifierIDRemoved;
+			ClassifiersVerbose.OnAdded -= OnClassiferVerboseAdded;
+			ClassifiersVerbose.OnRemoved -= OnClassifierVerboseRemoved;
 		}
 		#endregion
 
@@ -91,24 +89,24 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			/// </summary>
 			public VRClass()
 			{
-				images.Added += OnImageAdded;
-				images.Removed += OnImageRemoved;
+				images.OnAdded += OnImageAdded;
+				images.OnRemoved += OnImageRemoved;
 			}
 
 			~VRClass()
 			{
-				images.Added -= OnImageAdded;
-				images.Removed -= OnImageRemoved;
+				images.OnAdded -= OnImageAdded;
+				images.OnRemoved -= OnImageRemoved;
 			}
 
-			private void OnImageAdded()
+			private void OnImageAdded(byte[] image)
 			{
-				EventManager.Instance.SendEvent(Constants.ON_IMAGE_ADDED);
+				EventManager.Instance.SendEvent(Constants.ON_IMAGE_ADDED, image);
 			}
 
-			private void OnImageRemoved()
+			private void OnImageRemoved(byte[] image)
 			{
-				EventManager.Instance.SendEvent(Constants.ON_IMAGE_REMOVED);
+				EventManager.Instance.SendEvent(Constants.ON_IMAGE_REMOVED, image);
 			}
 		}
 		#endregion
@@ -126,7 +124,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 if (!SetAPIKey(APIKey))
                     Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
                 else
-                    EventManager.Instance.SendEvent(Constants.ON_API_KEY_UPDATED);
+                    EventManager.Instance.SendEvent(Constants.ON_API_KEY_UPDATED, APIKey);
 			}
 		}
 		private string m_APIKey;
@@ -176,14 +174,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public ObservedList<string> ClassifierIDs = new ObservedList<string>();
 
-		private void OnClassifierIDAdded()
+		private void OnClassifierIDAdded(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED);
+			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED, classifierID);
 		}
 
-		private void OnClassifierIDRemoved()
+		private void OnClassifierIDRemoved(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED);
+			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED, classifierID);
 		}
 		#endregion
 
@@ -215,14 +213,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public ObservedList<GetClassifiersPerClassifierVerbose> ClassifiersVerbose = new ObservedList<GetClassifiersPerClassifierVerbose>();
 
-		private void OnClassiferVerboseAdded()
+		private void OnClassiferVerboseAdded(GetClassifiersPerClassifierVerbose classifier)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_ADDED);
+			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_ADDED, classifier);
 		}
 
-		private void OnClassifierVerboseRemoved()
+		private void OnClassifierVerboseRemoved(GetClassifiersPerClassifierVerbose classifier)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_REMOVED);
+			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_REMOVED, classifier);
 		}
 		#endregion
 	}

@@ -21,6 +21,7 @@ using IBM.Watson.DeveloperCloud.Utilities;
 */
 using UnityEngine;
 using UnityEngine.UI;
+using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -109,22 +110,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Event Handlers
 		private void OnClassifierVerboseRemoved(object[] args)
 		{
-			Log.Debug("TestView", "Verbose classifier was removed.");
+			Log.Debug("TestView", "Verbose classifier was removed {0}.", (args[0] as GetClassifiersPerClassifierVerbose).classifier_id);
 		}
 
 		private void OnClassifierVerboseAdded(object[] args)
 		{
-			Log.Debug("TestView", "Verbose classifier was added.");
+			Log.Debug("TestView", "Verbose classifier was added {0}.", (args[0] as GetClassifiersPerClassifierVerbose).classifier_id);
 		}
 
 		private void OnClassifiersUpdated(object[] args)
 		{
-			Log.Debug("TestView", "Classifier was updated.");
+            Log.Debug("TestView", "Classifier was updated.");
 		}
 
 		private void OnAPIKeyUpdated(object[] args)
 		{
-			Log.Debug("TestView", "API Key was updated");
+			Log.Debug("TestView", "API Key was updated {0}.", args[0] as string);
 		}
 
 		private void OnImageRemoved(object[] args)
@@ -139,12 +140,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassiferRemoved(object[] args)
 		{
-			Log.Debug("TestView", "Classifier was removed.");
+			Log.Debug("TestView", "Classifier was removed {0}.", args[0]);
 		}
 
 		private void OnClassifierAdded(object[] args)
 		{
-			Log.Debug("TestView", "Classifier was added.");
+			Log.Debug("TestView", "Classifier was added {0}.", args[0]);
 		}
 		#endregion
 	}
