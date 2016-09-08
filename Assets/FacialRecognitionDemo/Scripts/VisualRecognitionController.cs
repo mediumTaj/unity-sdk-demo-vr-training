@@ -232,6 +232,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				Log.Debug("VisualRecognitionController", "Failed to classify image!");
 			}
 		}
-		#endregion
-	}
+        #endregion
+
+        #region UpdateClassifier
+        public void UpdateClassifier(string classifierID, byte[] positiveExamplesData, byte[] negativeExamplesData = default(byte[]))
+        {
+
+        }
+        #endregion
+    }
 }
