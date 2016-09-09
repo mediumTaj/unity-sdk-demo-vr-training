@@ -239,6 +239,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         {
 
         }
-        #endregion
-    }
+		#endregion
+
+		#region Start Application
+		public void StartApplication()
+		{
+			if (AppData.Instance.AppState == AppState.START)
+				AppData.Instance.AppState = AppState.OPTIONS;
+			else
+				Log.Error("VisualRecognitionController", "Application not in start state!");
+		}
+		#endregion
+	}
 }

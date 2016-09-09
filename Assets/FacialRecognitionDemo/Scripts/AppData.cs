@@ -24,6 +24,9 @@ using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class contains all application data.
+	/// </summary>
 	public class AppData
 	{
         #region Private Data
@@ -101,12 +104,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			private void OnImageAdded(byte[] image)
 			{
-				EventManager.Instance.SendEvent(Constants.ON_IMAGE_ADDED, image);
+				EventManager.Instance.SendEvent(Event.ON_IMAGE_ADDED, image);
 			}
 
 			private void OnImageRemoved(byte[] image)
 			{
-				EventManager.Instance.SendEvent(Constants.ON_IMAGE_REMOVED, image);
+				EventManager.Instance.SendEvent(Event.ON_IMAGE_REMOVED, image);
 			}
 		}
 		#endregion
@@ -124,7 +127,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 if (!SetAPIKey(APIKey))
                     Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
                 else
-                    EventManager.Instance.SendEvent(Constants.ON_API_KEY_UPDATED, APIKey);
+                    EventManager.Instance.SendEvent(Event.ON_API_KEY_UPDATED, APIKey);
 			}
 		}
 		private string m_APIKey;
@@ -176,12 +179,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassifierIDAdded(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED, classifierID);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_ADDED, classifierID);
 		}
 
 		private void OnClassifierIDRemoved(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_ADDED, classifierID);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_ADDED, classifierID);
 		}
 		#endregion
 
@@ -201,7 +204,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					ClassifierIDs.Add(classifier.classifier_id);
 				}
 
-				EventManager.Instance.SendEvent(Constants.ON_CLASSIFIERS_UPDATED);
+				EventManager.Instance.SendEvent(Event.ON_CLASSIFIERS_UPDATED);
 			}
 		}
 		private GetClassifiersTopLevelBrief m_ClassifiersBrief;
@@ -215,12 +218,38 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassiferVerboseAdded(GetClassifiersPerClassifierVerbose classifier)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_ADDED, classifier);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_ADDED, classifier);
 		}
 
 		private void OnClassifierVerboseRemoved(GetClassifiersPerClassifierVerbose classifier)
 		{
-			EventManager.Instance.SendEvent(Constants.ON_CLASSIFIER_VERBOSE_REMOVED, classifier);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_REMOVED, classifier);
+		}
+		#endregion
+
+		#region Started
+		private bool m_HasStarted = false;
+		public bool HasStarted
+		{
+			get { return m_HasStarted; }
+			set
+			{
+				m_HasStarted = value;
+				EventManager.Instance.SendEvent(Event.ON_HAS_STARTED_UPDATED);
+			}
+		}
+		#endregion
+
+		#region Application State
+		private int m_AppState = 0;
+		public int AppState
+		{
+			get { return m_AppState; }
+			set
+			{
+				m_AppState = value;
+				EventManager.Instance.SendEvent(Event.ON_UPDATE_APP_STATE);
+			}
 		}
 		#endregion
 	}

@@ -17,8 +17,10 @@
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
-	public class Constants
+	public class Event
 	{
+		public const string ON_HAS_STARTED_UPDATED = "OnHasStartedUpdated";
+		public const string ON_UPDATE_APP_STATE = "OnUpdateAppState";
 		public const string ON_CLASSIFIER_ADDED = "OnClassifierAdded";
 		public const string ON_CLASSIFIER_REMOVED = "OnClassifierRemoved";
 		public const string ON_IMAGE_ADDED = "OnImageAdded";
@@ -27,5 +29,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_CLASSIFIERS_UPDATED = "OnClassifiersUpdated";
 		public const string ON_CLASSIFIER_VERBOSE_ADDED = "OnClassiferVerboseAdded";
 		public const string ON_CLASSIFIER_VERBOSE_REMOVED = "OnClassiferVerboseRemoved";
+	}
+
+	public class AppState
+	{
+		public const int NONE = -1;
+		public const int START = 0;
+		public const int OPTIONS = 1;
+		public const int PHOTO = 2;
+		public const int CLASSIFY_RESULT = 3;
+		public const int ADD_TO_TRAINING = 4;
+		public const int TRAINING = 5;
+		public const int TRAINING_SUCCESS = 6;
+		public const int TRAINING_FAILURE = 7;
+		public const int TRAIN = 8;
+		public const int TRAIN_OPTIONS = 9;
+		public const int TRAIN_PHOTO = 10;
+		public const int RESULT_PHOTOS = 11;
 	}
 }
