@@ -55,12 +55,38 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifiersVerbose.OnRemoved -= OnClassifierVerboseRemoved;
 		}
 		#endregion
-
+		
 		#region Instance
 		/// <summary>
 		/// Returns the singleton instance of AppData.
 		/// </summary>
 		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
+		#endregion
+		
+		//#region Started
+		//private bool m_HasStarted = false;
+		//public bool HasStarted
+		//{
+		//	get { return m_HasStarted; }
+		//	set
+		//	{
+		//		m_HasStarted = value;
+		//		EventManager.Instance.SendEvent(Event.ON_HAS_STARTED_UPDATED);
+		//	}
+		//}
+		//#endregion
+
+		#region Application State
+		private int m_AppState = 0;
+		public int AppState
+		{
+			get { return m_AppState; }
+			set
+			{
+				m_AppState = value;
+				EventManager.Instance.SendEvent(Event.ON_UPDATE_APP_STATE);
+			}
+		}
 		#endregion
 
 		#region Visual Recognition Classes
@@ -227,28 +253,25 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		#endregion
 
-		#region Started
-		private bool m_HasStarted = false;
-		public bool HasStarted
+		#region APIKey
+		private bool m_IsAPIKeyValid = false;
+		public bool IsAPIKeyValid
 		{
-			get { return m_HasStarted; }
-			set
-			{
-				m_HasStarted = value;
-				EventManager.Instance.SendEvent(Event.ON_HAS_STARTED_UPDATED);
-			}
+			get { return m_IsAPIKeyValid; }
+			set { m_IsAPIKeyValid = value; }
 		}
-		#endregion
 
-		#region Application State
-		private int m_AppState = 0;
-		public int AppState
+		private bool m_IsCheckingAPIKey = false;
+		public bool IsCheckingAPIKey
 		{
-			get { return m_AppState; }
+			get { return m_IsCheckingAPIKey; }
 			set
 			{
-				m_AppState = value;
-				EventManager.Instance.SendEvent(Event.ON_UPDATE_APP_STATE);
+				m_IsCheckingAPIKey = value;
+				if (IsCheckingAPIKey)
+					EventManager.Instance.SendEvent(Event.CHECK_API_KEY);
+				else
+					EventManager.Instance.SendEvent(Event.API_KEY_CHECKED);
 			}
 		}
 		#endregion

@@ -31,6 +31,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Constructor and Destructor
+		/// <summary>
+		/// StartView Constrtuctor.
+		/// </summary>
 		public StartView()
 		{
 			m_ViewStates.Add(AppState.START);
@@ -38,10 +41,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		//override protected void Awake()
-		//{
-		//	base.Awake();
-		//}
 		#endregion
 
 		#region Private Functions

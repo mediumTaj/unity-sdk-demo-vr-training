@@ -16,7 +16,9 @@
 */
 
 using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -26,12 +28,29 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	public class ConfigView : View
 	{
 		#region Private Data
+		[SerializeField]
+		private InputField m_APIKeyInputField;
+		[SerializeField]
+		private Text m_StatusText;
+		private string m_CheckingMessage = "Checking API Key Validity...";
+		private string m_FailMessage = "API Key check failed! Please try again.";
+		private string m_SuccessMessage = "The API Key is valid!";
+		private string m_EnterAPIKeyMessage = "Please enter Visual Recognition API Key.";
+		private bool m_APIKeyChecked = false;
+
+		private AppData m_AppData
+		{
+			get { return AppData.Instance; }
+		}
 		#endregion
 
 		#region Public Properties
 		#endregion
 
 		#region Constructor and Destructor
+		/// <summary>
+		/// The ConfigView Constructor.
+		/// </summary>
 		public ConfigView()
 		{
 			m_ViewStates.Add(AppState.CONFIG);
@@ -39,10 +58,40 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		//override protected void Awake()
-		//{
-		//	base.Awake();
-		//}
+		protected override void Awake()
+		{
+			base.Awake();
+
+			string apiKey = Config.Instance.GetAPIKey("VisualRecognitionV3");
+
+			if (!string.IsNullOrEmpty(apiKey))
+			{
+				m_APIKeyInputField.text = Config.Instance.GetAPIKey("VisualRecognitionV3");
+
+				if (!m_AppData.IsAPIKeyValid)
+				{
+					m_AppData.IsCheckingAPIKey = true;
+					m_StatusText.text = m_CheckingMessage;
+				}
+				else
+				{
+					m_StatusText.text = m_SuccessMessage;
+				}
+
+			}
+			else
+				m_StatusText.text = m_EnterAPIKeyMessage;
+		}
+
+		void OnEnable()
+		{
+			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
+		}
+
+		void OnDisable()
+		{
+			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
+		}
 		#endregion
 
 		#region Private Functions
@@ -52,6 +101,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Event Handlers
+		private void HandleAPIKeyChecked(object[] args)
+		{
+			if (m_AppData.IsAPIKeyValid)
+				m_StatusText.text = m_SuccessMessage;
+			else
+				m_StatusText.text = m_FailMessage;
+		}
 		#endregion
 	}
 }

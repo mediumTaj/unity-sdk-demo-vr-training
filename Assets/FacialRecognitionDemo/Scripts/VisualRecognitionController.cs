@@ -25,25 +25,48 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		private VisualRecognition m_VisualRecognition = new VisualRecognition();
 
-        #region Update API Key
-        /// <summary>
-        /// Sets the APIKey in the Data.
-        /// </summary>
-        /// <param name="apiKey">The Visual Recognition service API Key.</param>
-        public void SetVisualRecognitionAPIKey(string apiKey)
+		#region Private Data
+		private AppData m_AppData
+		{
+			get { return AppData.Instance; }
+		}
+		#endregion
+
+		#region API Key
+		/// <summary>
+		/// Sets the APIKey in the Data.
+		/// </summary>
+		/// <param name="apiKey">The Visual Recognition service API Key.</param>
+		public void SetVisualRecognitionAPIKey(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
                 throw new ArgumentNullException("apiKey");
 
-            AppData.Instance.APIKey = apiKey;
+            m_AppData.APIKey = apiKey;
         }
-        #endregion
 
-        #region Get Classifiers
-        /// <summary>
-        /// Gets all classifiers.
-        /// </summary>
-        public void GetClassifiers()
+		/// <summary>
+		/// Check API Key validity
+		/// </summary>
+		public void CheckAPIKey()
+		{
+			m_VisualRecognition.GetServiceStatus(HandleGetServiceStatus);
+		}
+
+		private void HandleGetServiceStatus(string serviceID, bool active)
+		{
+			if (active)
+				m_AppData.IsAPIKeyValid = true;
+
+			m_AppData.IsCheckingAPIKey = false;
+		}
+		#endregion
+
+		#region Get Classifiers
+		/// <summary>
+		/// Gets all classifiers.
+		/// </summary>
+		public void GetClassifiers()
 		{
 			if (!m_VisualRecognition.GetClassifiers(OnGetClassifiers))
 				Log.Debug("VisualRecognitionController", "Failed to get classifiers!");
@@ -54,7 +77,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (classifiers != null)
 			{
 				Log.Debug("VisualRecognitionController", "GetClassifiers succeeded!");
-				AppData.Instance.ClassifiersBrief = classifiers;
+				m_AppData.ClassifiersBrief = classifiers;
 
 				if (!string.IsNullOrEmpty(data))
 					Log.Debug("VisualRecognitionController | OnGetClassifiers();", "data: {0}", data);
@@ -116,7 +139,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 bool replaceClassifier = false;
                 int classifierIndexToRemove = default(int);
 
-                foreach (GetClassifiersPerClassifierVerbose ClassifierVerbose in AppData.Instance.ClassifiersVerbose)
+                foreach (GetClassifiersPerClassifierVerbose ClassifierVerbose in m_AppData.ClassifiersVerbose)
                     if (ClassifierVerbose.classifier_id == classifier.classifier_id)
                     {
                         classifierFound = true;
@@ -124,17 +147,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                         if (ClassifierVerbose.classes != classifier.classes)
                         {
                             replaceClassifier = true;
-                            classifierIndexToRemove = AppData.Instance.ClassifiersVerbose.IndexOf(ClassifierVerbose);
+                            classifierIndexToRemove = m_AppData.ClassifiersVerbose.IndexOf(ClassifierVerbose);
                         }
                     }
 
                 if (!classifierFound)
-                    AppData.Instance.ClassifiersVerbose.Add(classifier);
+                    m_AppData.ClassifiersVerbose.Add(classifier);
 
                 if (classifierFound && replaceClassifier)
                 {
-                    AppData.Instance.ClassifiersVerbose.RemoveAt(classifierIndexToRemove);
-                    AppData.Instance.ClassifiersVerbose.Add(classifier);
+                    m_AppData.ClassifiersVerbose.RemoveAt(classifierIndexToRemove);
+                    m_AppData.ClassifiersVerbose.Add(classifier);
                 }
 
 				if (!string.IsNullOrEmpty(data))
@@ -179,7 +202,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				int numClassifiers = classifiers.classifiers.Length;
 				Log.Debug("VisualRecogntionController", "Classifier data received. NumClassifiers: {0}", numClassifiers);
-				AppData.Instance.ClassifiersBrief = classifiers;
+				m_AppData.ClassifiersBrief = classifiers;
 
 				if (!string.IsNullOrEmpty(data))
 					Log.Debug("VisualRecognitionController | OnGetAllClassifierData();", "data: {0}", data);
@@ -244,8 +267,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Start Application
 		public void StartApplication()
 		{
-			if (AppData.Instance.AppState == AppState.START)
-				AppData.Instance.AppState = AppState.CONFIG;
+			if (m_AppData.AppState == AppState.START)
+				m_AppData.AppState = AppState.CONFIG;
 			else
 				Log.Error("VisualRecognitionController", "Application not in start state!");
 		}
@@ -253,8 +276,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		public void GoBack()
 		{
-			if (AppData.Instance.AppState == AppState.CONFIG)
-				AppData.Instance.AppState = AppState.START;
+			if (m_AppData.AppState == AppState.CONFIG)
+				m_AppData.AppState = AppState.START;
 			else
 				Log.Error("VisualRecognitionController", "Application not in config state!");
 		}

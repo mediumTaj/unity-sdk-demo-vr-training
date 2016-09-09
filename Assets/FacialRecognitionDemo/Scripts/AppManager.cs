@@ -35,8 +35,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			get { return AppData.Instance; }
 		}
 
-		[SerializeField]
-		private StartView startView;
+		//[SerializeField]
+		//private StartView startView;
 		#endregion
 
 		#region Awake / Enable / Disable
@@ -59,11 +59,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		void OnEnable()
 		{
 			EventManager.Instance.RegisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
+			EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
 		}
 
 		void OnDisable()
 		{
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
+			EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
 		}
 		#endregion
 
@@ -101,6 +103,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				bool isVisible = view.IsVisibleInCurrentAppState();
 				view.gameObject.SetActive(isVisible);
 			}
+		}
+
+		private void OnCheckAPIKey(object[] args)
+		{
+			Log.Debug("AppManager", "Checking APIKey!");
+			m_VisualRecognitionController.CheckAPIKey();
 		}
 		#endregion
 	}

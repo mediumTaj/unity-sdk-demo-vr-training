@@ -29,6 +29,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_CLASSIFIERS_UPDATED = "OnClassifiersUpdated";
 		public const string ON_CLASSIFIER_VERBOSE_ADDED = "OnClassiferVerboseAdded";
 		public const string ON_CLASSIFIER_VERBOSE_REMOVED = "OnClassiferVerboseRemoved";
+		public const string CHECK_API_KEY = "CheckAPIKey";
+		public const string API_KEY_CHECKED = "APIKeyChecked";
 	}
 
 	public class AppState
