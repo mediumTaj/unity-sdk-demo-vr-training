@@ -62,19 +62,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
 		#endregion
-		
-		//#region Started
-		//private bool m_HasStarted = false;
-		//public bool HasStarted
-		//{
-		//	get { return m_HasStarted; }
-		//	set
-		//	{
-		//		m_HasStarted = value;
-		//		EventManager.Instance.SendEvent(Event.ON_HAS_STARTED_UPDATED);
-		//	}
-		//}
-		//#endregion
 
 		#region Application State
 		private int m_AppState = 0;

@@ -42,10 +42,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Awake / Start / Enable / Disable
-        protected virtual void Awake()
-		{
-			//EventManager.Instance.RegisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
-		}
+        protected virtual void Awake() {}
 		#endregion
 
 		#region Private Functions
@@ -61,10 +58,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Event Handlers
-		//private void OnUpdateAppState(object[] args)
-		//{
-		//	gameObject.SetActive(IsVisibleInCurrentAppState());
-		//}
 		#endregion
 	}
 }

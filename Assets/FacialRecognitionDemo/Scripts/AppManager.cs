@@ -72,13 +72,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
-		//public void HandleCheckAPIButtonClicked()
-		//{
-		//	if (m_VisualRecognitionController == null)
-		//		throw new NullReferenceException("m_VisualRecognitionController");
-
-		//	m_VisualRecognitionController.CheckAPIKey();
-		//}
 		#endregion
 
 		#region Event Handlers
@@ -92,12 +85,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				view.gameObject.SetActive(isVisible);
 			}
 		}
-
-		//private void OnCheckAPIKey(object[] args)
-		//{
-		//	Log.Debug("AppManager", "Checking APIKey!");
-		//	m_VisualRecognitionController.CheckAPIKey();
-		//}
 		#endregion
 	}
 }
