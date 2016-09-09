@@ -25,6 +25,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	public class StartView : View
 	{
 		#region Private Data
+		private AppData m_AppData
+		{
+			get { return AppData.Instance; }
+		}
 		#endregion
 
 		#region Public Properties
@@ -41,6 +45,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
+		public bool IsVisibleInCurrentAppState()
+		{
+			bool isVisible = false;
+			foreach (int ViewState in m_ViewStates)
+				if (ViewState == m_AppData.AppState)
+					isVisible = true;
+
+			return isVisible;
+		}
 		#endregion
 
 		#region Event Handlers
