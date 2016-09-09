@@ -245,10 +245,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public void StartApplication()
 		{
 			if (AppData.Instance.AppState == AppState.START)
-				AppData.Instance.AppState = AppState.OPTIONS;
+				AppData.Instance.AppState = AppState.CONFIG;
 			else
 				Log.Error("VisualRecognitionController", "Application not in start state!");
 		}
 		#endregion
+
+		public void GoBack()
+		{
+			if (AppData.Instance.AppState == AppState.CONFIG)
+				AppData.Instance.AppState = AppState.START;
+			else
+				Log.Error("VisualRecognitionController", "Application not in config state!");
+		}
 	}
 }

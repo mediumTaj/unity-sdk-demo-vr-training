@@ -29,6 +29,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		#region Private Data
 		private VisualRecognitionController m_VisualRecognitionController = null;
+		private View[] m_Views = null;
 		private AppData m_AppData
 		{
 			get { return AppData.Instance; }
@@ -41,8 +42,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Awake / Enable / Disable
 		void Awake()
 		{
+			m_AppData.AppState = AppState.NONE;
 			LogSystem.InstallDefaultReactors();
+
+			if (m_Views == null)
+				m_Views = Resources.FindObjectsOfTypeAll<View>();
+
 			m_VisualRecognitionController = new VisualRecognitionController();
+		}
+
+		void Start()
+		{
 			m_AppData.AppState = AppState.START;
 		}
 
@@ -71,24 +81,25 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			m_VisualRecognitionController.StartApplication();
 		}
+
+		public void HandleConfigButtonClicked()
+		{
+			if (m_VisualRecognitionController == null)
+				throw new NullReferenceException("m_VisualRecognitionController");
+
+			m_VisualRecognitionController.GoBack();
+		}
 		#endregion
 
 		#region Event Handlers
 		private void OnUpdateAppState(object[] args)
 		{
 			Log.Debug("AppManager", "App state has been updated to {0}!", m_AppData.AppState);
-			switch(m_AppData.AppState)
-			{
-				case AppState.NONE:
-					break;
-				case AppState.START:
-					break;
-				case AppState.OPTIONS:
-					break;
 
-				default:
-					Log.Debug("AppManager", "No mapping for app state {0}!", m_AppData.AppState);
-					break;
+			foreach(View view in m_Views)
+			{
+				bool isVisible = view.IsVisibleInCurrentAppState();
+				view.gameObject.SetActive(isVisible);
 			}
 		}
 		#endregion

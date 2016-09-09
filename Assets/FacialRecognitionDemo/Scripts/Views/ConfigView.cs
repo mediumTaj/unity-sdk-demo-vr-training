@@ -16,13 +16,14 @@
 */
 
 using UnityEngine;
+using System.Collections;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	/// <summary>
-	/// This class contorls the Start View.
+	/// This class controls the Config View.
 	/// </summary>
-	public class StartView : View
+	public class ConfigView : View
 	{
 		#region Private Data
 		#endregion
@@ -31,9 +32,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Constructor and Destructor
-		public StartView()
+		public ConfigView()
 		{
-			m_ViewStates.Add(AppState.START);
+			m_ViewStates.Add(AppState.CONFIG);
 		}
 		#endregion
 

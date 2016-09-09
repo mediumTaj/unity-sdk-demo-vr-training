@@ -35,7 +35,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		public const int NONE = -1;
 		public const int START = 0;
-		public const int OPTIONS = 1;
+		public const int CONFIG = 1;
 		public const int PHOTO = 2;
 		public const int CLASSIFY_RESULT = 3;
 		public const int ADD_TO_TRAINING = 4;

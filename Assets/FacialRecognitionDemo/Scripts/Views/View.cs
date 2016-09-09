@@ -17,6 +17,8 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using IBM.Watson.DeveloperCloud.Utilities;
+using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -27,6 +29,37 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		#region Private Data
 		protected List<int> m_ViewStates = new List<int>();
+
+		protected AppData m_AppData
+		{
+			get { return AppData.Instance; }
+		}
+		#endregion
+
+		#region Awake / Start / Enable / Disable
+		protected virtual void Awake()
+		{
+			//EventManager.Instance.RegisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
+		}
+		#endregion
+
+		#region Private Functions
+		public bool IsVisibleInCurrentAppState()
+		{
+			bool isVisible = false;
+			foreach (int ViewState in m_ViewStates)
+				if (ViewState == m_AppData.AppState)
+					isVisible = true;
+
+			return isVisible;
+		}
+		#endregion
+
+		#region Event Handlers
+		//private void OnUpdateAppState(object[] args)
+		//{
+		//	gameObject.SetActive(IsVisibleInCurrentAppState());
+		//}
 		#endregion
 	}
 }
