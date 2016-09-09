@@ -19,6 +19,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using IBM.Watson.DeveloperCloud.Utilities;
+using System.Collections;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -37,11 +38,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private string m_SuccessMessage = "The API Key is valid!";
 		private string m_EnterAPIKeyMessage = "Please enter Visual Recognition API Key.";
 		private bool m_APIKeyChecked = false;
-
-		private AppData m_AppData
-		{
-			get { return AppData.Instance; }
-		}
 		#endregion
 
 		#region Public Properties
@@ -58,56 +54,86 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		protected override void Awake()
-		{
-			base.Awake();
-
-			string apiKey = Config.Instance.GetAPIKey("VisualRecognitionV3");
-
-			if (!string.IsNullOrEmpty(apiKey))
-			{
-				m_APIKeyInputField.text = Config.Instance.GetAPIKey("VisualRecognitionV3");
-
-				if (!m_AppData.IsAPIKeyValid)
-				{
-					m_AppData.IsCheckingAPIKey = true;
-					m_StatusText.text = m_CheckingMessage;
-				}
-				else
-				{
-					m_StatusText.text = m_SuccessMessage;
-				}
-
-			}
-			else
-				m_StatusText.text = m_EnterAPIKeyMessage;
-		}
-
 		void OnEnable()
 		{
+            EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
-		}
+			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 
-		void OnDisable()
+            CheckAPIKey();
+        }
+
+        void OnDisable()
 		{
+            EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
-		}
-		#endregion
+            EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
+        }
+        #endregion
 
-		#region Private Functions
-		#endregion
+        #region Private Functions
+        private void CheckAPIKey()
+        {
+            string apiKey = Config.Instance.GetAPIKey("VisualRecognitionV3");
 
-		#region Public Functions
-		#endregion
+            if (!string.IsNullOrEmpty(apiKey))
+            {
+                m_APIKeyInputField.text = Config.Instance.GetAPIKey("VisualRecognitionV3");
 
-		#region Event Handlers
-		private void HandleAPIKeyChecked(object[] args)
+                if (!m_AppData.IsAPIKeyValid)
+                {
+                    m_AppData.IsCheckingAPIKey = true;
+                    m_StatusText.text = m_CheckingMessage;
+                }
+                else
+                {
+                    m_StatusText.text = m_SuccessMessage;
+                }
+
+            }
+            else
+                m_StatusText.text = m_EnterAPIKeyMessage;
+        }
+        #endregion
+
+        #region Public Functions
+        /// <summary>
+        /// UI Click handler for Check API Key button.
+        /// </summary>
+        public void OnCheckAPIKeyButtonClicked()
+        {
+            m_AppData.APIKey = m_APIKeyInputField.text;
+        }
+        #endregion
+
+        #region Event Handlers
+        private void HandleCheckAPIKey(object[] args)
+        {
+            m_Controller.CheckAPIKey();
+        }
+
+        private void HandleAPIKeyChecked(object[] args)
 		{
 			if (m_AppData.IsAPIKeyValid)
 				m_StatusText.text = m_SuccessMessage;
 			else
 				m_StatusText.text = m_FailMessage;
 		}
+
+        private void OnAPIKeyUpdated(object[] args)
+        {
+            Runnable.Run(LoadConfig());
+        }
+
+        private IEnumerator LoadConfig()
+        {
+            Config.Instance.ConfigLoaded = false;
+            Config.Instance.LoadConfig();
+            while (!Config.Instance.ConfigLoaded)
+                yield return null;
+
+            CheckAPIKey();
+        }
 		#endregion
 	}
 }

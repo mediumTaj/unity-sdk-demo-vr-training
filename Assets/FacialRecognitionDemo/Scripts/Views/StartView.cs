@@ -1,4 +1,7 @@
-﻿/**
+﻿
+
+using System;
+/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +17,6 @@
 * limitations under the License.
 *
 */
-
 using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
@@ -24,32 +26,39 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	/// </summary>
 	public class StartView : View
 	{
-		#region Private Data
-		#endregion
+        #region Private Data
+        #endregion
 
-		#region Public Properties
-		#endregion
+        #region Public Properties
+        #endregion
 
-		#region Constructor and Destructor
-		/// <summary>
-		/// StartView Constrtuctor.
-		/// </summary>
-		public StartView()
+        #region Constructor and Destructor
+        /// <summary>
+        /// StartView Constrtuctor.
+        /// </summary>
+        public StartView()
 		{
 			m_ViewStates.Add(AppState.START);
 		}
-		#endregion
+        #endregion
 
-		#region Awake / Start / Enable / Disable
-		#endregion
+        #region Awake / Start / Enable / Disable
+        #endregion
 
-		#region Private Functions
-		#endregion
+        #region Private Functions
+        #endregion
 
-		#region Public Functions
-		#endregion
+        #region Public Functions
+        /// <summary>
+        /// UI Handler for clicking the Start button.
+        /// </summary>
+        public void OnStartButtonClicked()
+        {
+            m_Controller.StartApplication();
+        }
+        #endregion
 
-		#region Event Handlers
-		#endregion
-	}
+        #region Event Handlers
+        #endregion
+    }
 }

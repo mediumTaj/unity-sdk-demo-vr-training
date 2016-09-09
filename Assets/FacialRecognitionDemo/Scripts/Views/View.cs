@@ -30,14 +30,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Private Data
 		protected List<int> m_ViewStates = new List<int>();
 
-		protected AppData m_AppData
-		{
-			get { return AppData.Instance; }
-		}
-		#endregion
+        protected AppData m_AppData
+        {
+            get { return AppData.Instance; }
+        }
 
-		#region Awake / Start / Enable / Disable
-		protected virtual void Awake()
+        protected VisualRecognitionController m_Controller
+        {
+            get { return VisualRecognitionController.Instance; }
+        }
+        #endregion
+
+        #region Awake / Start / Enable / Disable
+        protected virtual void Awake()
 		{
 			//EventManager.Instance.RegisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
 		}

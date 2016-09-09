@@ -140,63 +140,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		#endregion
 
-		#region API Key
-		/// <summary>
-		/// The Visual Recognition APIKey
-		/// </summary>
-		public string APIKey
-		{
-			get { return m_APIKey; }
-			set
-			{
-				m_APIKey = value;
-                if (!SetAPIKey(APIKey))
-                    Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
-                else
-                    EventManager.Instance.SendEvent(Event.ON_API_KEY_UPDATED, APIKey);
-			}
-		}
-		private string m_APIKey;
-
-		private bool SetAPIKey(string apiKey)
-        {
-            Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
-
-            visualRecognitionCredentials.m_ServiceID = m_VisualRecognitionServiceID;
-            visualRecognitionCredentials.m_Apikey = apiKey;
-            visualRecognitionCredentials.m_URL = m_VisualRecognitionServiceURL;
-            visualRecognitionCredentials.m_Note = m_VisualRecognitionServiceNote;
-
-            for (int i = 0; i < Config.Instance.Credentials.Count; i++)
-            {
-                if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
-                {
-                    if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
-                    {
-                        Log.Debug("VisualRecognitionUtilities", "Deleting existing visual recognition APIKEY");
-                        Config.Instance.Credentials.RemoveAt(i);
-                    }
-                    else
-                    {
-                        Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
-                        return false;
-                    }
-                }
-            }
-
-            Log.Debug("VisualRecognitionUtilities", "Adding visual recognition APIKEY | serviceID: {0} | APIKey: {1} | URL: {2} | Note: {3}", visualRecognitionCredentials.m_ServiceID, visualRecognitionCredentials.m_Apikey, visualRecognitionCredentials.m_URL, visualRecognitionCredentials.m_Note);
-
-            Config.Instance.Credentials.Add(visualRecognitionCredentials);
-
-            if (!Directory.Exists(Application.streamingAssetsPath))
-                Directory.CreateDirectory(Application.streamingAssetsPath);
-            File.WriteAllText(Application.streamingAssetsPath + "/Config.json", Config.Instance.SaveConfig());
-            RESTConnector.FlushConnectors();
-
-            return true;
-        }
-        #endregion
-
         #region Classifier IDs
         /// <summary>
         /// List of Classifier IDs
@@ -251,16 +194,81 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_REMOVED, classifier);
 		}
-		#endregion
+        #endregion
 
-		#region APIKey
-		private bool m_IsAPIKeyValid = false;
+        #region APIKey
+        /// <summary>
+        /// The Visual Recognition APIKey
+        /// </summary>
+        public string APIKey
+        {
+            get { return m_APIKey; }
+            set
+            {
+                m_APIKey = value;
+                if (SetAPIKey(APIKey))
+                {
+                    VisualRecognition.ClearApiKey();
+                    EventManager.Instance.SendEvent(Event.ON_API_KEY_UPDATED, APIKey);
+                }
+                else
+                    Log.Warning("AppData", "Visual Recognition API Keys were not updated!");
+            }
+        }
+        private string m_APIKey;
+
+        private bool SetAPIKey(string apiKey)
+        {
+            Config.CredentialInfo visualRecognitionCredentials = new Config.CredentialInfo();
+
+            visualRecognitionCredentials.m_ServiceID = m_VisualRecognitionServiceID;
+            visualRecognitionCredentials.m_Apikey = apiKey;
+            visualRecognitionCredentials.m_URL = m_VisualRecognitionServiceURL;
+            visualRecognitionCredentials.m_Note = m_VisualRecognitionServiceNote;
+
+            for (int i = 0; i < Config.Instance.Credentials.Count; i++)
+            {
+                if (Config.Instance.Credentials[i].m_ServiceID == visualRecognitionCredentials.m_ServiceID)
+                {
+                    if (Config.Instance.Credentials[i].m_Apikey != visualRecognitionCredentials.m_Apikey)
+                    {
+                        Log.Debug("VisualRecognitionUtilities", "Deleting existing visual recognition APIKEY");
+                        Config.Instance.Credentials.RemoveAt(i);
+                    }
+                    else
+                    {
+                        Log.Debug("VisualRecognitionUtilities", "API Key matches - not replacing!");
+                        return false;
+                    }
+                }
+            }
+
+            Log.Debug("VisualRecognitionUtilities", "Adding visual recognition APIKEY | serviceID: {0} | APIKey: {1} | URL: {2} | Note: {3}", visualRecognitionCredentials.m_ServiceID, visualRecognitionCredentials.m_Apikey, visualRecognitionCredentials.m_URL, visualRecognitionCredentials.m_Note);
+
+            Config.Instance.Credentials.Add(visualRecognitionCredentials);
+
+            if (!Directory.Exists(Application.streamingAssetsPath))
+                Directory.CreateDirectory(Application.streamingAssetsPath);
+            File.WriteAllText(Application.streamingAssetsPath + "/Config.json", Config.Instance.SaveConfig());
+            IsAPIKeyValid = false;
+            RESTConnector.FlushConnectors();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Is the current APIKey Valid.
+        /// </summary>
+        private bool m_IsAPIKeyValid = false;
 		public bool IsAPIKeyValid
 		{
 			get { return m_IsAPIKeyValid; }
 			set { m_IsAPIKeyValid = value; }
 		}
 
+        /// <summary>
+        /// Are we checking validity of API Key.
+        /// </summary>
 		private bool m_IsCheckingAPIKey = false;
 		public bool IsCheckingAPIKey
 		{

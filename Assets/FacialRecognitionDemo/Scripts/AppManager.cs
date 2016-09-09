@@ -16,14 +16,13 @@
 */
 
 using UnityEngine;
-using System;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	/// <summary>
-	/// This class manages the application. It handles all UI Clicks and passes them to the Controller.
+	/// This class manages the application states.
 	/// </summary>
 	public class AppManager : MonoBehaviour
 	{
@@ -35,8 +34,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			get { return AppData.Instance; }
 		}
 
-		//[SerializeField]
-		//private StartView startView;
+        private VisualRecognitionController m_Controller
+        {
+            get { return VisualRecognitionController.Instance; }
+        }
 		#endregion
 
 		#region Awake / Enable / Disable
@@ -59,13 +60,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		void OnEnable()
 		{
 			EventManager.Instance.RegisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
-			EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
 		}
 
 		void OnDisable()
 		{
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_UPDATE_APP_STATE, OnUpdateAppState);
-			EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
 		}
 		#endregion
 
@@ -73,24 +72,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
-		/// <summary>
-		/// UI Handler for clicking the Start button.
-		/// </summary>
-		public void HandleStartButtonClicked()
-		{
-			if (m_VisualRecognitionController == null)
-				throw new NullReferenceException("m_VisualRecognitionController");
+		//public void HandleCheckAPIButtonClicked()
+		//{
+		//	if (m_VisualRecognitionController == null)
+		//		throw new NullReferenceException("m_VisualRecognitionController");
 
-			m_VisualRecognitionController.StartApplication();
-		}
-
-		public void HandleConfigButtonClicked()
-		{
-			if (m_VisualRecognitionController == null)
-				throw new NullReferenceException("m_VisualRecognitionController");
-
-			m_VisualRecognitionController.GoBack();
-		}
+		//	m_VisualRecognitionController.CheckAPIKey();
+		//}
 		#endregion
 
 		#region Event Handlers
@@ -105,11 +93,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 
-		private void OnCheckAPIKey(object[] args)
-		{
-			Log.Debug("AppManager", "Checking APIKey!");
-			m_VisualRecognitionController.CheckAPIKey();
-		}
+		//private void OnCheckAPIKey(object[] args)
+		//{
+		//	Log.Debug("AppManager", "Checking APIKey!");
+		//	m_VisualRecognitionController.CheckAPIKey();
+		//}
 		#endregion
 	}
 }

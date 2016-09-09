@@ -17,6 +17,7 @@
 
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
+using IBM.Watson.DeveloperCloud.Utilities;
 using System;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
@@ -25,8 +26,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	{
 		private VisualRecognition m_VisualRecognition = new VisualRecognition();
 
-		#region Private Data
-		private AppData m_AppData
+        #region Instance
+        /// <summary>
+        /// Returns the singleton instance of VisualRecognitionController.
+        /// </summary>
+        public static VisualRecognitionController Instance { get { return Singleton<VisualRecognitionController>.Instance; } }
+        #endregion
+
+        #region Private Data
+        private AppData m_AppData
 		{
 			get { return AppData.Instance; }
 		}
@@ -45,15 +53,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             m_AppData.APIKey = apiKey;
         }
 
-		/// <summary>
-		/// Check API Key validity
-		/// </summary>
-		public void CheckAPIKey()
-		{
-			m_VisualRecognition.GetServiceStatus(HandleGetServiceStatus);
-		}
+        /// <summary>
+        /// Check API Key validity
+        /// </summary>
+        public void CheckAPIKey()
+        {
+            m_VisualRecognition.GetServiceStatus(HandleGetServiceStatus);
+        }
 
-		private void HandleGetServiceStatus(string serviceID, bool active)
+        private void HandleGetServiceStatus(string serviceID, bool active)
 		{
 			if (active)
 				m_AppData.IsAPIKeyValid = true;
@@ -273,13 +281,5 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				Log.Error("VisualRecognitionController", "Application not in start state!");
 		}
 		#endregion
-
-		public void GoBack()
-		{
-			if (m_AppData.AppState == AppState.CONFIG)
-				m_AppData.AppState = AppState.START;
-			else
-				Log.Error("VisualRecognitionController", "Application not in config state!");
-		}
 	}
 }
