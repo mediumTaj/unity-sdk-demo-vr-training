@@ -250,7 +250,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public bool IsAPIKeyValid
 		{
 			get { return m_IsAPIKeyValid; }
-			set { m_IsAPIKeyValid = value; }
+			set
+			{
+				m_IsAPIKeyValid = value;
+				//if (IsAPIKeyValid)
+				//	EventManager.Instance.SendEvent();
+			}
 		}
 
         /// <summary>

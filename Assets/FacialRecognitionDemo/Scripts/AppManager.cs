@@ -27,7 +27,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	public class AppManager : MonoBehaviour
 	{
 		#region Private Data
-		private VisualRecognitionController m_VisualRecognitionController = null;
+		//private VisualRecognitionController m_VisualRecognitionController = null;
 		private View[] m_Views = null;
 		private AppData m_AppData
 		{
@@ -49,7 +49,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_Views == null)
 				m_Views = Resources.FindObjectsOfTypeAll<View>();
 
-			m_VisualRecognitionController = new VisualRecognitionController();
+			//m_VisualRecognitionController = new VisualRecognitionController();
 		}
 
 		void Start()

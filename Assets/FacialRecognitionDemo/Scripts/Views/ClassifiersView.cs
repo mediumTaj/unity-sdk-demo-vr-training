@@ -25,6 +25,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	public class ClassifiersView : View
 	{
 		#region Private Data
+		[SerializeField]
+		private GameObject m_ClassifierViewPrefab;
 		#endregion
 
 		#region Public Properties
@@ -49,7 +51,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if(args[0] is GetClassifiersPerClassifierVerbose)
 			{
-
+				GameObject classifierVerboseGameObject = GameObject.Instantiate(m_ClassifierViewPrefab, gameObject.GetComponent<RectTransform>()) as GameObject;
+				ClassifierView classifierView = classifierVerboseGameObject.GetComponent<ClassifierView>();
+				classifierView.ClassifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
 			}
 		}
 
