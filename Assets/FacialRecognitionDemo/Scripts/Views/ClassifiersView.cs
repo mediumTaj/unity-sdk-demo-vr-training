@@ -32,6 +32,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Public Properties
 		#endregion
 
+		#region Constructor and Destructor
+		/// <summary>
+		/// The ClassifiersView Constructor.
+		/// </summary>
+		public ClassifiersView()
+		{
+			m_ViewStates.Add(AppState.CONFIG);
+		}
+		#endregion
+
 		#region Awake / Start / Enable / Disable
 		void OnEnable()
 		{

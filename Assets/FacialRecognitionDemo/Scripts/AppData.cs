@@ -19,6 +19,7 @@ using IBM.Watson.DeveloperCloud.Connection;
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -33,13 +34,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         private string m_VisualRecognitionServiceID = "VisualRecognitionV3";
         private string m_VisualRecognitionServiceURL = "https://gateway-a.watsonplatform.net/visual-recognition/api";
         private string m_VisualRecognitionServiceNote = "This ApiKey was added at runtime.";
-        #endregion
+		#endregion
 
-        #region Constructor and Destructor
-        /// <summary>
-        /// AppData Constructor
-        /// </summary>
-        public AppData()
+		#region Constructor and Destructor
+		/// <summary>
+		/// AppData Constructor
+		/// </summary>
+		public AppData()
 		{
 			ClassifierIDs.OnAdded += OnClassifierIDAdded;
 			ClassifierIDs.OnRemoved += OnClassifierIDRemoved;
@@ -61,6 +62,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// Returns the singleton instance of AppData.
 		/// </summary>
 		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
+		#endregion
+
+		#region Views
+		public List<View> Views = new List<View>();
 		#endregion
 
 		#region Application State
@@ -253,8 +258,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			set
 			{
 				m_IsAPIKeyValid = value;
-				//if (IsAPIKeyValid)
-				//	EventManager.Instance.SendEvent();
+				if (IsAPIKeyValid)
+					EventManager.Instance.SendEvent(Event.ON_API_KEY_VALIDATED);
 			}
 		}
 

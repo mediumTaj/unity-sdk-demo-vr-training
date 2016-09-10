@@ -19,6 +19,7 @@ using UnityEngine;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -132,6 +133,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 		private Class[] m_Classes;
+		#endregion
+
+		#region Constructor and Destructor
+		/// <summary>
+		/// The ClassifierView Constructor.
+		/// </summary>
+		public ClassifierView()
+		{
+			m_ViewStates.Add(AppState.CONFIG);
+		}
+		#endregion
+
+		#region Awake / Start / Enable / Disable
 		#endregion
 
 		#region Private Functions

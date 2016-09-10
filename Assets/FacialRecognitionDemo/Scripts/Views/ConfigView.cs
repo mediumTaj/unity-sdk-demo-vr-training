@@ -58,8 +58,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
-
-            CheckAPIKey();
+			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
         }
 
         void OnDisable()
@@ -67,11 +66,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
             EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
-        }
-        #endregion
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
+		}
 
-        #region Private Functions
-        private void CheckAPIKey()
+		void Start()
+		{
+			CheckAPIKey();
+		}
+		#endregion
+
+		#region Private Functions
+		private void CheckAPIKey()
         {
             string apiKey = Config.Instance.GetAPIKey("VisualRecognitionV3");
 

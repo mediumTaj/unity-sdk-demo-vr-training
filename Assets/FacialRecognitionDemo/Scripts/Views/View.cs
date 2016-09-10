@@ -30,7 +30,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Private Data
 		protected List<int> m_ViewStates = new List<int>();
 
-        protected AppData m_AppData
+		protected AppData m_AppData
         {
             get { return AppData.Instance; }
         }
@@ -39,16 +39,28 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         {
             get { return VisualRecognitionController.Instance; }
         }
-        #endregion
+		#endregion
 
-        #region Awake / Start / Enable / Disable
-        protected virtual void Awake() {}
+		#region Constructor and Destructor
+		public View()
+		{}
+		#endregion
+
+		#region Awake / Start / Enable / Disable
+		void Awake()
+		{
+			if (!m_AppData.Views.Contains(this))
+				m_AppData.Views.Add(this);
+		}
 		#endregion
 
 		#region Private Functions
 		public bool IsVisibleInCurrentAppState()
 		{
 			bool isVisible = false;
+			if (m_ViewStates.Count == 0)
+				Log.Warning("View", "View {0} does not have any view states!", gameObject.name);
+
 			foreach (int ViewState in m_ViewStates)
 				if (ViewState == m_AppData.AppState)
 					isVisible = true;

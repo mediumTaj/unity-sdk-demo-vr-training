@@ -27,8 +27,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	public class AppManager : MonoBehaviour
 	{
 		#region Private Data
-		//private VisualRecognitionController m_VisualRecognitionController = null;
-		private View[] m_Views = null;
 		private AppData m_AppData
 		{
 			get { return AppData.Instance; }
@@ -45,11 +43,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_AppData.AppState = AppState.NONE;
 			LogSystem.InstallDefaultReactors();
-
-			if (m_Views == null)
-				m_Views = Resources.FindObjectsOfTypeAll<View>();
-
-			//m_VisualRecognitionController = new VisualRecognitionController();
 		}
 
 		void Start()
@@ -79,7 +72,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			Log.Debug("AppManager", "App state has been updated to {0}!", m_AppData.AppState);
 
-			foreach(View view in m_Views)
+			foreach(View view in m_AppData.Views)
 			{
 				bool isVisible = view.IsVisibleInCurrentAppState();
 				view.gameObject.SetActive(isVisible);

@@ -198,7 +198,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// Retrieves all classifierIDs and then gets all classifier data from each classifierID.
 		/// </summary>
-		public void GetAllClassifierData()
+		public void GetAllClassifierData(object[] args = null)
 		{
 			if (!m_VisualRecognition.GetClassifiers(OnGetAllClassifierData))
 				Log.Debug("VisualRecognitionController", "Failed to get classifiers!");
