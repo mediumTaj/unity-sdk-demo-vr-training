@@ -24,7 +24,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
     {
 		#region Private Data
 		[SerializeField]
-		private GameObject m_ClassItem;
+		private GameObject m_ClassItemPrefab;
+		[SerializeField]
+		private RectTransform m_ClassListRectTransform;
 		#endregion
 
 		#region Public Properties

@@ -33,11 +33,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private InputField m_APIKeyInputField;
 		[SerializeField]
 		private Text m_StatusText;
+		[SerializeField]
+		private GameObject m_ClassifierViewPrefab;
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
 		private string m_SuccessMessage = "The API Key is valid!";
 		private string m_EnterAPIKeyMessage = "Please enter Visual Recognition API Key.";
-		private bool m_APIKeyChecked = false;
 		#endregion
 
 		#region Public Properties
