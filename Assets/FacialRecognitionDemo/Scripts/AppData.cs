@@ -172,14 +172,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public ObservedList<GetClassifiersPerClassifierVerbose> ClassifiersVerbose = new ObservedList<GetClassifiersPerClassifierVerbose>();
 
-		private void OnClassiferVerboseAdded(GetClassifiersPerClassifierVerbose classifier)
+		private void OnClassiferVerboseAdded(GetClassifiersPerClassifierVerbose classifierVerbose)
 		{
-			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_ADDED, classifier);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_ADDED, classifierVerbose);
 		}
 
-		private void OnClassifierVerboseRemoved(GetClassifiersPerClassifierVerbose classifier)
+		private void OnClassifierVerboseRemoved(GetClassifiersPerClassifierVerbose classifierVerbose)
 		{
-			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_REMOVED, classifier);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_REMOVED, classifierVerbose);
 		}
         #endregion
 

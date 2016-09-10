@@ -22,10 +22,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
     public class ClassifierView : View
     {
-        #region Private Data
-        #endregion
+		#region Private Data
+		[SerializeField]
+		private GameObject m_ClassItem;
+		#endregion
 
-        #region Public Properties
+		#region Public Properties
+		
         #endregion
 
         #region Private Functions
