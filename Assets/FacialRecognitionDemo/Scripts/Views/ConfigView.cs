@@ -32,10 +32,26 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private InputField m_APIKeyInputField;
 		[SerializeField]
 		private Text m_StatusText;
+		[SerializeField]
+		private GameObject m_DeleteClassifierConfirmationPanel;
+		[SerializeField]
+		private Text m_DeleteConfirmationText;
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
 		private string m_SuccessMessage = "The API Key is valid!";
 		private string m_EnterAPIKeyMessage = "Please enter Visual Recognition API Key.";
+		private string m_DeleteConfirmationMessage = "Are you sure you would like to delete classifier {0}?";
+		
+		private bool m_IsDeleteClassifierConfirmationVisible = false;
+		private bool IsDeleteClassifierConfirmationVisible
+		{
+			get { return m_IsDeleteClassifierConfirmationVisible; }
+			set
+			{
+				m_IsDeleteClassifierConfirmationVisible = value;
+				m_DeleteClassifierConfirmationPanel.SetActive(m_IsDeleteClassifierConfirmationVisible);
+			}
+		}
 		#endregion
 
 		#region Public Properties
@@ -111,6 +127,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			m_AppData.IsAPIKeyValid = false;
             m_AppData.APIKey = m_APIKeyInputField.text;
         }
+
+		/// <summary>
+		/// UI Click handler for cancelling clasifier deletion.
+		/// </summary>
+		public void OnCancelDeleteClassifierClicked()
+		{
+			IsDeleteClassifierConfirmationVisible = false;
+		}
+
+		/// <summary>
+		/// UI Click handler for confirming classifier deletion.
+		/// </summary>
+		public void OnDeleteClassifierConfirmatioClicked()
+		{
+			IsDeleteClassifierConfirmationVisible = false;
+			m_Controller.DeleteClassifier(m_AppData.ConfirmClassifierToDelete);
+		}
         #endregion
 
         #region Event Handlers
@@ -144,7 +177,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnRequestClassifierDeleteConfirmation(object[] args = null)
 		{
-
+			m_DeleteConfirmationText.text = string.Format(m_DeleteConfirmationMessage, m_AppData.ConfirmClassifierToDelete);
+			IsDeleteClassifierConfirmationVisible = true;
 		}
 		#endregion
 	}

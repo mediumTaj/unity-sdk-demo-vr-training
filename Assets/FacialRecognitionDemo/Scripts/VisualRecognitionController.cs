@@ -132,9 +132,41 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 				if (!string.IsNullOrEmpty(data))
 					Log.Debug("VisualRecognitionController | OnDeleteClassifier();", "data: {0}", data);
+
+				DeleteClassifierFromAppData(m_AppData.ConfirmClassifierToDelete);
+
+				m_AppData.ConfirmClassifierToDelete = default(string);
 			}
 			else
 				Log.Debug("VisualRecognitionController", "Failed to delete classifier!");
+		}
+
+		public void DeleteClassifierFromAppData(string classifierID)
+		{
+			if (string.IsNullOrEmpty(classifierID))
+				throw new ArgumentNullException(classifierID);
+
+			if (m_AppData.ClassifiersVerbose.Count > 0)
+			{
+				List<GetClassifiersPerClassifierVerbose> classifierList = new List<GetClassifiersPerClassifierVerbose>();
+				foreach (GetClassifiersPerClassifierVerbose classifierVerbose in m_AppData.ClassifiersVerbose)
+					classifierList.Add(classifierVerbose);
+
+				foreach (GetClassifiersPerClassifierVerbose classifierVerbose in classifierList)
+					if(classifierID == classifierVerbose.classifier_id)
+						m_AppData.ClassifiersVerbose.Remove(classifierVerbose);
+			}
+
+			if (m_AppData.ClassifierIDs.Count > 0)
+			{
+				List<string> classifierIDList = new List<string>();
+				foreach (string cID in m_AppData.ClassifierIDs)
+					classifierIDList.Add(cID);
+
+				foreach (string cID in classifierIDList)
+					if(classifierID == cID)
+						m_AppData.ClassifierIDs.Remove(cID);
+			}
 		}
         #endregion
 
