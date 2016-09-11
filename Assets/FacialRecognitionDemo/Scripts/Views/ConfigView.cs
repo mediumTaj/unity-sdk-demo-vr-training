@@ -59,7 +59,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
-        }
+			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
+		}
 
         void OnDisable()
 		{
@@ -67,6 +68,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
             EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
 		}
 
 		void Start()
@@ -105,6 +107,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public void OnCheckAPIKeyButtonClicked()
         {
+			m_AppData.IsAPIKeyValid = false;
             m_AppData.APIKey = m_APIKeyInputField.text;
         }
         #endregion

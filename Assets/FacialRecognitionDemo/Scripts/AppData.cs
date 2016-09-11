@@ -260,6 +260,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_IsAPIKeyValid = value;
 				if (IsAPIKeyValid)
 					EventManager.Instance.SendEvent(Event.ON_API_KEY_VALIDATED);
+				else
+					EventManager.Instance.SendEvent(Event.ON_API_KEY_INVALIDATED);
 			}
 		}
 

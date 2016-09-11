@@ -19,6 +19,7 @@ using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System;
+using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -223,6 +224,35 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			else
 			{
 				Log.Warning("VisualRecognitionController", "Failed to get all classifier data!");
+			}
+		}
+		#endregion
+
+		#region Clear Classifier Data
+		/// <summary>
+		/// Clears all classifier data.
+		/// </summary>
+		/// <param name="args">Optional event arguments.</param>
+		public void ClearClassifierData(object[] args = null)
+		{
+			if(m_AppData.ClassifiersVerbose.Count > 0)
+			{
+				List<GetClassifiersPerClassifierVerbose> classifierList = new List<GetClassifiersPerClassifierVerbose>();
+				foreach (GetClassifiersPerClassifierVerbose classifierVerbose in m_AppData.ClassifiersVerbose)
+					classifierList.Add(classifierVerbose);
+
+				foreach (GetClassifiersPerClassifierVerbose classifierVerbose in classifierList)
+					m_AppData.ClassifiersVerbose.Remove(classifierVerbose);
+			}
+
+			if(m_AppData.ClassifierIDs.Count > 0)
+			{
+				List<string> classifierIDList = new List<string>();
+				foreach (string classifierID in m_AppData.ClassifierIDs)
+					classifierIDList.Add(classifierID);
+
+				foreach (string classifierID in classifierIDList)
+					m_AppData.ClassifierIDs.Remove(classifierID);
 			}
 		}
 		#endregion

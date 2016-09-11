@@ -19,6 +19,7 @@ using UnityEngine;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
+using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -71,7 +72,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (args[0] is GetClassifiersPerClassifierVerbose)
 			{
+				List<View> viewList = new List<View>();
+				foreach (View view in m_AppData.Views)
+					viewList.Add(view);
 
+				GetClassifiersPerClassifierVerbose classifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
+				foreach (View view in viewList)
+					if (view is ClassifierView)
+						if ((view as ClassifierView).ClassifierVerbose == classifierVerbose)
+						{
+							m_AppData.Views.Remove(view);
+							Destroy(view.gameObject);
+						}
 			}
 		}
 		#endregion
