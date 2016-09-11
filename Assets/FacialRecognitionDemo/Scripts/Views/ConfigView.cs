@@ -59,6 +59,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 		}
 
         void OnDisable()
@@ -68,6 +69,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 		}
 
 		void Start()
@@ -112,12 +114,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Event Handlers
-        private void HandleCheckAPIKey(object[] args)
+        private void HandleCheckAPIKey(object[] args = null)
         {
             m_Controller.CheckAPIKey();
         }
 
-        private void HandleAPIKeyChecked(object[] args)
+        private void HandleAPIKeyChecked(object[] args = null)
 		{
 			if (m_AppData.IsAPIKeyValid)
 				m_StatusText.text = m_SuccessMessage;
@@ -125,7 +127,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_StatusText.text = m_FailMessage;
 		}
 
-        private void OnAPIKeyUpdated(object[] args)
+        private void OnAPIKeyUpdated(object[] args = null)
         {
             Runnable.Run(LoadConfig());
         }
@@ -139,6 +141,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
             CheckAPIKey();
         }
+
+		private void OnRequestClassifierDeleteConfirmation(object[] args = null)
+		{
+
+		}
 		#endregion
 	}
 }

@@ -99,6 +99,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Delete Classifier
+		/// <summary>
+		/// Confirms the deletion of a Visual Recognition classifier.
+		/// </summary>
+		/// <param name="classifierID"></param>
+		public void ConfirmDeleteClassifier(string classifierID)
+		{
+			if (string.IsNullOrEmpty(classifierID))
+				throw new ArgumentNullException(classifierID);
+
+			m_AppData.ConfirmClassifierToDelete = classifierID;
+		}
+
         /// <summary>
         /// Deletes a Visual Recognition classifier.
         /// </summary>

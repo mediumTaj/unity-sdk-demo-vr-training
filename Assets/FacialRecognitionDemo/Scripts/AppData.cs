@@ -282,5 +282,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 		#endregion
+
+		#region Delete Classifier Confirmation
+		/// <summary>
+		/// The classifier identifier to confirm deletion of.
+		/// </summary>
+		public string ConfirmClassifierToDelete
+		{
+			get { return m_ConfirmClassifierToDelete; }
+			set
+			{
+				m_ConfirmClassifierToDelete = value;
+
+				if (!string.IsNullOrEmpty(ConfirmClassifierToDelete))
+					EventManager.Instance.SendEvent(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION);
+			}
+		}
+		private string m_ConfirmClassifierToDelete;
+		#endregion
 	}
 }

@@ -124,13 +124,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_Classes = value;
 				foreach(Class classifierClass in Classes)
 				{
-					GameObject classItem = GameObject.Instantiate(m_ClassItemPrefab, m_ClassListRectTransform) as GameObject;
+					GameObject classItem = Instantiate(m_ClassItemPrefab, m_ClassListRectTransform) as GameObject;
 					Text classItemText = classItem.GetComponent<Text>();
 					classItemText.text = classifierClass.m_Class;
 				}
 			}
 		}
 		private Class[] m_Classes;
+		
+		/// <summary>
+		/// UI Event handler for delete classifier button clicked.
+		/// </summary>
+		public void OnDeleteClassifierButtonClicked()
+		{
+			m_Controller.ConfirmDeleteClassifier(ClassifierID);
+		}
 		#endregion
 
 		#region Constructor and Destructor
