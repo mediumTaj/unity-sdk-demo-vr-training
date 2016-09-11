@@ -16,10 +16,8 @@
 */
 
 using UnityEngine;
-using System.Collections;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {

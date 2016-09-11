@@ -14,8 +14,6 @@
 * limitations under the License.
 *
 */
-using UnityEngine;
-using System;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {

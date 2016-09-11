@@ -17,7 +17,6 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition

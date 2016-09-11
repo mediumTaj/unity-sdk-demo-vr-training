@@ -16,7 +16,6 @@
 */
 
 using UnityEngine;
-using System.Collections;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using System.Collections.Generic;

@@ -17,7 +17,6 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System.Collections;
 
