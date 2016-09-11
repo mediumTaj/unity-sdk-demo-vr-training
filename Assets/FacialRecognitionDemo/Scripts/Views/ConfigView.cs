@@ -36,6 +36,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private GameObject m_DeleteClassifierConfirmationPanel;
 		[SerializeField]
 		private Text m_DeleteConfirmationText;
+		[SerializeField]
+		private GameObject m_ContinueButton;
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
 		private string m_SuccessMessage = "The API Key is valid!";
@@ -50,6 +52,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				m_IsDeleteClassifierConfirmationVisible = value;
 				m_DeleteClassifierConfirmationPanel.SetActive(m_IsDeleteClassifierConfirmationVisible);
+			}
+		}
+
+		private bool m_IsContinueButtonVisible = false;
+		private bool IsContinueButtonVisible
+		{
+			get { return m_IsContinueButtonVisible; }
+			set
+			{
+				m_IsContinueButtonVisible = value;
+				m_ContinueButton.SetActive(IsContinueButtonVisible);
 			}
 		}
 		#endregion
@@ -73,8 +86,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 		}
 
@@ -83,8 +96,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
 			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
             EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, m_Controller.GetAllClassifierData);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, m_Controller.ClearClassifierData);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 		}
 
@@ -143,6 +156,26 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			IsDeleteClassifierConfirmationVisible = false;
 			m_Controller.DeleteClassifier(m_AppData.ConfirmClassifierToDelete);
+		}
+
+		/// <summary>
+		/// UI Click Handler for the continue button.
+		/// </summary>
+		public void OnContinueButtonClicked()
+		{
+			m_AppData.AppState = AppState.PHOTO;
+		}
+
+		public void OnAPIKeyValidated(object[] args = null)
+		{
+			m_Controller.GetAllClassifierData();
+			IsContinueButtonVisible = true;
+		}
+
+		public void OnAPIKeyInvalidated(object[] args = null)
+		{
+			m_Controller.ClearClassifierData();
+			IsContinueButtonVisible = false;
 		}
         #endregion
 
