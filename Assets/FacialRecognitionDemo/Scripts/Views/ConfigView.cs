@@ -165,18 +165,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_AppData.AppState = AppState.PHOTO;
 		}
-
-		public void OnAPIKeyValidated(object[] args = null)
-		{
-			m_Controller.GetAllClassifierData();
-			IsContinueButtonVisible = true;
-		}
-
-		public void OnAPIKeyInvalidated(object[] args = null)
-		{
-			m_Controller.ClearClassifierData();
-			IsContinueButtonVisible = false;
-		}
         #endregion
 
         #region Event Handlers
@@ -212,6 +200,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_DeleteConfirmationText.text = string.Format(m_DeleteConfirmationMessage, m_AppData.ConfirmClassifierToDelete);
 			IsDeleteClassifierConfirmationVisible = true;
+		}
+
+		private void OnAPIKeyValidated(object[] args = null)
+		{
+			m_Controller.GetAllClassifierData();
+			IsContinueButtonVisible = true;
+		}
+
+		private void OnAPIKeyInvalidated(object[] args = null)
+		{
+			m_Controller.ClearClassifierData();
+			IsContinueButtonVisible = false;
 		}
 		#endregion
 	}

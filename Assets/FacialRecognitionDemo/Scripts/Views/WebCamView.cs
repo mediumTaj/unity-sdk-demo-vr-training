@@ -45,6 +45,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
+		public void OnOptionsButtonClicked()
+		{
+			if (m_AppData.AppState == AppState.PHOTO)
+				m_AppData.AppState = AppState.CONFIG;
+		}
 		#endregion
 
 		#region Event Handlers

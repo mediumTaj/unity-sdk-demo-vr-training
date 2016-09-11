@@ -18,6 +18,7 @@
 using UnityEngine;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
+using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -72,7 +73,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			Log.Debug("AppManager", "App state has been updated to {0}!", m_AppData.AppState);
 
-			foreach(View view in m_AppData.Views)
+			List<View> viewList = new List<View>();
+			foreach (View view in m_AppData.Views)
+				viewList.Add(view);
+
+			foreach(View view in viewList)
 			{
 				bool isVisible = view.IsVisibleInCurrentAppState();
 				view.gameObject.SetActive(isVisible);

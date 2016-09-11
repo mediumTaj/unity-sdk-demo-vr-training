@@ -41,21 +41,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public ClassifiersView()
 		{
 			m_ViewStates.Add(AppState.CONFIG);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
 		}
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void OnEnable()
-		{
-			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
-		}
+		//void OnEnable()
+		//{
+		//}
 
-		void OnDisable()
-		{
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
-		}
+		//void OnDisable()
+		//{
+		//	EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
+		//	EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
+		//}
 		#endregion
 
 		#region Public Functions
