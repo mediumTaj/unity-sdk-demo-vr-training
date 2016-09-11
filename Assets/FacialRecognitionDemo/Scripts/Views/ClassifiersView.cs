@@ -66,9 +66,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (args[0] is GetClassifiersPerClassifierVerbose)
 			{
+				GetClassifiersPerClassifierVerbose classifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
 				GameObject classifierVerboseGameObject = Instantiate(m_ClassifierViewPrefab, m_ContentRectTransform) as GameObject;
 				ClassifierView classifierView = classifierVerboseGameObject.GetComponent<ClassifierView>();
-				classifierView.ClassifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
+				classifierView.ClassifierVerbose = classifierVerbose;
+
+				if (!m_AppData.ClassifierIDsToClassifyWith.Contains(classifierVerbose.classifier_id))
+					m_AppData.ClassifierIDsToClassifyWith.Add(classifierVerbose.classifier_id);
 			}
 		}
 
@@ -76,11 +80,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (args[0] is GetClassifiersPerClassifierVerbose)
 			{
+				GetClassifiersPerClassifierVerbose classifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
+				if (m_AppData.ClassifierIDsToClassifyWith.Contains(classifierVerbose.classifier_id))
+					m_AppData.ClassifierIDsToClassifyWith.Remove(classifierVerbose.classifier_id);
+
 				List<View> viewList = new List<View>();
 				foreach (View view in m_AppData.Views)
 					viewList.Add(view);
 
-				GetClassifiersPerClassifierVerbose classifierVerbose = args[0] as GetClassifiersPerClassifierVerbose;
 				foreach (View view in viewList)
 					if (view is ClassifierView)
 						if ((view as ClassifierView).ClassifierVerbose == classifierVerbose)

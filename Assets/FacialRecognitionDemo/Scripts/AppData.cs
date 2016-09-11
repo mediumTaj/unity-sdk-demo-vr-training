@@ -186,6 +186,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_VERBOSE_REMOVED, classifierVerbose);
 		}
+
+		/// <summary>
+		/// List of ClassifierIDs to use for image classification.
+		/// </summary>
+		public ObservedList<string> ClassifierIDsToClassifyWith = new ObservedList<string>();
         #endregion
 
         #region APIKey

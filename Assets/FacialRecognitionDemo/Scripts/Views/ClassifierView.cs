@@ -18,6 +18,7 @@
 using UnityEngine;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using UnityEngine.UI;
+using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -158,6 +159,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
+		/// <summary>
+		/// UI Event handler for flagging this classifier to use for classification.
+		/// </summary>
+		/// <param name="val"></param>
+		public void OnUseClassifierValueChanged(bool val)
+		{
+			if (val)
+				if (!m_AppData.ClassifierIDsToClassifyWith.Contains(ClassifierID))
+					m_AppData.ClassifierIDsToClassifyWith.Add(ClassifierID);
+				else
+				if (m_AppData.ClassifierIDsToClassifyWith.Contains(ClassifierID))
+					m_AppData.ClassifierIDsToClassifyWith.Remove(ClassifierID);
+		}
 		#endregion
 	}
 }

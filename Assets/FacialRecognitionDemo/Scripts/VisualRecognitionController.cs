@@ -298,6 +298,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				foreach (string classifierID in classifierIDList)
 					m_AppData.ClassifierIDs.Remove(classifierID);
 			}
+
+			if (m_AppData.ClassifierIDsToClassifyWith.Count > 0)
+				m_AppData.ClassifierIDsToClassifyWith.Clear();
 		}
 		#endregion
 
