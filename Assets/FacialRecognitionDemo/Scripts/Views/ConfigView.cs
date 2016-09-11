@@ -165,6 +165,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_AppData.AppState = AppState.PHOTO;
 		}
+
+		public void OnUseDefaultClassifierValueChanged(bool val)
+		{
+			if (val)
+				if (!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
+					m_AppData.ClassifierIDsToClassifyWith.Add("default");
+			else
+				if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
+					m_AppData.ClassifierIDsToClassifyWith.Remove("default");
+		}
         #endregion
 
         #region Event Handlers
