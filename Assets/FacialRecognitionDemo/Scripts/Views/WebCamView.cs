@@ -17,12 +17,18 @@
 
 using UnityEngine;
 using System.Collections;
+using IBM.Watson.DeveloperCloud.Widgets;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	public class WebCamView : View
 	{
 		#region Private Data
+		[SerializeField]
+		private WebCamWidget m_WebCamWidget;
+		[SerializeField]
+		private WebCamDisplayWidget m_WebCamDisplayWidget;
 		#endregion
 
 		#region Public Properties
@@ -39,12 +45,40 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
+		void Start()
+		{
+			Runnable.Run(DeactivateWebcam());
+		}
+
+		void OnEnable()
+		{
+			Runnable.Run(ActivateWebcam());
+		}
+
+		void OnDisable()
+		{
+			Runnable.Run(DeactivateWebcam());
+		}
 		#endregion
 
 		#region Private Functions
+		private IEnumerator ActivateWebcam()
+		{
+			yield return new WaitForSeconds(0.1f);
+			m_WebCamWidget.ActivateWebCam();
+		}
+
+		private IEnumerator DeactivateWebcam()
+		{
+			yield return new WaitForSeconds(0.1f);
+			m_WebCamWidget.DeactivateWebCam();
+		}
 		#endregion
 
 		#region Public Functions
+		/// <summary>
+		/// UI button handler for options button clicked.
+		/// </summary>
 		public void OnOptionsButtonClicked()
 		{
 			if (m_AppData.AppState == AppState.PHOTO)
