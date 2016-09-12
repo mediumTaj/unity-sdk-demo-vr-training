@@ -38,11 +38,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private Text m_DeleteConfirmationText;
 		[SerializeField]
 		private GameObject m_ContinueButton;
+		[SerializeField]
+		private Text m_ClassifierIDsToClassifyWithText;
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
 		private string m_SuccessMessage = "The API Key is valid!";
 		private string m_EnterAPIKeyMessage = "Please enter Visual Recognition API Key.";
 		private string m_DeleteConfirmationMessage = "Are you sure you would like to delete classifier {0}?";
+		private string m_ClassifierIDsToClassifyWithString = "{0}\n";
 		
 		private bool m_IsDeleteClassifierConfirmationVisible = false;
 		private bool IsDeleteClassifierConfirmationVisible
@@ -76,7 +79,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public ConfigView()
 		{
-			m_ViewStates.Add(AppState.CONFIG);
+			if (!m_ViewStates.Contains(AppState.CONFIG))
+				m_ViewStates.Add(AppState.CONFIG);
 		}
 		#endregion
 
@@ -103,6 +107,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		void Start()
 		{
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED, OnClassifierIDToClassifyWithAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
+
+			if (!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
+				m_AppData.ClassifierIDsToClassifyWith.Add("default");
+
 			CheckAPIKey();
 		}
 		#endregion
@@ -169,11 +179,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public void OnUseDefaultClassifierValueChanged(bool val)
 		{
 			if (val)
+			{
 				if (!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
 					m_AppData.ClassifierIDsToClassifyWith.Add("default");
+			}
 			else
+			{
 				if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
 					m_AppData.ClassifierIDsToClassifyWith.Remove("default");
+			}
 		}
         #endregion
 
@@ -222,6 +236,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_Controller.ClearClassifierData();
 			IsContinueButtonVisible = false;
+		}
+
+		private void OnClassifierIDToClassifyWithAdded(object[] args = null)
+		{
+			if (args[0] is string && m_ClassifierIDsToClassifyWithText.text != null)
+			{
+				m_ClassifierIDsToClassifyWithText.text += string.Format(m_ClassifierIDsToClassifyWithString, args[0] as string);
+			}
+		}
+
+		private void OnClassifierIDToClassifyWithRemoved(object[] args = null)
+		{
+			if(args[0] is string && m_ClassifierIDsToClassifyWithText.text != null)
+			{
+				if (m_ClassifierIDsToClassifyWithText.text.Contains(args[0] as string))
+					m_ClassifierIDsToClassifyWithText.text = m_ClassifierIDsToClassifyWithText.text.Replace(string.Format(m_ClassifierIDsToClassifyWithString, args[0] as string), "");
+			}
 		}
 		#endregion
 	}

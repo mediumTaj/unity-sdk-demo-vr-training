@@ -40,7 +40,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public WebCamView()
 		{
-			m_ViewStates.Add(AppState.PHOTO);
+			if (!m_ViewStates.Contains(AppState.PHOTO))
+				m_ViewStates.Add(AppState.PHOTO);
 		}
 		#endregion
 

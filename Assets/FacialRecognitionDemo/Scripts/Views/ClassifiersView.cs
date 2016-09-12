@@ -40,25 +40,35 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public ClassifiersView()
 		{
-			m_ViewStates.Add(AppState.CONFIG);
+			if (!m_ViewStates.Contains(AppState.CONFIG))
+				m_ViewStates.Add(AppState.CONFIG);
+		}
+		#endregion
+
+		#region Awake / Start / Enable / Disable
+		void Start()
+		{
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
 		}
 		#endregion
 
-		#region Awake / Start / Enable / Disable
-		//void OnEnable()
-		//{
-		//}
-
-		//void OnDisable()
-		//{
-		//	EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
-		//	EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
-		//}
-		#endregion
-
 		#region Public Functions
+		/// <summary>
+		/// UI click handler for SelectAllClassifiers button.
+		/// </summary>
+		public void OnSelectAllClassifiersButtonClicked()
+		{
+			m_Controller.SelectAllClassifiers();
+		}
+
+		/// <summary>
+		/// UI click handler for DeselectAllClassifiers button.
+		/// </summary>
+		public void OnDeselectAllClassifiersButtonClicked()
+		{
+			m_Controller.DeselectAllClassifiers();
+		}
 		#endregion
 
 		#region Event Handlers

@@ -148,7 +148,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public ClassifierView()
 		{
-			m_ViewStates.Add(AppState.CONFIG);
+			if (!m_ViewStates.Contains(AppState.CONFIG))
+				m_ViewStates.Add(AppState.CONFIG);
 		}
 		#endregion
 
@@ -166,11 +167,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public void OnUseClassifierValueChanged(bool val)
 		{
 			if (val)
+			{
 				if (!m_AppData.ClassifierIDsToClassifyWith.Contains(ClassifierID))
 					m_AppData.ClassifierIDsToClassifyWith.Add(ClassifierID);
-				else
+			}
+			else
+			{
 				if (m_AppData.ClassifierIDsToClassifyWith.Contains(ClassifierID))
 					m_AppData.ClassifierIDsToClassifyWith.Remove(ClassifierID);
+			}
 		}
 		#endregion
 	}

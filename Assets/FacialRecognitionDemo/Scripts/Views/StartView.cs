@@ -34,7 +34,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public StartView()
 		{
-			m_ViewStates.Add(AppState.START);
+			if (!m_ViewStates.Contains(AppState.START))
+				m_ViewStates.Add(AppState.START);
 		}
 		#endregion
 

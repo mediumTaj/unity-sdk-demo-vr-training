@@ -287,6 +287,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 				foreach (GetClassifiersPerClassifierVerbose classifierVerbose in classifierList)
 					m_AppData.ClassifiersVerbose.Remove(classifierVerbose);
+
 			}
 
 			if(m_AppData.ClassifierIDs.Count > 0)
@@ -299,8 +300,32 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					m_AppData.ClassifierIDs.Remove(classifierID);
 			}
 
+			if(m_AppData.ClassifiersBrief != null && m_AppData.ClassifiersBrief.classifiers.Length > 0)
+			{
+				Array.Clear(m_AppData.ClassifiersBrief.classifiers, 0, m_AppData.ClassifiersBrief.classifiers.Length);
+			}
+
 			if (m_AppData.ClassifierIDsToClassifyWith.Count > 0)
 				m_AppData.ClassifierIDsToClassifyWith.Clear();
+		}
+		#endregion
+
+		#region Select / Deselect classifiers
+		public void SelectAllClassifiers()
+		{
+			foreach (GetClassifiersPerClassifierVerbose classifierVerbose in m_AppData.ClassifiersVerbose)
+				if (!m_AppData.ClassifierIDsToClassifyWith.Contains(classifierVerbose.classifier_id))
+					m_AppData.ClassifierIDsToClassifyWith.Add(classifierVerbose.classifier_id);
+		}
+		
+		public void DeselectAllClassifiers()
+		{
+			List<string> classiferIDsToClassifyWithList = new List<string>();
+			foreach (string classifierID in m_AppData.ClassifierIDsToClassifyWith)
+				classiferIDsToClassifyWithList.Add(classifierID);
+
+			foreach (string classifierID in classiferIDsToClassifyWithList)
+				m_AppData.ClassifierIDsToClassifyWith.Remove(classifierID);
 		}
 		#endregion
 

@@ -34,6 +34,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_API_KEY_VALIDATED = "OnAPIKeyValidated";
 		public const string ON_API_KEY_INVALIDATED = "OnAPIKeyInvalidated";
 		public const string ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION = "OnRequestClassifierDeleteConfirmation";
+		public const string ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED = "OnClassifierToClassifyWithAdded";
+		public const string ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED = "OnClassifierToClassifyWithRemoved";
 	}
 
 	public class AppState

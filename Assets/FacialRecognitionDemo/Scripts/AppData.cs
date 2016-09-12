@@ -46,6 +46,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifierIDs.OnRemoved += OnClassifierIDRemoved;
 			ClassifiersVerbose.OnAdded += OnClassiferVerboseAdded;
 			ClassifiersVerbose.OnRemoved += OnClassifierVerboseRemoved;
+			ClassifierIDsToClassifyWith.OnAdded += OnClassifierIDsToClassifyWithAdded;
+			ClassifierIDsToClassifyWith.OnRemoved += OnClassifierIDsToClassifyWithRemoved;
+
 		}
 
 		~AppData()
@@ -54,6 +57,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifierIDs.OnRemoved -= OnClassifierIDRemoved;
 			ClassifiersVerbose.OnAdded -= OnClassiferVerboseAdded;
 			ClassifiersVerbose.OnRemoved -= OnClassifierVerboseRemoved;
+			ClassifierIDsToClassifyWith.OnAdded -= OnClassifierIDsToClassifyWithAdded;
+			ClassifierIDsToClassifyWith.OnRemoved -= OnClassifierIDsToClassifyWithRemoved;
 		}
 		#endregion
 		
@@ -191,13 +196,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// List of ClassifierIDs to use for image classification.
 		/// </summary>
 		public ObservedList<string> ClassifierIDsToClassifyWith = new ObservedList<string>();
-        #endregion
 
-        #region APIKey
-        /// <summary>
-        /// The Visual Recognition APIKey
-        /// </summary>
-        public string APIKey
+		private void OnClassifierIDsToClassifyWithAdded(string classifierID)
+		{
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED, classifierID);
+		}
+
+		private void OnClassifierIDsToClassifyWithRemoved(string classifierID)
+		{
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, classifierID);
+		}
+		#endregion
+
+		#region APIKey
+		/// <summary>
+		/// The Visual Recognition APIKey
+		/// </summary>
+		public string APIKey
         {
             get { return m_APIKey; }
             set
