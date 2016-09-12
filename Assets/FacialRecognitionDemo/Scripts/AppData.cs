@@ -48,6 +48,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifiersVerbose.OnRemoved += OnClassifierVerboseRemoved;
 			ClassifierIDsToClassifyWith.OnAdded += OnClassifierIDsToClassifyWithAdded;
 			ClassifierIDsToClassifyWith.OnRemoved += OnClassifierIDsToClassifyWithRemoved;
+			Endpoints.OnAdded += OnEndpointAdded;
+			Endpoints.OnRemoved += OnEndpointRemoved;
 
 		}
 
@@ -59,6 +61,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifiersVerbose.OnRemoved -= OnClassifierVerboseRemoved;
 			ClassifierIDsToClassifyWith.OnAdded -= OnClassifierIDsToClassifyWithAdded;
 			ClassifierIDsToClassifyWith.OnRemoved -= OnClassifierIDsToClassifyWithRemoved;
+			Endpoints.OnAdded -= OnEndpointAdded;
+			Endpoints.OnRemoved -= OnEndpointRemoved;
 		}
 		#endregion
 		
@@ -319,6 +323,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 		private string m_ConfirmClassifierToDelete;
+		#endregion
+
+		#region Visual Recognition Endpoints
+		/// <summary>
+		/// List of endpoints to use for the call.
+		/// </summary>
+		public ObservedList<int> Endpoints = new ObservedList<int>();
+
+		private void OnEndpointAdded(int endpoint)
+		{
+			EventManager.Instance.SendEvent(Event.ON_ENDPOINT_ADDED, endpoint);
+		}
+
+		private void OnEndpointRemoved(int endpoint)
+		{
+			EventManager.Instance.SendEvent(Event.ON_ENDPOINT_REMOVED, endpoint);
+		}
 		#endregion
 	}
 }

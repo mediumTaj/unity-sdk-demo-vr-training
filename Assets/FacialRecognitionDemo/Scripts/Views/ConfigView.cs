@@ -42,6 +42,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private Text m_ClassifierIDsToClassifyWithText;
 		[SerializeField]
 		private Toggle m_UseDefaultClassifierToggle;
+		[SerializeField]
+		private Toggle m_ClassifyToggle;
+		[SerializeField]
+		private Toggle m_DetectFacesToggle;
+		[SerializeField]
+		private Toggle m_RecognizeTextToggle;
 
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
