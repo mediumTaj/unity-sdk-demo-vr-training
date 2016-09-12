@@ -340,6 +340,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			EventManager.Instance.SendEvent(Event.ON_ENDPOINT_REMOVED, endpoint);
 		}
-		#endregion
-	}
+        #endregion
+
+        #region Web Camera Aspect Ratio
+        /// <summary>
+        /// Gets and sets the Web Camera Aspect Ratio.
+        /// </summary>
+        public float WebCameraAspectRatio
+        {
+            get { return m_WebCameraAspectRatio; }
+            set
+            {
+                m_WebCameraAspectRatio = value;
+                EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED);
+            }
+        }
+        private float m_WebCameraAspectRatio;
+        #endregion
+    }
 }

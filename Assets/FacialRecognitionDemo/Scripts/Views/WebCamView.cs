@@ -19,6 +19,7 @@ using UnityEngine;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Widgets;
 using IBM.Watson.DeveloperCloud.Utilities;
+using UnityEngine.UI;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -29,16 +30,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private WebCamWidget m_WebCamWidget;
 		[SerializeField]
 		private WebCamDisplayWidget m_WebCamDisplayWidget;
-		#endregion
+        [SerializeField]
+        private AspectRatioFitter m_RawImageAspectRatioFitter;
+        #endregion
 
-		#region Public Properties
-		#endregion
+        #region Public Properties
+        #endregion
 
-		#region Constructor and Destructor
-		/// <summary>
-		/// WebCamView Constructor.
-		/// </summary>
-		public WebCamView()
+        #region Constructor and Destructor
+        /// <summary>
+        /// WebCamView Constructor.
+        /// </summary>
+        public WebCamView()
 		{
 			if (!m_ViewStates.Contains(AppState.PHOTO))
 				m_ViewStates.Add(AppState.PHOTO);
@@ -48,12 +51,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Awake / Start / Enable / Disable
 		void Start()
 		{
-			Runnable.Run(DeactivateWebcam());
+            EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED, OnCameraAspectRatioChanged);
+            Runnable.Run(DeactivateWebcam());
 		}
 
 		void OnEnable()
 		{
-			Runnable.Run(ActivateWebcam());
+            Runnable.Run(ActivateWebcam());
 		}
 
 		void OnDisable()
@@ -66,7 +70,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private IEnumerator ActivateWebcam()
 		{
 			yield return new WaitForSeconds(0.1f);
-			m_WebCamWidget.ActivateWebCam();
+            m_AppData.WebCameraAspectRatio = (float)m_WebCamWidget.RequestedWidth / (float)m_WebCamWidget.RequestedHeight;
+            m_WebCamWidget.ActivateWebCam();
 		}
 
 		private IEnumerator DeactivateWebcam()
@@ -85,9 +90,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.AppState == AppState.PHOTO)
 				m_AppData.AppState = AppState.CONFIG;
 		}
-		#endregion
+        #endregion
 
-		#region Event Handlers
-		#endregion
-	}
+        #region Event Handlers
+        private void OnCameraAspectRatioChanged(object[] args = null)
+        {
+            m_RawImageAspectRatioFitter.aspectRatio = m_AppData.WebCameraAspectRatio;
+        }
+        #endregion
+    }
 }
