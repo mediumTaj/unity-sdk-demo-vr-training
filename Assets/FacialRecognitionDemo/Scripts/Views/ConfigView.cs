@@ -19,6 +19,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System.Collections;
+using System;
+using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -103,6 +105,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_ENDPOINT_ADDED, OnEndpointAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_ENDPOINT_REMOVED, OnEndpointRemoved);
 		}
 
         void OnDisable()
@@ -114,6 +118,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_ENDPOINT_ADDED, OnEndpointAdded);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_ENDPOINT_REMOVED, OnEndpointRemoved);
 		}
 
 		void Start()
@@ -123,6 +129,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			if (!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
 				m_AppData.ClassifierIDsToClassifyWith.Add("default");
+
+			if (!m_AppData.Endpoints.Contains(Endpoint.CLASSIFY))
+				m_AppData.Endpoints.Add(Endpoint.CLASSIFY);
 
 			CheckAPIKey();
 		}
@@ -187,6 +196,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			m_AppData.AppState = AppState.PHOTO;
 		}
 
+		/// <summary>
+		/// UI Handler for UseDefaultClassifier toggle.
+		/// </summary>
+		/// <param name="val"></param>
 		public void OnUseDefaultClassifierValueChanged(bool val)
 		{
 			if (val)
@@ -198,6 +211,48 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
 					m_AppData.ClassifierIDsToClassifyWith.Remove("default");
+			}
+		}
+
+		public void UseClassifyEndpoint(bool val)
+		{
+			if (val)
+			{
+				if (!m_AppData.Endpoints.Contains(Endpoint.CLASSIFY))
+					m_AppData.Endpoints.Add(Endpoint.CLASSIFY);
+			}
+			else
+			{
+				if (m_AppData.Endpoints.Contains(Endpoint.CLASSIFY))
+					m_AppData.Endpoints.Remove(Endpoint.CLASSIFY);
+			}
+		}
+
+		public void UseDetectFacesEndpoint (bool val)
+		{
+			if (val)
+			{
+				if (!m_AppData.Endpoints.Contains(Endpoint.DETECT_FACES))
+					m_AppData.Endpoints.Add(Endpoint.DETECT_FACES);
+			}
+			else
+			{
+				if (m_AppData.Endpoints.Contains(Endpoint.DETECT_FACES))
+					m_AppData.Endpoints.Remove(Endpoint.DETECT_FACES);
+			}
+		}
+
+		public void UseRecognizeTextEndpoint(bool val)
+		{
+			if (val)
+			{
+				if (!m_AppData.Endpoints.Contains(Endpoint.RECOGNIZE_TEXT))
+					m_AppData.Endpoints.Add(Endpoint.RECOGNIZE_TEXT);
+			}
+			else
+			{
+				if (m_AppData.Endpoints.Contains(Endpoint.RECOGNIZE_TEXT))
+					m_AppData.Endpoints.Remove(Endpoint.RECOGNIZE_TEXT);
 			}
 		}
         #endregion
@@ -249,7 +304,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			IsContinueButtonVisible = false;
 		}
 
-		private void OnClassifierIDToClassifyWithAdded(object[] args = null)
+		private void OnClassifierIDToClassifyWithAdded(object[] args)
 		{
 			if (args[0] is string && m_ClassifierIDsToClassifyWithText.text != null)
 			{
@@ -258,9 +313,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				if (args[0] as string == "default")
 					m_UseDefaultClassifierToggle.isOn = true;
 			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
+			}
 		}
 
-		private void OnClassifierIDToClassifyWithRemoved(object[] args = null)
+		private void OnClassifierIDToClassifyWithRemoved(object[] args)
 		{
 			if(args[0] is string && m_ClassifierIDsToClassifyWithText.text != null)
 			{
@@ -269,6 +328,82 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 				if (args[0] as string == "default")
 					m_UseDefaultClassifierToggle.isOn = false;
+			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
+			}
+		}
+
+		private void OnEndpointAdded(object[] args)
+		{
+			if(args[0] is int)
+			{
+				int endpoint = (int)args[0];
+				switch (endpoint)
+				{
+					case Endpoint.CLASSIFY:
+						if (!m_ClassifyToggle.isOn)
+						{
+							m_ClassifyToggle.isOn = true;
+						}
+						break;
+					case Endpoint.DETECT_FACES:
+						if (!m_DetectFacesToggle.isOn)
+						{
+							m_DetectFacesToggle.isOn = true;
+						}
+						break;
+					case Endpoint.RECOGNIZE_TEXT:
+						if (!m_RecognizeTextToggle.isOn)
+						{
+							m_RecognizeTextToggle.isOn = true;
+						}
+						break;
+					default:
+						Log.Debug("ConfigView", "No case for {0}", endpoint.ToString());
+						break;
+				}
+			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
+			}
+		}
+
+		private void OnEndpointRemoved(object[] args)
+		{
+			if (args[0] is int)
+			{
+				int endpoint = (int)args[0];
+				switch (endpoint)
+				{
+					case Endpoint.CLASSIFY:
+						if (m_ClassifyToggle.isOn)
+						{
+							m_ClassifyToggle.isOn = false;
+						}
+						break;
+					case Endpoint.DETECT_FACES:
+						if (m_DetectFacesToggle.isOn)
+						{
+							m_DetectFacesToggle.isOn = false;
+						}
+						break;
+					case Endpoint.RECOGNIZE_TEXT:
+						if (m_RecognizeTextToggle.isOn)
+						{
+							m_RecognizeTextToggle.isOn = false;
+						}
+						break;
+					default:
+						Log.Debug("ConfigView", "No case for {0}", endpoint.ToString());
+						break;
+				}
+			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
 			}
 		}
 		#endregion

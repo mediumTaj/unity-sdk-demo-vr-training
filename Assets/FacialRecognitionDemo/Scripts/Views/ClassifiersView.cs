@@ -19,6 +19,7 @@ using UnityEngine;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using System.Collections.Generic;
+using System;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -105,6 +106,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 							m_AppData.Views.Remove(view);
 							Destroy(view.gameObject);
 						}
+			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
 			}
 		}
 		#endregion
