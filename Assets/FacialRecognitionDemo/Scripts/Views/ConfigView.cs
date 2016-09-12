@@ -40,6 +40,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private GameObject m_ContinueButton;
 		[SerializeField]
 		private Text m_ClassifierIDsToClassifyWithText;
+		[SerializeField]
+		private Toggle m_UseDefaultClassifierToggle;
+
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
 		private string m_SuccessMessage = "The API Key is valid!";
@@ -87,22 +90,24 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Awake / Start / Enable / Disable
 		void OnEnable()
 		{
-            EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
-			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
+            EventManager.Instance.RegisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
+			EventManager.Instance.RegisterEventReceiver(Event.API_KEY_CHECKED, OnAPIKeyChecked);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
 		}
 
         void OnDisable()
 		{
-            EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, HandleCheckAPIKey);
-			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, HandleAPIKeyChecked);
+            EventManager.Instance.UnregisterEventReceiver(Event.CHECK_API_KEY, OnCheckAPIKey);
+			EventManager.Instance.UnregisterEventReceiver(Event.API_KEY_CHECKED, OnAPIKeyChecked);
             EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_UPDATED, OnAPIKeyUpdated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
 		}
 
 		void Start()
@@ -192,12 +197,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Event Handlers
-        private void HandleCheckAPIKey(object[] args = null)
+        private void OnCheckAPIKey(object[] args = null)
         {
             m_Controller.CheckAPIKey();
         }
 
-        private void HandleAPIKeyChecked(object[] args = null)
+        private void OnAPIKeyChecked(object[] args = null)
 		{
 			if (m_AppData.IsAPIKeyValid)
 				m_StatusText.text = m_SuccessMessage;
@@ -243,6 +248,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (args[0] is string && m_ClassifierIDsToClassifyWithText.text != null)
 			{
 				m_ClassifierIDsToClassifyWithText.text += string.Format(m_ClassifierIDsToClassifyWithString, args[0] as string);
+
+				if (args[0] as string == "default")
+					m_UseDefaultClassifierToggle.isOn = true;
 			}
 		}
 
@@ -252,6 +260,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				if (m_ClassifierIDsToClassifyWithText.text.Contains(args[0] as string))
 					m_ClassifierIDsToClassifyWithText.text = m_ClassifierIDsToClassifyWithText.text.Replace(string.Format(m_ClassifierIDsToClassifyWithString, args[0] as string), "");
+
+				if (args[0] as string == "default")
+					m_UseDefaultClassifierToggle.isOn = false;
 			}
 		}
 		#endregion

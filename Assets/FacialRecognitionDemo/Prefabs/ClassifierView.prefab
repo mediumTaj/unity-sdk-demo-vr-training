@@ -501,6 +501,7 @@ MonoBehaviour:
   m_ClassifierNameLabel: {fileID: 114000010883553916}
   m_ClassifierStatusLabel: {fileID: 114000011167882588}
   m_ClassifierCreatedLabel: {fileID: 114000012286890006}
+  m_UseClassiferToClassifyToggle: {fileID: 114000013033820630}
 --- !u!114 &114000010827882522
 MonoBehaviour:
   m_ObjectHideFlags: 1

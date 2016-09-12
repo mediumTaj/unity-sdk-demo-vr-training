@@ -19,6 +19,7 @@ using UnityEngine;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using UnityEngine.UI;
 using IBM.Watson.DeveloperCloud.Logging;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -37,6 +38,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private Text m_ClassifierStatusLabel;
 		[SerializeField]
 		private Text m_ClassifierCreatedLabel;
+		[SerializeField]
+		private Toggle m_UseClassiferToClassifyToggle;
 		#endregion
 
 		#region Public Properties
@@ -154,6 +157,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
+		void OnEnable()
+		{
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED, OnClassifierIDToClassifyWithAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
+		}
+
+		void OnDisable()
+		{
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED, OnClassifierIDToClassifyWithAdded);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
+		}
 		#endregion
 
 		#region Private Functions
@@ -175,6 +189,26 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				if (m_AppData.ClassifierIDsToClassifyWith.Contains(ClassifierID))
 					m_AppData.ClassifierIDsToClassifyWith.Remove(ClassifierID);
+			}
+		}
+		#endregion
+
+		#region Event Handlers
+		private void OnClassifierIDToClassifyWithAdded(object[] args)
+		{
+			if(args[0] is string)
+			{
+				if (args[0] as string == ClassifierID)
+					m_UseClassiferToClassifyToggle.isOn = true;
+			}
+		}
+
+		private void OnClassifierIDToClassifyWithRemoved(object[] args)
+		{
+			if (args[0] is string)
+			{
+				if (args[0] as string == ClassifierID)
+					m_UseClassiferToClassifyToggle.isOn = false;
 			}
 		}
 		#endregion

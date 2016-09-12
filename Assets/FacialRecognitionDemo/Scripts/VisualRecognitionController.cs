@@ -313,6 +313,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Select / Deselect classifiers
 		public void SelectAllClassifiers()
 		{
+			if(!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
+				m_AppData.ClassifierIDsToClassifyWith.Add("default");
+
 			foreach (GetClassifiersPerClassifierVerbose classifierVerbose in m_AppData.ClassifiersVerbose)
 				if (!m_AppData.ClassifierIDsToClassifyWith.Contains(classifierVerbose.classifier_id))
 					m_AppData.ClassifierIDsToClassifyWith.Add(classifierVerbose.classifier_id);
@@ -320,6 +323,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		
 		public void DeselectAllClassifiers()
 		{
+			if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
+				m_AppData.ClassifierIDsToClassifyWith.Remove("default");
+
 			List<string> classiferIDsToClassifyWithList = new List<string>();
 			foreach (string classifierID in m_AppData.ClassifierIDsToClassifyWith)
 				classiferIDsToClassifyWithList.Add(classifierID);
