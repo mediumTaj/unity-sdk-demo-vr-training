@@ -41,8 +41,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED = "OnClassifierToClassifyWithRemoved";
 		public const string ON_ENDPOINT_ADDED = "OnEndpointAdded";
 		public const string ON_ENDPOINT_REMOVED = "OnEndpointRemoved";
-        public const string ON_WEB_CAMERA_ASPECT_RATIO_CHANGED = "OnCameraAspectRatioChanged";
-
+        //public const string ON_WEB_CAMERA_ASPECT_RATIO_CHANGED = "OnCameraAspectRatioChanged";
+        public const string ON_WEB_CAMERA_DIMENSIONS_UPDATED = "OnWebCameraDimensionsUpdated";
     }
 
 	/// <summary>

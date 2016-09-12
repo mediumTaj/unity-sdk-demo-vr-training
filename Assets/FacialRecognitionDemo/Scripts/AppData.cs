@@ -342,20 +342,102 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
         #endregion
 
-        #region Web Camera Aspect Ratio
+        #region Web Camera Dimensions
+        /// <summary>
+        /// Controls the aspect ratio of the WebCamera.
+        /// </summary>
+        public CameraDimensions WebCameraDimensions
+        {
+            get { return m_WebCameraDimensions; }
+            set
+            {
+                m_WebCameraDimensions = value;
+                EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED);
+            }
+        }
+        private CameraDimensions m_WebCameraDimensions;
+        
+        /// <summary>
+        /// A class holding int values for WebCam width and height.
+        /// </summary>
+        public class CameraDimensions
+        {
+            /// <summary>
+            /// The width of the WebCamera.
+            /// </summary>
+            public int Width { get; set; }
+            /// <summary>
+            /// The height of the WebCamera.
+            /// </summary>
+            public int Height { get; set; }
+
+            /// <summary>
+            /// Default constructor
+            /// </summary>
+            public CameraDimensions()
+            { }
+
+            /// <summary>
+            /// Constructor with initialization arguments.
+            /// </summary>
+            /// <param name="width">Width of thw WebCamera.</param>
+            /// <param name="height">Height of the WebCamera.</param>
+            public CameraDimensions(int width, int height)
+            {
+                Width = width;
+                Height = height;
+            }
+
+            /// <summary>
+            /// Returns the aspect ratio of the camera.
+            /// </summary>
+            /// <returns></returns>
+            public float GetAspectRatio()
+            {
+                return (float)Width/(float)Height;
+            }
+        }
+        ///// <summary>
+        ///// The web camera width
+        ///// </summary>
+        //public int WebCamWidth
+        //{
+        //    get { return m_WebCamWidth; }
+        //    set
+        //    {
+        //        m_WebCamWidth = value;
+        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_WIDTH_UPDATED);
+        //    }
+        //}
+        //private int m_WebCamWidth;
+
+        ///// <summary>
+        ///// The web camera height
+        ///// </summary>
+        //public int WebCamHeight
+        //{
+        //    get { return m_WebCamHeight; }
+        //    set
+        //    {
+        //        m_WebCamHeight = value;
+        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_HEIGHT_UPDATED);
+        //    }
+        //}
+        //private int m_WebCamHeight;
+
         /// <summary>
         /// Gets and sets the Web Camera Aspect Ratio.
         /// </summary>
-        public float WebCameraAspectRatio
-        {
-            get { return m_WebCameraAspectRatio; }
-            set
-            {
-                m_WebCameraAspectRatio = value;
-                EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED);
-            }
-        }
-        private float m_WebCameraAspectRatio;
+        //public float WebCameraAspectRatio
+        //{
+        //    get { return m_WebCameraAspectRatio; }
+        //    set
+        //    {
+        //        m_WebCameraAspectRatio = value;
+        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED);
+        //    }
+        //}
+        //private float m_WebCameraAspectRatio;
         #endregion
     }
 }

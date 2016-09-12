@@ -51,7 +51,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Awake / Start / Enable / Disable
 		void Start()
 		{
-            EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED, OnCameraAspectRatioChanged);
+            EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
             Runnable.Run(DeactivateWebcam());
 		}
 
@@ -70,7 +70,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private IEnumerator ActivateWebcam()
 		{
 			yield return new WaitForSeconds(0.1f);
-            m_AppData.WebCameraAspectRatio = (float)m_WebCamWidget.RequestedWidth / (float)m_WebCamWidget.RequestedHeight;
+            m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
             m_WebCamWidget.ActivateWebCam();
 		}
 
@@ -93,9 +93,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Event Handlers
-        private void OnCameraAspectRatioChanged(object[] args = null)
+        private void OnWebCameraDimensionsUpdated(object[] args = null)
         {
-            m_RawImageAspectRatioFitter.aspectRatio = m_AppData.WebCameraAspectRatio;
+            m_WebCamWidget.RequestedWidth = m_AppData.WebCameraDimensions.Width;
+            m_WebCamWidget.RequestedHeight = m_AppData.WebCameraDimensions.Height;
+            m_RawImageAspectRatioFitter.aspectRatio = m_AppData.WebCameraDimensions.GetAspectRatio();
         }
         #endregion
     }
