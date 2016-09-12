@@ -51,6 +51,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			Endpoints.OnAdded += OnEndpointAdded;
 			Endpoints.OnRemoved += OnEndpointRemoved;
 
+            if (VisualRecognition == null)
+                VisualRecognition = new VisualRecognition();
 		}
 
 		~AppData()
@@ -71,10 +73,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// Returns the singleton instance of AppData.
 		/// </summary>
 		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
-		#endregion
+        #endregion
 
-		#region Views
-		public List<View> Views = new List<View>();
+        #region Visual Recognition
+        /// <summary>
+        /// Visual Recognition instance.
+        /// </summary>
+        public VisualRecognition VisualRecognition 
+        {
+            get { return m_VisualRecognition; }
+            set { m_VisualRecognition = value; }
+        }
+        private VisualRecognition m_VisualRecognition = null;
+        #endregion
+
+        #region Views
+        public List<View> Views = new List<View>();
 		#endregion
 
 		#region Application State
