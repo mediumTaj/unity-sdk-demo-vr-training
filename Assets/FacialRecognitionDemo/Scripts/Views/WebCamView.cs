@@ -25,6 +25,9 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays the image coming from the WebCamera.
+	/// </summary>
 	public class WebCamView : View
 	{
 		#region Private Data

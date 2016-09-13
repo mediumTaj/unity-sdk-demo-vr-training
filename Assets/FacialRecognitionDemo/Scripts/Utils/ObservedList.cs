@@ -24,6 +24,10 @@ using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class extends List and allows us to know when a List has been changed.
+	/// </summary>
+	/// <typeparam name="T">The datatype of the ObservedList.</typeparam>
 	[Serializable]
 	public class ObservedList<T> : List<T>
 	{

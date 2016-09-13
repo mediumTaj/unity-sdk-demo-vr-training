@@ -24,6 +24,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	using System.Collections.Generic;
 	using Services.VisualRecognition.v3;
 	using Logging;
+
+	/// <summary>
+	/// This class shows the results from Classification, DetectFaces and RecognizeText.
+	/// </summary>
 	public class ResultView : View
 	{
 		#region Private Data
@@ -52,6 +56,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Constructor and Destructor
+		/// <summary>
+		/// The ResultView constructor.
+		/// </summary>
 		public ResultView()
 		{
 			if (!m_ViewStates.Contains(AppState.CLASSIFY_RESULT))
@@ -65,10 +72,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			base.Awake();
 			EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_IMAGE_TO_CLASSIFY, OnImageToClassify);
-		}
-		void Start()
-		{
-			
 		}
 
 		void OnEnable()
@@ -169,11 +172,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					if (faceOutline != null)
 						faceOutline.FaceResult = faceResult;
 					else
-						Log.Debug("ResultView", "No face outline script found!");
+						Log.Warning("ResultView", "No face outline script found!");
 					m_ResultGameObjectList.Add(detectFacesOutline);
 				}
 		}
-
+		
 		private void OnRecognizeTextResult(object[] args = null)
 		{
 			if (m_AppData.RecognizeTextResult == null)
@@ -195,7 +198,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					if (textOutline != null)
 						textOutline.TextResult = textResult;
 					else
-						Log.Debug("ResultView", "No text outline script found!");
+						Log.Warning("ResultView", "No text outline script found!");
 					m_ResultGameObjectList.Add(detectTextOutline);
 				}
 		}

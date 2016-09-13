@@ -23,6 +23,9 @@ using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class outlines faces from DetectFaces and shows results data.
+	/// </summary>
 	public class FaceOutline : MonoBehaviour
 	{
 		#region Private Data
@@ -41,7 +44,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// The face data for this panel.
 		/// </summary>
-		private OneFaceResult m_FaceResult;
 		public OneFaceResult FaceResult
 		{
 			get { return m_FaceResult; }
@@ -53,11 +55,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				UpdateRect();
 			}
 		}
+		private OneFaceResult m_FaceResult;
 
 		/// <summary>
 		/// The position of this panel. This is adjusted for scale factor
 		/// </summary>
-		private Vector2 m_PanelPosition;
 		public Vector2 PanelPosition
 		{
 			get { return m_PanelPosition; }
@@ -67,11 +69,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_FaceOutlinePanelRectTransform.anchoredPosition = PanelPosition;
 			}
 		}
+		private Vector2 m_PanelPosition;
 
 		/// <summary>
 		/// The dimensions of this panel. This is adjusted for scale factor.
 		/// </summary>
-		private Vector2 m_OutlineDimensions;
 		public Vector2 OutlineDimensions
 		{
 			get { return m_OutlineDimensions; }
@@ -84,6 +86,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_TextHolderRectTransform.sizeDelta = new Vector2(m_OutlineRectTransform.sizeDelta.x, m_TextHolderRectTransform.sizeDelta.y);
 			}
 		}
+		private Vector2 m_OutlineDimensions;
 		#endregion
 
 		#region Constructor and Destructor

@@ -32,11 +32,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			get { return AppData.Instance; }
 		}
-
-        private VisualRecognitionController m_Controller
-        {
-            get { return VisualRecognitionController.Instance; }
-        }
 		#endregion
 
 		#region Awake / Enable / Disable

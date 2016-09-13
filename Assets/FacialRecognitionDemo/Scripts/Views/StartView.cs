@@ -30,7 +30,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		#region Constructor and Destructor
 		/// <summary>
-		/// StartView Constrtuctor.
+		/// The StartView Constrtuctor.
 		/// </summary>
 		public StartView()
 		{

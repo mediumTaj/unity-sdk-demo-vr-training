@@ -20,6 +20,9 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays recognize text results in the RecognizeTextResult prefab.
+	/// </summary>
 	public class RecognizeTextResult : MonoBehaviour
 	{
 		#region Private Data

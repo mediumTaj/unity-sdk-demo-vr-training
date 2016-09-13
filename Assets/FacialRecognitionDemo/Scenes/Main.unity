@@ -6497,6 +6497,7 @@ MonoBehaviour:
   m_ClassifyToggle: {fileID: 1824934048}
   m_DetectFacesToggle: {fileID: 1254367066}
   m_RecognizeTextToggle: {fileID: 1705924707}
+  m_OKButton: {fileID: 723019674}
 --- !u!114 &1812373791
 MonoBehaviour:
   m_ObjectHideFlags: 0

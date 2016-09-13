@@ -88,11 +88,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #endregion
 
         #region Views
+		/// <summary>
+		/// A list of all views in the application. This is used for showing and hiding views depending on AppState.
+		/// </summary>
         public List<View> Views = new List<View>();
 		#endregion
 
 		#region Application State
-		private int m_AppState = 0;
+		/// <summary>
+		/// The current state of the application. This shows and hides Views depending on their ViewStates.
+		/// </summary>
 		public int AppState
 		{
 			get { return m_AppState; }
@@ -102,6 +107,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_UPDATE_APP_STATE);
 			}
 		}
+		private int m_AppState = 0;
 		#endregion
 
 		#region Visual Recognition Classes
@@ -289,7 +295,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// <summary>
         /// Is the current APIKey Valid.
         /// </summary>
-        private bool m_IsAPIKeyValid = false;
 		public bool IsAPIKeyValid
 		{
 			get { return m_IsAPIKeyValid; }
@@ -302,6 +307,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					EventManager.Instance.SendEvent(Event.ON_API_KEY_INVALIDATED);
 			}
 		}
+        private bool m_IsAPIKeyValid = false;
 
         /// <summary>
         /// Are we checking validity of API Key.
@@ -390,7 +396,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             /// </summary>
             public CameraDimensions()
             { }
-
             /// <summary>
             /// Constructor with initialization arguments.
             /// </summary>
@@ -401,7 +406,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 Width = width;
                 Height = height;
             }
-
             /// <summary>
             /// Returns the aspect ratio of the camera.
             /// </summary>
@@ -417,7 +421,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// Image texture to classify.
 		/// </summary>
-		private Texture2D m_Image;
 		public Texture2D Image
 		{
 			get { return m_Image; }
@@ -427,6 +430,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_IMAGE_TO_CLASSIFY);
 			}
 		}
+		private Texture2D m_Image;
 
 		/// <summary>
 		/// Image byte data to classify.
@@ -438,7 +442,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Scale Factor
-		private float m_ScaleFactor;
+		/// <summary>
+		/// The scale factor between the requested WebCamTexture size and the RawTexture it is writing to. Used to adjust the position and size of face and text outlines.
+		/// </summary>
 		public float ScaleFactor
 		{
 			get { return m_ScaleFactor; }
@@ -448,10 +454,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_UPDATE_SCALE_FACTOR);
 			}
 		}
+		private float m_ScaleFactor;
 		#endregion
 
 		#region Results
-		private ClassifyTopLevelMultiple m_ClassifyResult = null;
+		/// <summary>
+		/// Stored resutls from Classify.
+		/// </summary>
 		public ClassifyTopLevelMultiple ClassifyResult
 		{
 			get { return m_ClassifyResult; }
@@ -461,8 +470,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_CLASSIFICATION_RESULT);
 			}
 		}
+		private ClassifyTopLevelMultiple m_ClassifyResult = null;
 
-		private FacesTopLevelMultiple m_DetectFacesResult = null;
+		/// <summary>
+		/// Stored results from DetectFaces.
+		/// </summary>
 		public FacesTopLevelMultiple DetectFacesResult
 		{
 			get { return m_DetectFacesResult; }
@@ -472,8 +484,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_DETECT_FACES_RESULT);
 			}
 		}
+		private FacesTopLevelMultiple m_DetectFacesResult = null;
 
-		private TextRecogTopLevelMultiple m_RecognizeTextResult = null;
+		/// <summary>
+		/// Stored results from RecognizeText.
+		/// </summary>
 		public TextRecogTopLevelMultiple RecognizeTextResult
 		{
 			get { return m_RecognizeTextResult; }
@@ -483,6 +498,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				EventManager.Instance.SendEvent(Event.ON_RECOGNIZE_TEXT_RESULT);
 			}
 		}
+		private TextRecogTopLevelMultiple m_RecognizeTextResult = null;
 		#endregion
 	}
 }

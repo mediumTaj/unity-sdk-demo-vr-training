@@ -50,6 +50,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private Toggle m_DetectFacesToggle;
 		[SerializeField]
 		private Toggle m_RecognizeTextToggle;
+		[SerializeField]
+		private Button m_OKButton;
 
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
@@ -214,6 +216,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 
+		/// <summary>
+		/// Adds or removes the Classify endpoint.
+		/// </summary>
+		/// <param name="val">Is true if we should use the Classify endpoint, false if we should not.</param>
 		public void UseClassifyEndpoint(bool val)
 		{
 			if (val)
@@ -228,6 +234,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 
+		/// <summary>
+		/// Adds or removes the DetectFaces endpoint.
+		/// </summary>
+		/// <param name="val">Is true if we should use the DetectFaces endpoint, false if we should not.</param>
 		public void UseDetectFacesEndpoint (bool val)
 		{
 			if (val)
@@ -242,6 +252,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 
+		/// <summary>
+		/// Adds or removes the RecognizeText endpoint.
+		/// </summary>
+		/// <param name="val">Is true if we should use the RecognizeText endpoint, false if we should not.</param>
 		public void UseRecognizeTextEndpoint(bool val)
 		{
 			if (val)
@@ -364,6 +378,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 						Log.Debug("ConfigView", "No case for {0}", endpoint.ToString());
 						break;
 				}
+
+				m_OKButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
 			}
 			else
 			{
@@ -400,6 +416,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 						Log.Debug("ConfigView", "No case for {0}", endpoint.ToString());
 						break;
 				}
+
+				m_OKButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
 			}
 			else
 			{

@@ -19,12 +19,13 @@ using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class handles all functionality from views and user interaction. The controller directly sets values in the AppData (Model).
+	/// </summary>
 	public class VisualRecognitionController
 	{
 		private VisualRecognition m_VisualRecognition = new VisualRecognition();
@@ -143,6 +144,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				Log.Debug("VisualRecognitionController", "Failed to delete classifier!");
 		}
 
+		/// <summary>
+		/// Deletes a classifier from AppData.
+		/// </summary>
+		/// <param name="classifierID">The classifier identifier to delete.</param>
 		public void DeleteClassifierFromAppData(string classifierID)
 		{
 			if (string.IsNullOrEmpty(classifierID))
@@ -313,6 +318,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Select / Deselect classifiers
+		/// <summary>
+		/// Selects all classifiers to use for classification. This includes the default classifier.
+		/// </summary>
 		public void SelectAllClassifiers()
 		{
 			if(!m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
@@ -323,6 +331,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					m_AppData.ClassifierIDsToClassifyWith.Add(classifierVerbose.classifier_id);
 		}
 		
+		/// <summary>
+		/// Deselets all classifiers to use for clasification. This includes the default classifier.
+		/// </summary>
 		public void DeselectAllClassifiers()
 		{
 			if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
@@ -336,44 +347,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_AppData.ClassifierIDsToClassifyWith.Remove(classifierID);
 		}
 		#endregion
-
-		//#region Classify
-		///// <summary>
-		///// Classifies an image by ByteArray.
-		///// </summary>
-		///// <param name="imageData">Byte array of image data.</param>
-		///// <param name="classifierIDs">Array of classifier identifiers to use.</param>
-		///// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
-		///// <param name="threshold">Threshold for omitting classification results.</param>
-		//public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
-		//{
-		//	if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
-		//		Log.Warning("VisualRecognitionController", "Failed to classify image!");
-		//}
-
-		//private void OnClassify(ClassifyTopLevelMultiple classify, string data)
-		//{
-		//	if(classify != null)
-		//	{
-		//		foreach (ClassifyTopLevelSingle image in classify.images)
-		//			foreach (ClassifyPerClassifier classifier in image.classifiers)
-		//			{
-		//				Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
-		//				foreach (ClassResult classResult in classifier.classes)
-		//				{
-						
-		//				Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
-		//					if (!string.IsNullOrEmpty(classResult.type_hierarchy))
-		//						Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
-		//				}
-		//			}
-		//	}
-		//	else
-		//	{
-		//		Log.Debug("VisualRecognitionController", "Failed to classify image!");
-		//	}
-		//}
-  //      #endregion
 
         #region UpdateClassifier
         public void UpdateClassifier(string classifierID, byte[] positiveExamplesData, byte[] negativeExamplesData = default(byte[]))
@@ -393,6 +366,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Classify
+		/// <summary>
+		/// Classifys a byteArray of imagedata using the Visual Recognition service.
+		/// </summary>
+		/// <param name="imageData">A byte[] of image data.</param>
 		public void Classify(byte[] imageData)
 		{
 			string[] owners = { "IBM", "me" };
@@ -407,6 +384,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Detect Faces
+		/// <summary>
+		/// Detects faces in a byteArray of imagedata using the Visual Recognition service.
+		/// </summary>
+		/// <param name="imageData">A byte[] of image data.</param>
 		public void DetectFaces(byte[] imageData)
 		{
 			m_AppData.VisualRecognition.DetectFaces(OnDetectFaces, imageData);
@@ -420,6 +401,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region RecognizeText
+		/// <summary>
+		/// Recognizes text in a byteArray of imagedata using the Visual Recognition service.
+		/// </summary>
+		/// <param name="imageData">A byte[] of image data.</param>
 		public void RecognizeText(byte[] imageData)
 		{
 			m_AppData.VisualRecognition.RecognizeText(OnRecognizeText, imageData);

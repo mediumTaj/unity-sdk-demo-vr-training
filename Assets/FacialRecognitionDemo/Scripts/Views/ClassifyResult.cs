@@ -21,6 +21,9 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays classify results in the ClassifyResults prefab.
+	/// </summary>
 	public class ClassifyResult : MonoBehaviour
 	{
 		#region Private Data

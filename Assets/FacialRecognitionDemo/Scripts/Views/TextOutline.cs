@@ -23,6 +23,9 @@ using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays an outline and an summary for detected text.
+	/// </summary>
 	public class TextOutline : MonoBehaviour
 	{
 		#region Private Data
@@ -41,7 +44,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// The word data for this panel.
 		/// </summary>
-		private TextRecogOneWord m_TextResult;
 		public TextRecogOneWord TextResult
 		{
 			get { return m_TextResult; }
@@ -53,11 +55,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				UpdateRect();
 			}
 		}
+		private TextRecogOneWord m_TextResult;
 
 		/// <summary>
 		/// The position of this panel. This is adjusted for scale factor
 		/// </summary>
-		private Vector2 m_PanelPosition;
 		public Vector2 PanelPosition
 		{
 			get { return m_PanelPosition; }
@@ -67,11 +69,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_TextOutlinePanelRectTransform.anchoredPosition = PanelPosition;
 			}
 		}
+		private Vector2 m_PanelPosition;
 
 		/// <summary>
 		/// The dimensions of this panel. This is adjusted for scale factor.
 		/// </summary>
-		private Vector2 m_OutlineDimensions;
 		public Vector2 OutlineDimensions
 		{
 			get { return m_OutlineDimensions; }
@@ -84,6 +86,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_TextHolderRectTransform.sizeDelta = new Vector2(m_OutlineRectTransform.sizeDelta.x, m_TextHolderRectTransform.sizeDelta.y);
 			}
 		}
+		private Vector2 m_OutlineDimensions;
 		#endregion
 
 		#region Constructor and Destructor
@@ -98,7 +101,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		void OnDisable()
 		{
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_UPDATE_SCALE_FACTOR, OnUpdateScaleFactor);
-
 		}
 		#endregion
 

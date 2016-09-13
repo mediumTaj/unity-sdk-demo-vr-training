@@ -20,6 +20,9 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays detect faces results in the DetectFacesResult prefab.
+	/// </summary>
 	public class DetectFacesResult : MonoBehaviour
 	{
 		#region Private Data

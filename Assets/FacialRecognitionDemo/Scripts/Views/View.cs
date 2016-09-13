@@ -41,8 +41,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Constructor and Destructor
-		public View()
-		{}
 		#endregion
 
 		#region Awake / Start / Enable / Disable
@@ -54,6 +52,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Private Functions
+		/// <summary>
+		/// Determines if each view should be visible at the current Application State.
+		/// </summary>
+		/// <returns>Returns true if he view should be visible in the current AppState, false if not.</returns>
 		public bool IsVisibleInCurrentAppState()
 		{
 			bool isVisible = false;

@@ -23,6 +23,9 @@ using System;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// This class displays all available classifiers as ClassifierView.
+	/// </summary>
 	public class ClassifiersView : View
 	{
 		#region Private Data
