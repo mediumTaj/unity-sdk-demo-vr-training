@@ -48,7 +48,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifiersVerbose.OnRemoved += OnClassifierVerboseRemoved;
 			ClassifierIDsToClassifyWith.OnAdded += OnClassifierIDsToClassifyWithAdded;
 			ClassifierIDsToClassifyWith.OnRemoved += OnClassifierIDsToClassifyWithRemoved;
+			Endpoints.OnAdded += OnEndpointAdded;
+			Endpoints.OnRemoved += OnEndpointRemoved;
 
+            if (VisualRecognition == null)
+                VisualRecognition = new VisualRecognition();
 		}
 
 		~AppData()
@@ -59,6 +63,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifiersVerbose.OnRemoved -= OnClassifierVerboseRemoved;
 			ClassifierIDsToClassifyWith.OnAdded -= OnClassifierIDsToClassifyWithAdded;
 			ClassifierIDsToClassifyWith.OnRemoved -= OnClassifierIDsToClassifyWithRemoved;
+			Endpoints.OnAdded -= OnEndpointAdded;
+			Endpoints.OnRemoved -= OnEndpointRemoved;
 		}
 		#endregion
 		
@@ -67,10 +73,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// Returns the singleton instance of AppData.
 		/// </summary>
 		public static AppData Instance { get { return Singleton<AppData>.Instance; } }
-		#endregion
+        #endregion
 
-		#region Views
-		public List<View> Views = new List<View>();
+        #region Visual Recognition
+        /// <summary>
+        /// Visual Recognition instance.
+        /// </summary>
+        public VisualRecognition VisualRecognition 
+        {
+            get { return m_VisualRecognition; }
+            set { m_VisualRecognition = value; }
+        }
+        private VisualRecognition m_VisualRecognition = null;
+        #endregion
+
+        #region Views
+        public List<View> Views = new List<View>();
 		#endregion
 
 		#region Application State
@@ -319,6 +337,152 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 		private string m_ConfirmClassifierToDelete;
+		#endregion
+
+		#region Visual Recognition Endpoints
+		/// <summary>
+		/// List of endpoints to use for the call.
+		/// </summary>
+		public ObservedList<int> Endpoints = new ObservedList<int>();
+
+		private void OnEndpointAdded(int endpoint)
+		{
+			EventManager.Instance.SendEvent(Event.ON_ENDPOINT_ADDED, endpoint);
+		}
+
+		private void OnEndpointRemoved(int endpoint)
+		{
+			EventManager.Instance.SendEvent(Event.ON_ENDPOINT_REMOVED, endpoint);
+		}
+        #endregion
+
+        #region Web Camera Dimensions
+        /// <summary>
+        /// Controls the aspect ratio of the WebCamera.
+        /// </summary>
+        public CameraDimensions WebCameraDimensions
+        {
+            get { return m_WebCameraDimensions; }
+            set
+            {
+                m_WebCameraDimensions = value;
+                EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED);
+            }
+        }
+        private CameraDimensions m_WebCameraDimensions;
+        
+        /// <summary>
+        /// A class holding int values for WebCam width and height.
+        /// </summary>
+        public class CameraDimensions
+        {
+            /// <summary>
+            /// The width of the WebCamera.
+            /// </summary>
+            public int Width { get; set; }
+            /// <summary>
+            /// The height of the WebCamera.
+            /// </summary>
+            public int Height { get; set; }
+
+            /// <summary>
+            /// Default constructor
+            /// </summary>
+            public CameraDimensions()
+            { }
+
+            /// <summary>
+            /// Constructor with initialization arguments.
+            /// </summary>
+            /// <param name="width">Width of thw WebCamera.</param>
+            /// <param name="height">Height of the WebCamera.</param>
+            public CameraDimensions(int width, int height)
+            {
+                Width = width;
+                Height = height;
+            }
+
+            /// <summary>
+            /// Returns the aspect ratio of the camera.
+            /// </summary>
+            /// <returns></returns>
+            public float GetAspectRatio()
+            {
+                return (float)Width/(float)Height;
+            }
+        }
+		#endregion
+
+		#region Image
+		/// <summary>
+		/// Image texture to classify.
+		/// </summary>
+		private Texture2D m_Image;
+		public Texture2D Image
+		{
+			get { return m_Image; }
+			set
+			{
+				m_Image = value;
+				EventManager.Instance.SendEvent(Event.ON_IMAGE_TO_CLASSIFY);
+			}
+		}
+
+		/// <summary>
+		/// Image byte data to classify.
+		/// </summary>
+		public byte[] ImageData
+		{
+			get { return m_Image.EncodeToPNG(); }
+		}
+		#endregion
+
+		#region Scale Factor
+		private float m_ScaleFactor;
+		public float ScaleFactor
+		{
+			get { return m_ScaleFactor; }
+			set
+			{
+				m_ScaleFactor = value;
+				EventManager.Instance.SendEvent(Event.ON_UPDATE_SCALE_FACTOR);
+			}
+		}
+		#endregion
+
+		#region Results
+		private ClassifyTopLevelMultiple m_ClassifyResult = null;
+		public ClassifyTopLevelMultiple ClassifyResult
+		{
+			get { return m_ClassifyResult; }
+			set
+			{
+				m_ClassifyResult = value;
+				EventManager.Instance.SendEvent(Event.ON_CLASSIFICATION_RESULT);
+			}
+		}
+
+		private FacesTopLevelMultiple m_DetectFacesResult = null;
+		public FacesTopLevelMultiple DetectFacesResult
+		{
+			get { return m_DetectFacesResult; }
+			set
+			{
+				m_DetectFacesResult = value;
+				EventManager.Instance.SendEvent(Event.ON_DETECT_FACES_RESULT);
+			}
+		}
+
+		private TextRecogTopLevelMultiple m_RecognizeTextResult = null;
+		public TextRecogTopLevelMultiple RecognizeTextResult
+		{
+			get { return m_RecognizeTextResult; }
+			set
+			{
+				m_RecognizeTextResult = value;
+				EventManager.Instance.SendEvent(Event.ON_RECOGNIZE_TEXT_RESULT);
+			}
+		}
 		#endregion
 	}
 }

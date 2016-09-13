@@ -20,6 +20,7 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using UnityEngine.UI;
 using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Utilities;
+using System;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -201,6 +202,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				if (args[0] as string == ClassifierID)
 					m_UseClassiferToClassifyToggle.isOn = true;
 			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
+			}
 		}
 
 		private void OnClassifierIDToClassifyWithRemoved(object[] args)
@@ -209,6 +214,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				if (args[0] as string == ClassifierID)
 					m_UseClassiferToClassifyToggle.isOn = false;
+			}
+			else
+			{
+				throw new ArgumentException("Arguemnt was of an unexpected type!");
 			}
 		}
 		#endregion

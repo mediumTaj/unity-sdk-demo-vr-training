@@ -19,7 +19,9 @@ using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -335,43 +337,43 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		#endregion
 
-		#region Classify
-		/// <summary>
-		/// Classifies an image by ByteArray.
-		/// </summary>
-		/// <param name="imageData">Byte array of image data.</param>
-		/// <param name="classifierIDs">Array of classifier identifiers to use.</param>
-		/// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
-		/// <param name="threshold">Threshold for omitting classification results.</param>
-		public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
-		{
-			if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
-				Log.Warning("VisualRecognitionController", "Failed to classify image!");
-		}
+		//#region Classify
+		///// <summary>
+		///// Classifies an image by ByteArray.
+		///// </summary>
+		///// <param name="imageData">Byte array of image data.</param>
+		///// <param name="classifierIDs">Array of classifier identifiers to use.</param>
+		///// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
+		///// <param name="threshold">Threshold for omitting classification results.</param>
+		//public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
+		//{
+		//	if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
+		//		Log.Warning("VisualRecognitionController", "Failed to classify image!");
+		//}
 
-		private void OnClassify(ClassifyTopLevelMultiple classify, string data)
-		{
-			if(classify != null)
-			{
-				foreach (ClassifyTopLevelSingle image in classify.images)
-					foreach (ClassifyPerClassifier classifier in image.classifiers)
-					{
-						Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
-						foreach (ClassResult classResult in classifier.classes)
-						{
+		//private void OnClassify(ClassifyTopLevelMultiple classify, string data)
+		//{
+		//	if(classify != null)
+		//	{
+		//		foreach (ClassifyTopLevelSingle image in classify.images)
+		//			foreach (ClassifyPerClassifier classifier in image.classifiers)
+		//			{
+		//				Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
+		//				foreach (ClassResult classResult in classifier.classes)
+		//				{
 						
-						Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
-							if (!string.IsNullOrEmpty(classResult.type_hierarchy))
-								Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
-						}
-					}
-			}
-			else
-			{
-				Log.Debug("VisualRecognitionController", "Failed to classify image!");
-			}
-		}
-        #endregion
+		//				Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
+		//					if (!string.IsNullOrEmpty(classResult.type_hierarchy))
+		//						Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
+		//				}
+		//			}
+		//	}
+		//	else
+		//	{
+		//		Log.Debug("VisualRecognitionController", "Failed to classify image!");
+		//	}
+		//}
+  //      #endregion
 
         #region UpdateClassifier
         public void UpdateClassifier(string classifierID, byte[] positiveExamplesData, byte[] negativeExamplesData = default(byte[]))
@@ -387,6 +389,46 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_AppData.AppState = AppState.CONFIG;
 			else
 				Log.Error("VisualRecognitionController", "Application not in start state!");
+		}
+		#endregion
+
+		#region Classify
+		public void Classify(byte[] imageData)
+		{
+			string[] owners = { "IBM", "me" };
+			m_AppData.VisualRecognition.Classify(OnClassify, imageData, owners, m_AppData.ClassifierIDsToClassifyWith.ToArray());
+		}
+
+		private void OnClassify(ClassifyTopLevelMultiple classify, string data)
+		{
+			if (classify != null)
+				m_AppData.ClassifyResult = classify;
+		}
+		#endregion
+
+		#region Detect Faces
+		public void DetectFaces(byte[] imageData)
+		{
+			m_AppData.VisualRecognition.DetectFaces(OnDetectFaces, imageData);
+		}
+
+		private void OnDetectFaces(FacesTopLevelMultiple multipleImages, string data)
+		{
+			if (multipleImages != null)
+				m_AppData.DetectFacesResult = multipleImages;
+		}
+		#endregion
+
+		#region RecognizeText
+		public void RecognizeText(byte[] imageData)
+		{
+			m_AppData.VisualRecognition.RecognizeText(OnRecognizeText, imageData);
+		}
+
+		private void OnRecognizeText(TextRecogTopLevelMultiple multipleImages, string data)
+		{
+			if (multipleImages != null)
+				m_AppData.RecognizeTextResult = multipleImages;
 		}
 		#endregion
 	}

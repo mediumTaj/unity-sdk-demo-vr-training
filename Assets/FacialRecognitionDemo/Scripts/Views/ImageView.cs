@@ -14,7 +14,6 @@
 * limitations under the License.
 *
 */
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +24,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         #region Private Data
         [SerializeField]
         private RawImage m_RawImage;
-        
+        //[SerializeField]
+        //private AspectRatioFitter m_RawImageAspectRatioFitter;
+        #endregion
+
+        #region Awake / Start / Enable / Disable
+        //void Awake()
+        //{
+        //    EventManager.Instance.RegisterEventReceiver(Event.ON_CAMERA_ASPECT_RATIO_CHANGED, OnCameraAspectRatioChanged);
+        //}
         #endregion
 
         #region Public Properties
@@ -51,6 +58,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             tex.LoadImage(ImageData);
             m_RawImage.texture = tex;
         }
+        #endregion
+
+        #region Event Handlers
+        //private void OnCameraAspectRatioChanged(object[] args = null)
+        //{
+        //    m_RawImageAspectRatioFitter.aspectRatio = m_AppData.CameraAspectRatio;
+        //}
         #endregion
     }
 }

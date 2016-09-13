@@ -46,7 +46,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void Awake()
+		protected virtual void Awake()
 		{
 			if (!m_AppData.Views.Contains(this))
 				m_AppData.Views.Add(this);

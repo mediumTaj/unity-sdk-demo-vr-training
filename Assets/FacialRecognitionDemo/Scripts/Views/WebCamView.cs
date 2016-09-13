@@ -19,6 +19,9 @@ using UnityEngine;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Widgets;
 using IBM.Watson.DeveloperCloud.Utilities;
+using UnityEngine.UI;
+using IBM.Watson.DeveloperCloud.Logging;
+using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -29,16 +32,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private WebCamWidget m_WebCamWidget;
 		[SerializeField]
 		private WebCamDisplayWidget m_WebCamDisplayWidget;
-		#endregion
+        [SerializeField]
+        private AspectRatioFitter m_RawImageAspectRatioFitter;
+		[SerializeField]
+		private RectTransform m_RawImageRectTransform;
+        #endregion
 
-		#region Public Properties
-		#endregion
+        #region Public Properties
+        #endregion
 
-		#region Constructor and Destructor
-		/// <summary>
-		/// WebCamView Constructor.
-		/// </summary>
-		public WebCamView()
+        #region Constructor and Destructor
+        /// <summary>
+        /// WebCamView Constructor.
+        /// </summary>
+        public WebCamView()
 		{
 			if (!m_ViewStates.Contains(AppState.PHOTO))
 				m_ViewStates.Add(AppState.PHOTO);
@@ -46,9 +53,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void Start()
+		protected override void Awake()
 		{
-			Runnable.Run(DeactivateWebcam());
+			base.Awake();
+            EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
+            EventManager.Instance.RegisterEventReceiver(Event.ON_IMAGE_TO_CLASSIFY, OnImageToClassify);
+            //Runnable.Run(DeactivateWebcam());
 		}
 
 		void OnEnable()
@@ -66,6 +76,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private IEnumerator ActivateWebcam()
 		{
 			yield return new WaitForSeconds(0.1f);
+            m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
 			m_WebCamWidget.ActivateWebCam();
 		}
 
@@ -73,6 +84,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			yield return new WaitForSeconds(0.1f);
 			m_WebCamWidget.DeactivateWebCam();
+		}
+		
+		private IEnumerator TakePhoto()
+		{
+			yield return new WaitForEndOfFrame();
+			Texture2D image = new Texture2D(m_AppData.WebCameraDimensions.Width, m_AppData.WebCameraDimensions.Height, TextureFormat.RGB24, false);
+			image.SetPixels32(m_WebCamWidget.WebCamTexture.GetPixels32());
+			image.Apply();
+
+			m_AppData.Image = image;
 		}
 		#endregion
 
@@ -85,9 +106,31 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.AppState == AppState.PHOTO)
 				m_AppData.AppState = AppState.CONFIG;
 		}
-		#endregion
 
-		#region Event Handlers
-		#endregion
-	}
+        /// <summary>
+        /// UI button handler for take photo button clicked.
+        /// </summary>
+        public void OnTakePhotoButtonClicked()
+        {
+			Runnable.Run(TakePhoto());
+        }
+        #endregion
+
+        #region Event Handlers
+        private void OnWebCameraDimensionsUpdated(object[] args = null)
+        {
+            m_WebCamWidget.RequestedWidth = m_AppData.WebCameraDimensions.Width;
+            m_WebCamWidget.RequestedHeight = m_AppData.WebCameraDimensions.Height;
+            m_RawImageAspectRatioFitter.aspectRatio = m_AppData.WebCameraDimensions.GetAspectRatio();
+
+			m_AppData.ScaleFactor = m_RawImageRectTransform.rect.width / (float)m_WebCamWidget.RequestedWidth;
+        }
+
+		private void OnImageToClassify(object[] args = null)
+		{
+			if (m_AppData.AppState == AppState.PHOTO)
+				m_AppData.AppState = AppState.CLASSIFY_RESULT;
+		}
+        #endregion
+    }
 }

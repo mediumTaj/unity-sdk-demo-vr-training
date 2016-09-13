@@ -17,6 +17,9 @@
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
+	/// <summary>
+	/// Event contstants.
+	/// </summary>
 	public class Event
 	{
 		public const string ON_HAS_STARTED_UPDATED = "OnHasStartedUpdated";
@@ -36,8 +39,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION = "OnRequestClassifierDeleteConfirmation";
 		public const string ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED = "OnClassifierToClassifyWithAdded";
 		public const string ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED = "OnClassifierToClassifyWithRemoved";
+		public const string ON_ENDPOINT_ADDED = "OnEndpointAdded";
+		public const string ON_ENDPOINT_REMOVED = "OnEndpointRemoved";
+        public const string ON_WEB_CAMERA_DIMENSIONS_UPDATED = "OnWebCameraDimensionsUpdated";
+		public const string ON_CLASSIFICATION_RESULT = "OnClassificationResult";
+		public const string ON_DETECT_FACES_RESULT = "OnDetectFacesResult";
+		public const string ON_RECOGNIZE_TEXT_RESULT = "OnRecognizeTextResult";
+		public const string ON_IMAGE_TO_CLASSIFY = "OnImageToClassify";
+		public const string ON_UPDATE_SCALE_FACTOR = "OnUpdateScaleFactor";
+
 	}
 
+	/// <summary>
+	/// Application states.
+	/// </summary>
 	public class AppState
 	{
 		public const int NONE = -1;
@@ -53,5 +68,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const int TRAIN_OPTIONS = 9;
 		public const int TRAIN_PHOTO = 10;
 		public const int RESULT_PHOTOS = 11;
+	}
+
+	/// <summary>
+	/// Visual Recognition Enpoints.
+	/// </summary>
+	public class Endpoint
+	{
+		public const int NONE = -1;
+		public const int CLASSIFY = 0;
+		public const int DETECT_FACES = 1;
+		public const int RECOGNIZE_TEXT = 2;
 	}
 }
