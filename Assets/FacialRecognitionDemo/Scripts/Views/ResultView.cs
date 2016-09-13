@@ -21,17 +21,25 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	using System.Collections;
 	using UnityEngine.UI;
 	using Utilities;
+	using System.Collections.Generic;
 	public class ResultView : View
 	{
 		#region Private Data
 		[SerializeField]
-		private Text m_ClassifyResultText;
+		private RectTransform m_ResultContentRectTransform;
 		[SerializeField]
 		private GameObject m_ClassifyResultGameObject;
 		[SerializeField]
 		private RawImage m_ResultImage;
 		[SerializeField]
 		private AspectRatioFitter m_ResultImageAspectRatioFitter;
+		[SerializeField]
+		private GameObject m_ClassifyResultsPrefab;
+		[SerializeField]
+		private GameObject m_DetectFacesResultsPrefab;
+		[SerializeField]
+		private GameObject m_RecognizeTextReultsPrefab;
+		private List<GameObject> m_ResultGameObjectList = new List<GameObject>();
 		#endregion
 
 		#region Public Properties
@@ -46,10 +54,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void Start()
+		protected override void Awake()
 		{
+			base.Awake();
 			EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_IMAGE_TO_CLASSIFY, OnImageToClassify);
+		}
+		void Start()
+		{
+			
 		}
 
 		void OnEnable()
@@ -70,12 +83,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Private Functions
 		private void ClearClassifyResult()
 		{
-			m_ClassifyResultText.text = "";
 			m_AppData.Image = null;
 			m_AppData.ClassifyResult = null;
 			m_AppData.DetectFacesResult = null;
 			m_AppData.RecognizeTextResult = null;
 			m_ResultImage.texture = null;
+			while (m_ResultGameObjectList.Count > 0)
+			{
+				Destroy(m_ResultGameObjectList[0]);
+				m_ResultGameObjectList.RemoveAt(0);
+			}
 			m_ClassifyResultGameObject.SetActive(false);
 		}
 		#endregion
@@ -119,18 +136,28 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (!m_ClassifyResultGameObject.activeSelf)
 				m_ClassifyResultGameObject.SetActive(true);
+
+			GameObject classifyResult = Instantiate(m_ClassifyResultsPrefab, m_ResultContentRectTransform) as GameObject;
+			m_ResultGameObjectList.Add(classifyResult);
+
 		}
 
 		private void OnDetectFacesResult(object[] args = null)
 		{
 			if (!m_ClassifyResultGameObject.activeSelf)
 				m_ClassifyResultGameObject.SetActive(true);
+
+			GameObject detectFacesResult = Instantiate(m_DetectFacesResultsPrefab, m_ResultContentRectTransform) as GameObject;
+			m_ResultGameObjectList.Add(detectFacesResult);
 		}
 
 		private void OnRecognizeTextResult(object[] args = null)
 		{
 			if (!m_ClassifyResultGameObject.activeSelf)
 				m_ClassifyResultGameObject.SetActive(true);
+
+			GameObject recognizeTextResult = Instantiate(m_RecognizeTextReultsPrefab, m_ResultContentRectTransform) as GameObject;
+			m_ResultGameObjectList.Add(recognizeTextResult);
 		}
 		#endregion
 	}

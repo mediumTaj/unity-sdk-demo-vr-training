@@ -2143,8 +2143,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 625740228}
   - 222: {fileID: 625740231}
-  - 114: {fileID: 625740229}
   - 114: {fileID: 625740230}
+  - 114: {fileID: 625740229}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -2168,7 +2168,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 10}
+  m_SizeDelta: {x: -283, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &625740229
 MonoBehaviour:
@@ -2178,31 +2178,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 625740227}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 9
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 9
-    m_MaxSize: 40
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
 --- !u!114 &625740230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2214,7 +2201,7 @@ MonoBehaviour:
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
+  m_HorizontalFit: 1
   m_VerticalFit: 2
 --- !u!222 &625740231
 CanvasRenderer:
@@ -2335,7 +2322,7 @@ GameObject:
   - 222: {fileID: 688029817}
   - 114: {fileID: 688029816}
   m_Layer: 5
-  m_Name: ClassifyResult
+  m_Name: Result
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3447,7 +3434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 3
-  m_AspectRatio: 1.2538941
+  m_AspectRatio: 1.7777778
 --- !u!1 &1014500902
 GameObject:
   m_ObjectHideFlags: 0
@@ -6337,7 +6324,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1791043858}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6363,10 +6350,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61957c717e51ed7478d5f31f0ac61a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ClassifyResultText: {fileID: 625740229}
+  m_ResultContentRectTransform: {fileID: 625740228}
   m_ClassifyResultGameObject: {fileID: 688029814}
   m_ResultImage: {fileID: 1010859337}
   m_ResultImageAspectRatioFitter: {fileID: 1010859339}
+  m_ClassifyResultsPrefab: {fileID: 1000012495860586, guid: 8c8d1f1f69d51e54dabb52252307189b,
+    type: 2}
+  m_DetectFacesResultsPrefab: {fileID: 1000012251446648, guid: 391e42d39fe1d9f4f8e89eae8139b0f6,
+    type: 2}
+  m_RecognizeTextReultsPrefab: {fileID: 1000013172397080, guid: e31b54ab07a635f4ead2573097f078af,
+    type: 2}
 --- !u!1 &1805915574
 GameObject:
   m_ObjectHideFlags: 0

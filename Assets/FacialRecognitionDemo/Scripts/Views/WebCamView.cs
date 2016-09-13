@@ -51,16 +51,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void Start()
+		protected override void Awake()
 		{
+			base.Awake();
             EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
             EventManager.Instance.RegisterEventReceiver(Event.ON_IMAGE_TO_CLASSIFY, OnImageToClassify);
-            Runnable.Run(DeactivateWebcam());
+            //Runnable.Run(DeactivateWebcam());
 		}
 
 		void OnEnable()
 		{
-            Runnable.Run(ActivateWebcam());
+			Runnable.Run(ActivateWebcam());
 		}
 
 		void OnDisable()
@@ -74,7 +75,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			yield return new WaitForSeconds(0.1f);
             m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
-            m_WebCamWidget.ActivateWebCam();
+			m_WebCamWidget.ActivateWebCam();
 		}
 
 		private IEnumerator DeactivateWebcam()

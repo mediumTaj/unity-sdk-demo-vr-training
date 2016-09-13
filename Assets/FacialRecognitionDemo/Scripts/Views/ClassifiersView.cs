@@ -47,8 +47,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		void Start()
+
+		protected override void Awake()
 		{
+			base.Awake();
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_ADDED, OnClassifierVerboseAdded);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_VERBOSE_REMOVED, OnClassifierVerboseRemoved);
 		}
