@@ -184,16 +184,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// UI Click handler for confirming classifier deletion.
 		/// </summary>
-		public void OnDeleteClassifierConfirmatioClicked()
+		public void OnDeleteClassifierConfirmationClicked()
 		{
 			IsDeleteClassifierConfirmationVisible = false;
 			m_Controller.DeleteClassifier(m_AppData.ConfirmClassifierToDelete);
 		}
 
 		/// <summary>
-		/// UI Click Handler for the continue button.
+		/// UI Click Handler for the classify button.
 		/// </summary>
-		public void OnContinueButtonClicked()
+		public void OnClassifyButtonClicked()
 		{
 			m_AppData.AppState = AppState.PHOTO;
 		}
@@ -214,6 +214,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				if (m_AppData.ClassifierIDsToClassifyWith.Contains("default"))
 					m_AppData.ClassifierIDsToClassifyWith.Remove("default");
 			}
+		}
+
+		/// <summary>
+		/// UI Handler for Train button.
+		/// </summary>
+		public void OnTrainButtonClicked()
+		{
+
 		}
 
 		/// <summary>

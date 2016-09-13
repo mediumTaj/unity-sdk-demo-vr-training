@@ -33,8 +33,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Private Data
 		[SerializeField]
 		private RectTransform m_ResultContentRectTransform;
-		[SerializeField]
-		private GameObject m_ClassifyResultGameObject;
+		//[SerializeField]
+		//private GameObject m_ClassifyResultGameObject;
 		[SerializeField]
 		private RawImage m_ResultImage;
 		[SerializeField]
@@ -102,7 +102,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				Destroy(m_ResultGameObjectList[0]);
 				m_ResultGameObjectList.RemoveAt(0);
 			}
-			m_ClassifyResultGameObject.SetActive(false);
+			//m_ClassifyResultGameObject.SetActive(false);
 		}
 		#endregion
 
@@ -143,8 +143,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassificationResult(object[] args = null)
 		{
-			if (!m_ClassifyResultGameObject.activeSelf)
-				m_ClassifyResultGameObject.SetActive(true);
+			//if (!m_ClassifyResultGameObject.activeSelf)
+			//	m_ClassifyResultGameObject.SetActive(true);
 
 			GameObject classifyResult = Instantiate(m_ClassifyResultsPrefab, m_ResultContentRectTransform) as GameObject;
 			m_ResultGameObjectList.Add(classifyResult);
@@ -156,8 +156,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.DetectFacesResult == null)
 				return;
 
-			if (!m_ClassifyResultGameObject.activeSelf)
-				m_ClassifyResultGameObject.SetActive(true);
+			//if (!m_ClassifyResultGameObject.activeSelf)
+			//	m_ClassifyResultGameObject.SetActive(true);
 
 			GameObject detectFacesResult = Instantiate(m_DetectFacesResultsPrefab, m_ResultContentRectTransform) as GameObject;
 			m_ResultGameObjectList.Add(detectFacesResult);
@@ -182,8 +182,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.RecognizeTextResult == null)
 				return;
 
-			if (!m_ClassifyResultGameObject.activeSelf)
-				m_ClassifyResultGameObject.SetActive(true);
+			//if (!m_ClassifyResultGameObject.activeSelf)
+			//	m_ClassifyResultGameObject.SetActive(true);
 
 			GameObject recognizeTextResult = Instantiate(m_RecognizeTextReultsPrefab, m_ResultContentRectTransform) as GameObject;
 			m_ResultGameObjectList.Add(recognizeTextResult);
