@@ -154,14 +154,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// The results screen.
 		/// </summary>
 		public const int CLASSIFY_RESULT = 3;
-		public const int ADD_TO_TRAINING = 4;
-		public const int TRAINING = 5;
-		public const int TRAINING_SUCCESS = 6;
-		public const int TRAINING_FAILURE = 7;
-		public const int TRAIN = 8;
-		public const int TRAIN_OPTIONS = 9;
-		public const int TRAIN_PHOTO = 10;
-		public const int RESULT_PHOTOS = 11;
+		/// <summary>
+		/// The update screen.
+		/// </summary>
+		public const int UPDATE = 4;
+		/// <summary>
+		/// The training screen.
+		/// </summary>
+		public const int TRAIN = 5;
 	}
 
 	/// <summary>
