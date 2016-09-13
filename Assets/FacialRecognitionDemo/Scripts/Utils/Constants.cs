@@ -122,7 +122,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// The scale factor between the WebCameraWidget and the RawImage displaying the texture has been updated.
 		/// </summary>
 		public const string ON_UPDATE_SCALE_FACTOR = "OnUpdateScaleFactor";
-
+		/// <summary>
+		/// The number of cameras on this device was updated.
+		/// </summary>
+		public const string ON_NUMBER_OF_WEB_CAMERAS_UPDATED = "OnNumberOfWebCamerasUpdated";
+		public const string ON_WEB_CAMERA_INDEX_UPDATED = "OnWebCameraIndexUpdated";
 	}
 
 	/// <summary>

@@ -45,13 +45,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_Text.text += string.Format("\nimages processed: {0}", multipleImages.images_processed);
 				foreach (TextRecogTopLevelSingle texts in multipleImages.images)
 				{
-					m_Text.text += string.Format("\n\ttext: {0}", texts.text);
-					foreach (TextRecogOneWord text in texts.words)
+					if (!string.IsNullOrEmpty(texts.text))
 					{
-						m_Text.text += string.Format("\n\t\ttext location: {0}, {1}, {2}, {3}", text.location.left, text.location.top, text.location.width, text.location.height);
-						m_Text.text += string.Format("\n\t\tLine number: {0}", text.line_number);
-						m_Text.text += string.Format("\n\t\tword: {0}, Score: {1}", text.word, text.score);
+						m_Text.text += string.Format("\n\ttext: {0}", texts.text);
+
+						foreach (TextRecogOneWord text in texts.words)
+						{
+							m_Text.text += string.Format("\n\t\ttext location: {0}, {1}, {2}, {3}", text.location.left, text.location.top, text.location.width, text.location.height);
+							m_Text.text += string.Format("\n\t\tLine number: {0}", text.line_number);
+							m_Text.text += string.Format("\n\t\tword: {0}, Score: {1}", text.word, text.score);
+						}
 					}
+					else
+						m_Text.text += "\n\tNo text detected!";
 				}
 			}
 		}

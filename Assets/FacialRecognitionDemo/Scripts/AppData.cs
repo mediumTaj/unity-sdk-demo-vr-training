@@ -500,5 +500,35 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		private TextRecogTopLevelMultiple m_RecognizeTextResult = null;
 		#endregion
+
+		#region CameraIndex
+		/// <summary>
+		/// The number of cameras on the device.
+		/// </summary>
+		public int NumberOfWebCameras
+		{
+			get { return m_NumberOfWebCameras; }
+			set
+			{
+				m_NumberOfWebCameras = value;
+				EventManager.Instance.SendEvent(Event.ON_NUMBER_OF_WEB_CAMERAS_UPDATED);
+			} 
+		}
+		private int m_NumberOfWebCameras;
+
+		/// <summary>
+		/// The current camera index.
+		/// </summary>
+		public int WebCameraIndex
+		{
+			get { return m_WebCameraIndex; }
+			set
+			{
+				m_WebCameraIndex = value;
+				EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_INDEX_UPDATED);
+			}
+		}
+		private int m_WebCameraIndex;
+		#endregion
 	}
 }
