@@ -46,7 +46,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public const string ON_DETECT_FACES_RESULT = "OnDetectFacesResult";
 		public const string ON_RECOGNIZE_TEXT_RESULT = "OnRecognizeTextResult";
 		public const string ON_IMAGE_TO_CLASSIFY = "OnImageToClassify";
-    }
+		public const string ON_UPDATE_SCALE_FACTOR = "OnUpdateScaleFactor";
+
+	}
 
 	/// <summary>
 	/// Application states.

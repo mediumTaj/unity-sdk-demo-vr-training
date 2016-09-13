@@ -2353,7 +2353,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 688029814}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -2971,6 +2971,7 @@ MonoBehaviour:
   m_WebCamWidget: {fileID: 1014500904}
   m_WebCamDisplayWidget: {fileID: 378956891}
   m_RawImageAspectRatioFitter: {fileID: 1282632485}
+  m_RawImageRectTransform: {fileID: 1282632482}
 --- !u!1 &832338577
 GameObject:
   m_ObjectHideFlags: 0
@@ -6359,6 +6360,8 @@ MonoBehaviour:
   m_DetectFacesResultsPrefab: {fileID: 1000012251446648, guid: 391e42d39fe1d9f4f8e89eae8139b0f6,
     type: 2}
   m_RecognizeTextReultsPrefab: {fileID: 1000013172397080, guid: e31b54ab07a635f4ead2573097f078af,
+    type: 2}
+  m_FaceOutlinePanel: {fileID: 1000011110630304, guid: 4b51731d4a8745e40af84e8db2bd18a2,
     type: 2}
 --- !u!1 &1805915574
 GameObject:

@@ -45,14 +45,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				{
 					foreach (ClassifyPerClassifier classifier in image.classifiers)
 					{
-						m_Text.text += "\n\n\tclassifier_id: " + classifier.classifier_id;
-						m_Text.text += "\n\tclassifer name: " + classifier.name;
+						m_Text.text += "\n\n\tID: " + classifier.classifier_id;
+						m_Text.text += "\n\tName: " + classifier.name;
 
 						foreach (ClassResult classResult in classifier.classes)
 						{
-							m_Text.text += "\n\t\tclass: " + classResult.m_class + ", score: " + classResult.score;
+							m_Text.text += "\n\t\tClass: <b>" + classResult.m_class + "</b>, Score: " + classResult.score;
 							if (!string.IsNullOrEmpty(classResult.type_hierarchy))
-								m_Text.text += "\n\t\t type_hierarchy: " + classResult.type_hierarchy;
+								m_Text.text += "\n\t\t Type Hierarchy: " + classResult.type_hierarchy;
 						}
 					}
 				}

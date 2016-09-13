@@ -40,28 +40,30 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (multipleImages != null)
 			{
 				m_Text.text += string.Format("\nimages processed: {0}", multipleImages.images_processed);
-				foreach (FacesTopLevelSingle faces in multipleImages.images)
-				{
-					foreach (OneFaceResult face in faces.faces)
+				if (multipleImages.images != null && multipleImages.images.Length > 0)
+					foreach (FacesTopLevelSingle faces in multipleImages.images)
 					{
-						if (face.face_location != null)
+						if(faces.faces != null && faces.faces.Length > 0)
+						foreach (OneFaceResult face in faces.faces)
 						{
-							m_Text.text += string.Format("\n\tFace location: {0}, {1}, {2}, {3}", face.face_location.left, face.face_location.top, face.face_location.width, face.face_location.height);
-						}
-						if (face.gender != null)
-						{
-							m_Text.text += string.Format("\n\tGender: {0}, Score: {1}", face.gender.gender, face.gender.score);
-						}
-						if (face.age != null)
-						{
-							m_Text.text += string.Format("\n\tAge Min: {0}, Age Max: {1}, Score: {2}", face.age.min, face.age.max, face.age.score);
-						}
-						if (face.identity != null)
-						{
-							m_Text.text += string.Format("\n\tName: {0}, Score: {1}, Type Heiarchy: {2}", face.identity.name, face.identity.score, face.identity.type_hierarchy);
+							if (face.face_location != null)
+							{
+								m_Text.text += string.Format("\n\tFace location: {0}, {1}, {2}, {3}", face.face_location.left, face.face_location.top, face.face_location.width, face.face_location.height);
+							}
+							if (face.gender != null)
+							{
+								m_Text.text += string.Format("\n\tGender: {0}, Score: {1}", face.gender.gender, face.gender.score);
+							}
+							if (face.age != null)
+							{
+								m_Text.text += string.Format("\n\tAge Min: {0}, Age Max: {1}, Score: {2}", face.age.min, face.age.max, face.age.score);
+							}
+							if (face.identity != null)
+							{
+								m_Text.text += string.Format("\n\tName: {0}, Score: {1}, Type Heiarchy: {2}", face.identity.name, face.identity.score, face.identity.type_hierarchy);
+							}
 						}
 					}
-				}
 			}
 		}
 		#endregion

@@ -22,6 +22,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	using UnityEngine.UI;
 	using Utilities;
 	using System.Collections.Generic;
+	using Services.VisualRecognition.v3;
+	using Logging;
 	public class ResultView : View
 	{
 		#region Private Data
@@ -39,6 +41,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private GameObject m_DetectFacesResultsPrefab;
 		[SerializeField]
 		private GameObject m_RecognizeTextReultsPrefab;
+		[SerializeField]
+		private GameObject m_FaceOutlinePanel;
 		private List<GameObject> m_ResultGameObjectList = new List<GameObject>();
 		#endregion
 
@@ -144,11 +148,28 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnDetectFacesResult(object[] args = null)
 		{
+			if (m_AppData.DetectFacesResult == null)
+				return;
+
 			if (!m_ClassifyResultGameObject.activeSelf)
 				m_ClassifyResultGameObject.SetActive(true);
 
 			GameObject detectFacesResult = Instantiate(m_DetectFacesResultsPrefab, m_ResultContentRectTransform) as GameObject;
 			m_ResultGameObjectList.Add(detectFacesResult);
+
+			RectTransform resultRectTransform = m_ResultImage.GetComponent<RectTransform>();
+
+			if(m_AppData.DetectFacesResult.images != null && m_AppData.DetectFacesResult.images[0].faces != null && m_AppData.DetectFacesResult.images.Length > 0 && m_AppData.DetectFacesResult.images[0].faces.Length > 0)
+				foreach (OneFaceResult faceResult in m_AppData.DetectFacesResult.images[0].faces)
+				{
+					GameObject detectFacesOutline = Instantiate(m_FaceOutlinePanel, resultRectTransform) as GameObject;
+					FaceOutline faceOutline = detectFacesOutline.GetComponent<FaceOutline>();
+					if (faceOutline != null)
+						faceOutline.FaceResult = faceResult;
+					else
+						Log.Debug("ResultView", "No face outline script found!");
+					m_ResultGameObjectList.Add(detectFacesOutline);
+				}
 		}
 
 		private void OnRecognizeTextResult(object[] args = null)

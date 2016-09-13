@@ -437,6 +437,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		#endregion
 
+		#region Scale Factor
+		private float m_ScaleFactor;
+		public float ScaleFactor
+		{
+			get { return m_ScaleFactor; }
+			set
+			{
+				m_ScaleFactor = value;
+				EventManager.Instance.SendEvent(Event.ON_UPDATE_SCALE_FACTOR);
+			}
+		}
+		#endregion
+
 		#region Results
 		private ClassifyTopLevelMultiple m_ClassifyResult = null;
 		public ClassifyTopLevelMultiple ClassifyResult

@@ -34,6 +34,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private WebCamDisplayWidget m_WebCamDisplayWidget;
         [SerializeField]
         private AspectRatioFitter m_RawImageAspectRatioFitter;
+		[SerializeField]
+		private RectTransform m_RawImageRectTransform;
         #endregion
 
         #region Public Properties
@@ -120,6 +122,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             m_WebCamWidget.RequestedWidth = m_AppData.WebCameraDimensions.Width;
             m_WebCamWidget.RequestedHeight = m_AppData.WebCameraDimensions.Height;
             m_RawImageAspectRatioFitter.aspectRatio = m_AppData.WebCameraDimensions.GetAspectRatio();
+
+			m_AppData.ScaleFactor = m_RawImageRectTransform.rect.width / (float)m_WebCamWidget.RequestedWidth;
         }
 
 		private void OnImageToClassify(object[] args = null)
