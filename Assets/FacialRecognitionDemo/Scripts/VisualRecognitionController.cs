@@ -19,7 +19,9 @@ using IBM.Watson.DeveloperCloud.Logging;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -335,43 +337,43 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		}
 		#endregion
 
-		#region Classify
-		/// <summary>
-		/// Classifies an image by ByteArray.
-		/// </summary>
-		/// <param name="imageData">Byte array of image data.</param>
-		/// <param name="classifierIDs">Array of classifier identifiers to use.</param>
-		/// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
-		/// <param name="threshold">Threshold for omitting classification results.</param>
-		public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
-		{
-			if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
-				Log.Warning("VisualRecognitionController", "Failed to classify image!");
-		}
+		//#region Classify
+		///// <summary>
+		///// Classifies an image by ByteArray.
+		///// </summary>
+		///// <param name="imageData">Byte array of image data.</param>
+		///// <param name="classifierIDs">Array of classifier identifiers to use.</param>
+		///// <param name="owners">Array of owners. Usually "IBM" and "me"</param>
+		///// <param name="threshold">Threshold for omitting classification results.</param>
+		//public void Classify(byte[] imageData, string[] classifierIDs = default(string[]), string[] owners = default(string[]), float threshold = 1)
+		//{
+		//	if (!m_VisualRecognition.Classify(OnClassify, imageData, owners, classifierIDs, threshold))
+		//		Log.Warning("VisualRecognitionController", "Failed to classify image!");
+		//}
 
-		private void OnClassify(ClassifyTopLevelMultiple classify, string data)
-		{
-			if(classify != null)
-			{
-				foreach (ClassifyTopLevelSingle image in classify.images)
-					foreach (ClassifyPerClassifier classifier in image.classifiers)
-					{
-						Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
-						foreach (ClassResult classResult in classifier.classes)
-						{
+		//private void OnClassify(ClassifyTopLevelMultiple classify, string data)
+		//{
+		//	if(classify != null)
+		//	{
+		//		foreach (ClassifyTopLevelSingle image in classify.images)
+		//			foreach (ClassifyPerClassifier classifier in image.classifiers)
+		//			{
+		//				Log.Debug("VisualRecognitionController", "Classifier Name: {0} | ID: {1}", classifier.name, classifier.classifier_id);
+		//				foreach (ClassResult classResult in classifier.classes)
+		//				{
 						
-						Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
-							if (!string.IsNullOrEmpty(classResult.type_hierarchy))
-								Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
-						}
-					}
-			}
-			else
-			{
-				Log.Debug("VisualRecognitionController", "Failed to classify image!");
-			}
-		}
-        #endregion
+		//				Log.Debug("VisualRecogntionController", "Class: {0} | Score: {1}", classResult.m_class, classResult.score);
+		//					if (!string.IsNullOrEmpty(classResult.type_hierarchy))
+		//						Log.Debug("VisualRecogntionController", "type_hierarchy: {0}", classResult.type_hierarchy);
+		//				}
+		//			}
+		//	}
+		//	else
+		//	{
+		//		Log.Debug("VisualRecognitionController", "Failed to classify image!");
+		//	}
+		//}
+  //      #endregion
 
         #region UpdateClassifier
         public void UpdateClassifier(string classifierID, byte[] positiveExamplesData, byte[] negativeExamplesData = default(byte[]))
@@ -387,6 +389,146 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_AppData.AppState = AppState.CONFIG;
 			else
 				Log.Error("VisualRecognitionController", "Application not in start state!");
+		}
+		#endregion
+
+		#region Classify
+		public void Classify(byte[] imageData)
+		{
+			string[] owners = { "IBM", "me" };
+			m_AppData.VisualRecognition.Classify(OnClassify, imageData, owners, m_AppData.ClassifierIDsToClassifyWith.ToArray());
+		}
+
+		private void OnClassify(ClassifyTopLevelMultiple classify, string data)
+		{
+			if (classify != null)
+				m_AppData.ClassifyResult = classify;
+
+			//if (classify != null)
+			//{
+			//	if (!m_ClassifyResultGameObject.activeSelf)
+			//		m_ClassifyResultGameObject.SetActive(true);
+
+			//	Log.Debug("WebCamRecognition", "\nimages processed: " + classify.images_processed);
+			//	m_ClassifyResultText.text += "\nimages processed: " + classify.images_processed;
+			//	foreach (ClassifyTopLevelSingle image in classify.images)
+			//	{
+			//		Log.Debug("WebCamRecognition", "\tsource_url: " + image.source_url + ", resolved_url: " + image.resolved_url);
+			//		m_ClassifyResultText.text += "\n\tsource_url: " + image.source_url + ", resolved_url: " + image.resolved_url;
+			//		foreach (ClassifyPerClassifier classifier in image.classifiers)
+			//		{
+			//			Log.Debug("WebCamRecognition", "\t\tclassifier_id: " + classifier.classifier_id + ", name: " + classifier.name);
+			//			m_ClassifyResultText.text += "\n\n\t\tclassifier_id: " + classifier.classifier_id + ", name: " + classifier.name;
+
+			//			foreach (ClassResult classResult in classifier.classes)
+			//			{
+			//				Log.Debug("WebCamRecognition", "\t\t\tclass: " + classResult.m_class + ", score: " + classResult.score + ", type_hierarchy: " + classResult.type_hierarchy);
+			//				m_ClassifyResultText.text += "\n\t\t\tclass: " + classResult.m_class + ", score: " + classResult.score + ", type_hierarchy: " + classResult.type_hierarchy;
+			//			}
+			//		}
+			//	}
+			//}
+			//else
+			//{
+			//	Log.Debug("WebCamRecognition", "Classification failed!");
+			//}
+		}
+		#endregion
+
+		#region Detect Faces
+		public void DetectFaces(byte[] imageData)
+		{
+			m_AppData.VisualRecognition.DetectFaces(OnDetectFaces, imageData);
+		}
+
+		private void OnDetectFaces(FacesTopLevelMultiple multipleImages, string data)
+		{
+			if (multipleImages != null)
+				m_AppData.DetectFacesResult = multipleImages;
+
+			//if (multipleImages != null)
+			//{
+			//	if (!m_ClassifyResultGameObject.activeSelf)
+			//		m_ClassifyResultGameObject.SetActive(true);
+
+			//	Log.Debug("WebCamRecognition", "\nimages processed: {0}", multipleImages.images_processed);
+			//	m_ClassifyResultText.text += string.Format("\nimages processed: {0}", multipleImages.images_processed);
+			//	foreach (FacesTopLevelSingle faces in multipleImages.images)
+			//	{
+			//		Log.Debug("WebCamRecognition", "\tsource_url: {0}, resolved_url: {1}", faces.source_url, faces.resolved_url);
+			//		m_ClassifyResultText.text += string.Format("\n\n\tsource_url: {0}, resolved_url: {1}", faces.source_url, faces.resolved_url);
+
+			//		foreach (OneFaceResult face in faces.faces)
+			//		{
+			//			if (face.face_location != null)
+			//			{
+			//				Log.Debug("WebCamRecognition", "\t\tFace location: {0}, {1}, {2}, {3}", face.face_location.left, face.face_location.top, face.face_location.width, face.face_location.height);
+			//				m_ClassifyResultText.text += string.Format("\n\t\tFace location: {0}, {1}, {2}, {3}", face.face_location.left, face.face_location.top, face.face_location.width, face.face_location.height);
+			//			}
+			//			if (face.gender != null)
+			//			{
+			//				Log.Debug("WebCamRecognition", "\t\tGender: {0}, Score: {1}", face.gender.gender, face.gender.score);
+			//				m_ClassifyResultText.text += string.Format("\n\t\tGender: {0}, Score: {1}", face.gender.gender, face.gender.score);
+			//			}
+			//			if (face.age != null)
+			//			{
+			//				Log.Debug("WebCamRecognition", "\t\tAge Min: {0}, Age Max: {1}, Score: {2}", face.age.min, face.age.max, face.age.score);
+			//				m_ClassifyResultText.text += string.Format("\n\t\tAge Min: {0}, Age Max: {1}, Score: {2}", face.age.min, face.age.max, face.age.score);
+			//			}
+			//			if (face.identity != null)
+			//			{
+			//				Log.Debug("WebCamRecognition", "\t\tName: {0}, Score: {1}, Type Heiarchy: {2}", face.identity.name, face.identity.score, face.identity.type_hierarchy);
+			//				m_ClassifyResultText.text += string.Format("\n\t\tName: {0}, Score: {1}, Type Heiarchy: {2}", face.identity.name, face.identity.score, face.identity.type_hierarchy);
+			//			}
+			//		}
+			//	}
+			//}
+			//else
+			//{
+			//	Log.Debug("WebCamRecognition", "Detect faces failed!");
+			//}
+		}
+		#endregion
+
+		#region RecognizeText
+		public void RecognizeText(byte[] imageData)
+		{
+			m_AppData.VisualRecognition.RecognizeText(OnRecognizeText, imageData);
+		}
+
+		private void OnRecognizeText(TextRecogTopLevelMultiple multipleImages, string data)
+		{
+			if (multipleImages != null)
+				m_AppData.RecognizeTextResult = multipleImages;
+
+			//if (multipleImages != null)
+			//{
+			//	if (!m_ClassifyResultGameObject.activeSelf)
+			//		m_ClassifyResultGameObject.SetActive(true);
+
+			//	Log.Debug("WebCamRecognition", "\nimages processed: {0}", multipleImages.images_processed);
+			//	m_ClassifyResultText.text += string.Format("\nimages processed: {0}", multipleImages.images_processed);
+			//	foreach (TextRecogTopLevelSingle texts in multipleImages.images)
+			//	{
+			//		Log.Debug("WebCamRecognition", "\tsource_url: {0}, resolved_url: {1}", texts.source_url, texts.resolved_url);
+			//		m_ClassifyResultText.text += string.Format("\n\n\tsource_url: {0}, resolved_url: {1}", texts.source_url, texts.resolved_url);
+			//		Log.Debug("WebCamRecognition", "\ttext: {0}", texts.text);
+			//		m_ClassifyResultText.text += string.Format("\n\ttext: {0}", texts.text);
+			//		foreach (TextRecogOneWord text in texts.words)
+			//		{
+			//			Log.Debug("WebCamRecognition", "\t\ttext location: {0}, {1}, {2}, {3}", text.location.left, text.location.top, text.location.width, text.location.height);
+			//			m_ClassifyResultText.text += string.Format("\n\t\ttext location: {0}, {1}, {2}, {3}", text.location.left, text.location.top, text.location.width, text.location.height);
+			//			Log.Debug("WebCamRecognition", "\t\tLine number: {0}", text.line_number);
+			//			m_ClassifyResultText.text += string.Format("\n\t\tLine number: {0}", text.line_number);
+			//			Log.Debug("WebCamRecognition", "\t\tword: {0}, Score: {1}", text.word, text.score);
+			//			m_ClassifyResultText.text += string.Format("\n\t\tword: {0}, Score: {1}", text.word, text.score);
+			//		}
+			//	}
+			//}
+			//else
+			//{
+			//	Log.Debug("WebCamRecognition", "RecognizeText failed!");
+			//}
 		}
 		#endregion
 	}

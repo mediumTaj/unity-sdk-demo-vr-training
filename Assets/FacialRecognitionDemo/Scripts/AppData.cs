@@ -413,7 +413,63 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         }
 		#endregion
 
+		#region Image
+		/// <summary>
+		/// Image texture to classify.
+		/// </summary>
+		private Texture2D m_Image;
+		public Texture2D Image
+		{
+			get { return m_Image; }
+			set
+			{
+				m_Image = value;
+				EventManager.Instance.SendEvent(Event.ON_IMAGE_TO_CLASSIFY);
+			}
+		}
+
+		/// <summary>
+		/// Image byte data to classify.
+		/// </summary>
+		public byte[] ImageData
+		{
+			get { return m_Image.EncodeToPNG(); }
+		}
+		#endregion
+
 		#region Results
+		private ClassifyTopLevelMultiple m_ClassifyResult = null;
+		public ClassifyTopLevelMultiple ClassifyResult
+		{
+			get { return m_ClassifyResult; }
+			set
+			{
+				m_ClassifyResult = value;
+				EventManager.Instance.SendEvent(Event.ON_CLASSIFICATION_RESULT);
+			}
+		}
+
+		private FacesTopLevelMultiple m_DetectFacesResult = null;
+		public FacesTopLevelMultiple DetectFacesResult
+		{
+			get { return m_DetectFacesResult; }
+			set
+			{
+				m_DetectFacesResult = value;
+				EventManager.Instance.SendEvent(Event.ON_DETECT_FACES_RESULT);
+			}
+		}
+
+		private TextRecogTopLevelMultiple m_RecognizeTextResult = null;
+		public TextRecogTopLevelMultiple RecognizeTextResult
+		{
+			get { return m_RecognizeTextResult; }
+			set
+			{
+				m_RecognizeTextResult = value;
+				EventManager.Instance.SendEvent(Event.ON_RECOGNIZE_TEXT_RESULT);
+			}
+		}
 		#endregion
 	}
 }
