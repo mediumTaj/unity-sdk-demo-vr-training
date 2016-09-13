@@ -411,47 +411,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 return (float)Width/(float)Height;
             }
         }
-        ///// <summary>
-        ///// The web camera width
-        ///// </summary>
-        //public int WebCamWidth
-        //{
-        //    get { return m_WebCamWidth; }
-        //    set
-        //    {
-        //        m_WebCamWidth = value;
-        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_WIDTH_UPDATED);
-        //    }
-        //}
-        //private int m_WebCamWidth;
+		#endregion
 
-        ///// <summary>
-        ///// The web camera height
-        ///// </summary>
-        //public int WebCamHeight
-        //{
-        //    get { return m_WebCamHeight; }
-        //    set
-        //    {
-        //        m_WebCamHeight = value;
-        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_HEIGHT_UPDATED);
-        //    }
-        //}
-        //private int m_WebCamHeight;
-
-        /// <summary>
-        /// Gets and sets the Web Camera Aspect Ratio.
-        /// </summary>
-        //public float WebCameraAspectRatio
-        //{
-        //    get { return m_WebCameraAspectRatio; }
-        //    set
-        //    {
-        //        m_WebCameraAspectRatio = value;
-        //        EventManager.Instance.SendEvent(Event.ON_WEB_CAMERA_ASPECT_RATIO_CHANGED);
-        //    }
-        //}
-        //private float m_WebCameraAspectRatio;
-        #endregion
-    }
+		#region Results
+		#endregion
+	}
 }
