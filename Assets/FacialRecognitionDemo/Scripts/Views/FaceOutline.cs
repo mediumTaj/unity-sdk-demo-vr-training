@@ -114,11 +114,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			m_Text.text = string.Format(textString,
 				FaceResult.age.min.ToString(),
 				FaceResult.age.max.ToString(),
-				FaceResult.age.score.ToString(),
+				FaceResult.age.score.ToString("F2"),
 				FaceResult.gender.gender,
-				FaceResult.gender.score,
+				FaceResult.gender.score.ToString("F2"),
 				FaceResult.identity != null && !string.IsNullOrEmpty(FaceResult.identity.name) ? FaceResult.identity.name : "?",
-				FaceResult.identity != null && FaceResult.identity.score != default(double) ? FaceResult.identity.score.ToString() : "?",
+				FaceResult.identity != null && FaceResult.identity.score != default(double) ? FaceResult.identity.score.ToString("F2") : "?",
 				FaceResult.identity != null && !string.IsNullOrEmpty(FaceResult.identity.type_hierarchy) ? FaceResult.identity.type_hierarchy : "?"
 				);
 		}
