@@ -6363,6 +6363,8 @@ MonoBehaviour:
     type: 2}
   m_FaceOutlinePanel: {fileID: 1000011110630304, guid: 4b51731d4a8745e40af84e8db2bd18a2,
     type: 2}
+  m_TextOutlinePanel: {fileID: 1000014035955390, guid: 2de1eee054e514e4a9b4793b46188011,
+    type: 2}
 --- !u!1 &1805915574
 GameObject:
   m_ObjectHideFlags: 0
@@ -6996,11 +6998,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 174172812}
   m_RootOrder: 3
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 34.1, y: 0}
-  m_SizeDelta: {x: 225, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -78.8, y: 15.7}
+  m_SizeDelta: {x: 225, y: 17.85}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1914338218
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -43,6 +43,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private GameObject m_RecognizeTextReultsPrefab;
 		[SerializeField]
 		private GameObject m_FaceOutlinePanel;
+		[SerializeField]
+		private GameObject m_TextOutlinePanel;
 		private List<GameObject> m_ResultGameObjectList = new List<GameObject>();
 		#endregion
 
@@ -159,7 +161,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			RectTransform resultRectTransform = m_ResultImage.GetComponent<RectTransform>();
 
-			if(m_AppData.DetectFacesResult.images != null && m_AppData.DetectFacesResult.images[0].faces != null && m_AppData.DetectFacesResult.images.Length > 0 && m_AppData.DetectFacesResult.images[0].faces.Length > 0)
+			if(m_AppData.DetectFacesResult.images != null && m_AppData.DetectFacesResult.images.Length > 0 && m_AppData.DetectFacesResult.images[0].faces != null &&  m_AppData.DetectFacesResult.images[0].faces.Length > 0)
 				foreach (OneFaceResult faceResult in m_AppData.DetectFacesResult.images[0].faces)
 				{
 					GameObject detectFacesOutline = Instantiate(m_FaceOutlinePanel, resultRectTransform) as GameObject;
@@ -174,11 +176,28 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnRecognizeTextResult(object[] args = null)
 		{
+			if (m_AppData.RecognizeTextResult == null)
+				return;
+
 			if (!m_ClassifyResultGameObject.activeSelf)
 				m_ClassifyResultGameObject.SetActive(true);
 
 			GameObject recognizeTextResult = Instantiate(m_RecognizeTextReultsPrefab, m_ResultContentRectTransform) as GameObject;
 			m_ResultGameObjectList.Add(recognizeTextResult);
+
+			RectTransform resultRectTransform = m_ResultImage.GetComponent<RectTransform>();
+
+			if (m_AppData.RecognizeTextResult.images != null && m_AppData.RecognizeTextResult.images.Length > 0 && m_AppData.RecognizeTextResult.images[0].words != null && m_AppData.RecognizeTextResult.images[0].words.Length > 0)
+				foreach (TextRecogOneWord textResult in m_AppData.RecognizeTextResult.images[0].words)
+				{
+					GameObject detectTextOutline = Instantiate(m_TextOutlinePanel, resultRectTransform) as GameObject;
+					TextOutline textOutline = detectTextOutline.GetComponent<TextOutline>();
+					if (textOutline != null)
+						textOutline.TextResult = textResult;
+					else
+						Log.Debug("ResultView", "No text outline script found!");
+					m_ResultGameObjectList.Add(detectTextOutline);
+				}
 		}
 		#endregion
 	}
