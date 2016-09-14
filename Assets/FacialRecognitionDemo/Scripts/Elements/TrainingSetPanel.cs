@@ -12,30 +12,38 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
+*
 */
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
-	/// <summary>
-	/// This class reviews the last training set created.
-	/// </summary>
-	public class ReviewTrainingSetView : View
+	public class TrainingSetPanel : MonoBehaviour
 	{
 		#region Private Data
+		[SerializeField]
+		private RawImage m_RawImage;
+		[SerializeField]
+		private InputField m_ClassField;
 		#endregion
 
 		#region Public Properties
+		public AppData.TrainingSet TrainingSet
+		{
+			get { return m_TrainingSet; }
+			set
+			{
+				m_TrainingSet = value;
+				m_RawImage.texture = TrainingSet.images[0];
+			}
+		}
+		private AppData.TrainingSet m_TrainingSet;
 		#endregion
 
 		#region Constructor and Destructor
-		public ReviewTrainingSetView()
-		{
-			if (!m_ViewStates.Contains(AppState.REVIEW_TRAINING_SET))
-				m_ViewStates.Add(AppState.REVIEW_TRAINING_SET);
-		}
 		#endregion
 
 		#region Awake / Start / Enable / Disable
@@ -45,25 +53,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Public Functions
-		/// <summary>
-		/// UI click handler for discard button.
-		/// </summary>
-		public void OnDiscardButtonClicked()
-		{
-			m_AppData.TrainingSets.RemoveAt(m_AppData.TrainingSets.Count);
-
-			if (m_AppData.AppState == AppState.REVIEW_TRAINING_SET)
-				m_AppData.AppState = AppState.CREATE_TRAINING_SET;
-		}
-
-		/// <summary>
-		/// UI click handler for accept button.
-		/// </summary>
-		public void OnAcceptButtonClicked()
-		{
-			if (m_AppData.AppState == AppState.REVIEW_TRAINING_SET)
-				m_AppData.AppState = AppState.TRAIN;
-		}
 		#endregion
 
 		#region Event Handlers

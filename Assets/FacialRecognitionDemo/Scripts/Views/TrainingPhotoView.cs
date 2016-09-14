@@ -69,16 +69,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			m_WebCamDisplayWidget.RawImage = m_RawImage;
 
-			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+			//EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			//EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
 		}
 
 		void OnDisable()
 		{
 			Runnable.Run(DeactivateWebcam());
 
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
 		}
 		#endregion
 
@@ -112,7 +112,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 
 			Log.Debug("TrainingPhotoView", "Photo session complete!");
-			m_AppData.TrainingSets.Add(m_TrainingSet);
+			//m_AppData.TrainingSets.Add(m_TrainingSet);
+			m_AppData.TempTrainingSet = m_TrainingSet;
+
+			if (m_AppData.AppState == AppState.CREATE_TRAINING_SET)
+				m_AppData.AppState = AppState.REVIEW_TRAINING_SET;
 		}
 		#endregion
 
@@ -152,22 +156,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_AppData.AppState = AppState.CLASSIFY_RESULT;
 		}
 
-		private void OnTrainingSetAdded(object[] args)
-		{
-			if(args[0] is AppData.TrainingSet)
-			{
-				if (m_AppData.AppState == AppState.CREATE_TRAINING_SET)
-					m_AppData.AppState = AppState.REVIEW_TRAINING_SET;
-			}
-		}
+		//private void OnTrainingSetAdded(object[] args)
+		//{
+		//	if(args[0] is AppData.TrainingSet)
+		//	{
+				
+		//	}
+		//}
 
-		private void OnTrainingSetRemoved(object[] args)
-		{
-			if (args[0] is AppData.TrainingSet)
-			{
+		//private void OnTrainingSetRemoved(object[] args)
+		//{
+		//	if (args[0] is AppData.TrainingSet)
+		//	{
 
-			}
-		}
+		//	}
+		//}
 		#endregion
 	}
 }

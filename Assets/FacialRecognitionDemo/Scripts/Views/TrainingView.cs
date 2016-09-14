@@ -40,8 +40,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private Button m_SelectAllButton;
 		[SerializeField]
 		private Button m_DeslectAllButton;
+		[SerializeField]
+		private GameObject m_TrainingSetPrefab;
+		[SerializeField]
+		private RectTransform m_TrainingSetsHolderRectTransform;
 
 		private List<GameObject> m_ClassifierToTrainGameObjects = new List<GameObject>();
+		private List<GameObject> m_TrainingSetGameObjects = new List<GameObject>();
 		#endregion
 
 		#region Public Properties
@@ -59,13 +64,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#endregion
 
 		#region Awake / Start / Enable / Disable
+		protected override void Awake()
+		{
+			base.Awake();
+			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+		}
 		void OnEnable()
 		{
 			PopulateClassifiersToTrain();
 			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
 			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
 
 			m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
 		}
@@ -74,8 +83,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
 			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
 		}
 		#endregion
 
@@ -130,12 +139,28 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				isActive = true;
 			}
-			else if (m_AppData.TrainingSets.Count > 2)
+			else if (m_AppData.TrainingSets.Count >= 2)
 			{
 				isActive = true;
 			}
 			
 			return isActive;
+		}
+
+		private void ClearData()
+		{
+			m_AppData.ClassifierIDsToTrain.Clear();
+			while (m_ClassifierToTrainGameObjects.Count > 0)
+			{
+				Destroy(m_ClassifierToTrainGameObjects[0]);
+				m_ClassifierToTrainGameObjects.RemoveAt(0);
+			}
+
+			while(m_TrainingSetGameObjects.Count > 0)
+			{
+				Destroy(m_TrainingSetGameObjects[0]);
+				m_TrainingSetGameObjects.RemoveAt(0);
+			}
 		}
 		#endregion
 
@@ -145,13 +170,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public void OnOptionsButtonClicked()
 		{
-			m_AppData.ClassifierIDsToTrain.Clear();
-			while (m_ClassifierToTrainGameObjects.Count > 0)
-			{
-				Destroy(m_ClassifierToTrainGameObjects[0]);
-				m_ClassifierToTrainGameObjects.RemoveAt(0);
-			}
-
+			ClearData();
 			m_AppData.AppState = AppState.CONFIG;
 		}
 
@@ -180,8 +199,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 
+		/// <summary>
+		/// UI Click handler for the Create Training Set Button.
+		/// </summary>
 		public void OnCreateTrainingSetButtonClicked()
 		{
+			//ClearData();
 			m_AppData.AppState = AppState.CREATE_TRAINING_SET;
 		}
 		#endregion
@@ -202,6 +225,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (args[0] is AppData.TrainingSet)
 			{
 				m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
+
+				GameObject trainingSetPanelGameObject = Instantiate(m_TrainingSetPrefab, m_TrainingSetsHolderRectTransform) as GameObject;
+				m_TrainingSetGameObjects.Add(trainingSetPanelGameObject);
+				TrainingSetPanel trainingSetPanel = trainingSetPanelGameObject.GetComponent<TrainingSetPanel>();
+				if (trainingSetPanel != null)
+					trainingSetPanel.TrainingSet = args[0] as AppData.TrainingSet;
 			}
 		}
 
@@ -210,6 +239,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (args[0] is AppData.TrainingSet)
 			{
 				m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
+
+				Destroy(m_TrainingSetGameObjects[m_TrainingSetGameObjects.Count -1]);
+				m_TrainingSetGameObjects.RemoveAt(m_TrainingSetGameObjects.Count - 1);
 			}
 		}
 		#endregion

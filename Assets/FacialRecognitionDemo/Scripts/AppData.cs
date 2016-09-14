@@ -125,6 +125,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public ObservedList<TrainingSet> TrainingSets = new ObservedList<TrainingSet>();
 
 		/// <summary>
+		/// Temporary training set for switching in between states.
+		/// </summary>
+		public TrainingSet TempTrainingSet;
+
+		/// <summary>
 		/// One Visual Recognition class.
 		/// </summary>
 		public class TrainingSet
