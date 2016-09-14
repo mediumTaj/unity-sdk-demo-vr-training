@@ -355,6 +355,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         }
 		#endregion
 
+		#region TrainClassifier
+		#endregion
+
 		#region Start Application
 		public void StartApplication()
 		{

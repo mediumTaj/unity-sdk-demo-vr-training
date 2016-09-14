@@ -33,6 +33,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		[SerializeField]
 		private InputField m_APIKeyInputField;
 		[SerializeField]
+		private Button m_CheckAPIKeyButton;
+		[SerializeField]
 		private Text m_StatusText;
 		[SerializeField]
 		private GameObject m_DeleteClassifierConfirmationPanel;
@@ -51,7 +53,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		[SerializeField]
 		private Toggle m_RecognizeTextToggle;
 		[SerializeField]
-		private Button m_OKButton;
+		private Button m_ClassifyButton;
+		[SerializeField]
+		private Button m_TrainButton;
 
 		private string m_CheckingMessage = "Checking API Key Validity...";
 		private string m_FailMessage = "API Key check failed! Please try again.";
@@ -106,7 +110,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
-			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_ENDPOINT_ADDED, OnEndpointAdded);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_ENDPOINT_REMOVED, OnEndpointRemoved);
 		}
@@ -119,13 +122,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_VALIDATED, OnAPIKeyValidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_API_KEY_INVALIDATED, OnAPIKeyInvalidated);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_REQUEST_CLASSIFIER_DELETE_CONFIRMATION, OnRequestClassifierDeleteConfirmation);
-			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_ENDPOINT_ADDED, OnEndpointAdded);
 			EventManager.Instance.UnregisterEventReceiver(Event.ON_ENDPOINT_REMOVED, OnEndpointRemoved);
 		}
 
 		void Start()
 		{
+			m_TrainButton.interactable = IsTrainButtonActive();
+			m_ClassifyButton.interactable = IsClassifyButtonActive();
+			m_CheckAPIKeyButton.interactable = IsCheckAPIKeyButtonActive();
+
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_ADDED, OnClassifierIDToClassifyWithAdded);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_ID_TO_CLASSIFY_WITH_REMOVED, OnClassifierIDToClassifyWithRemoved);
 
@@ -161,13 +167,39 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             else
                 m_StatusText.text = m_EnterAPIKeyMessage;
         }
-        #endregion
+		private bool IsCheckAPIKeyButtonActive()
+		{
+			return !m_AppData.IsCheckingAPIKey;
+		}
 
-        #region Public Functions
-        /// <summary>
-        /// UI Click handler for Check API Key button.
-        /// </summary>
-        public void OnCheckAPIKeyButtonClicked()
+		private bool IsClassifyButtonActive()
+		{
+			return m_AppData.ClassifierIDsToClassifyWith.Count > 0 && m_AppData.Endpoints.Count > 0;
+		}
+
+		private bool IsTrainButtonActive()
+		{
+			bool isActive = false;
+
+			m_TrainButton.interactable = m_AppData.ClassifierIDsToClassifyWith.Count > 0 && m_AppData.ClassifierIDsToClassifyWith[0] != "default" ? false : true;
+			if (m_AppData.ClassifierIDsToClassifyWith.Count > 1)
+				isActive = true;
+			else if (m_AppData.ClassifierIDsToClassifyWith.Count == 1 && m_AppData.ClassifierIDsToClassifyWith[0] == "default")
+				isActive = false;
+			else if (m_AppData.ClassifierIDsToClassifyWith.Count == 1 && m_AppData.ClassifierIDsToClassifyWith[0] != "default")
+				isActive = true;
+			else
+				isActive = false;
+
+			return isActive;
+		}
+		#endregion
+
+		#region Public Functions
+		/// <summary>
+		/// UI Click handler for Check API Key button.
+		/// </summary>
+		public void OnCheckAPIKeyButtonClicked()
         {
 			m_AppData.IsAPIKeyValid = false;
             m_AppData.APIKey = m_APIKeyInputField.text;
@@ -221,7 +253,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public void OnTrainButtonClicked()
 		{
-
+			m_AppData.AppState = AppState.TRAIN;
 		}
 
 		/// <summary>
@@ -283,17 +315,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         private void OnCheckAPIKey(object[] args = null)
         {
             m_Controller.CheckAPIKey();
-        }
+			m_CheckAPIKeyButton.interactable = IsCheckAPIKeyButtonActive();
+		}
 
-        private void OnAPIKeyChecked(object[] args = null)
+		private void OnAPIKeyChecked(object[] args = null)
 		{
 			if (m_AppData.IsAPIKeyValid)
 				m_StatusText.text = m_SuccessMessage;
 			else
 				m_StatusText.text = m_FailMessage;
+
+			m_CheckAPIKeyButton.interactable = IsCheckAPIKeyButtonActive();
 		}
 
-        private void OnAPIKeyUpdated(object[] args = null)
+		private void OnAPIKeyUpdated(object[] args = null)
         {
             Runnable.Run(LoadConfig());
         }
@@ -334,6 +369,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 				if (args[0] as string == "default")
 					m_UseDefaultClassifierToggle.isOn = true;
+
+				m_TrainButton.interactable = IsTrainButtonActive();
+
+				m_ClassifyButton.interactable = IsClassifyButtonActive();
 			}
 			else
 			{
@@ -350,6 +389,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 				if (args[0] as string == "default")
 					m_UseDefaultClassifierToggle.isOn = false;
+
+				m_TrainButton.interactable = IsTrainButtonActive();
+
+				m_ClassifyButton.interactable = IsClassifyButtonActive();
 			}
 			else
 			{
@@ -387,7 +430,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 						break;
 				}
 
-				m_OKButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
+				m_ClassifyButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
 			}
 			else
 			{
@@ -425,7 +468,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 						break;
 				}
 
-				m_OKButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
+				m_ClassifyButton.interactable = m_AppData.Endpoints.Count == 0 ? false : true;
 			}
 			else
 			{

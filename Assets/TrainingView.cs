@@ -36,7 +36,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		public TrainingView()
 		{
 			if (!m_ViewStates.Contains(AppState.TRAIN))
-				m_ViewStates.Add(AppState.START);
+				m_ViewStates.Add(AppState.TRAIN);
 		}
 		#endregion
 
