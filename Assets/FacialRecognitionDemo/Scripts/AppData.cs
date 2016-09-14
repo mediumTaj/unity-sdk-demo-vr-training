@@ -50,8 +50,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifierIDsToClassifyWith.OnRemoved += OnClassifierIDsToClassifyWithRemoved;
 			Endpoints.OnAdded += OnEndpointAdded;
 			Endpoints.OnRemoved += OnEndpointRemoved;
+			ClassifierIDsToTrain.OnAdded += OnClassifierIDToTrainAdded;
+			ClassifierIDsToTrain.OnRemoved += OnClassifierIDToTrainRemoved;
 
-            if (VisualRecognition == null)
+
+			if (VisualRecognition == null)
                 VisualRecognition = new VisualRecognition();
 		}
 
@@ -65,6 +68,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			ClassifierIDsToClassifyWith.OnRemoved -= OnClassifierIDsToClassifyWithRemoved;
 			Endpoints.OnAdded -= OnEndpointAdded;
 			Endpoints.OnRemoved -= OnEndpointRemoved;
+			ClassifierIDsToTrain.OnAdded -= OnClassifierIDToTrainAdded;
+			ClassifierIDsToTrain.OnRemoved -= OnClassifierIDToTrainRemoved;
 		}
 		#endregion
 		
@@ -110,54 +115,50 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private int m_AppState = 0;
 		#endregion
 
-		#region Visual Recognition Classes
+		#region Training Sets
 		/// <summary>
 		/// List of Visual Recognition classes.
 		/// </summary>
-		public ObservedList<VRClass> VRClasses { get; set; }
+		public ObservedList<TrainingSet> TrainingSets = new ObservedList<TrainingSet>();
 
 		/// <summary>
 		/// One Visual Recognition class.
 		/// </summary>
-		public class VRClass
+		public class TrainingSet
 		{
 			/// <summary>
 			/// Visual Recognition classname.
 			/// </summary>
 			public string className { get; set; }
 			/// <summary>
-			/// Visual Recognition Classifier Identifier.
-			/// </summary>
-			public string classifierID { get; set; }
-			/// <summary>
 			/// List of images as byteArrays.
 			/// </summary>
 			public ObservedList<byte[]> images = new ObservedList<byte[]>();
 
-			/// <summary>
-			/// VRClass Constructor.
-			/// </summary>
-			public VRClass()
-			{
-				images.OnAdded += OnImageAdded;
-				images.OnRemoved += OnImageRemoved;
-			}
+			///// <summary>
+			///// VRClass Constructor.
+			///// </summary>
+			//public TrainingSet()
+			//{
+			//	images.OnAdded += OnImageAdded;
+			//	images.OnRemoved += OnImageRemoved;
+			//}
 
-			~VRClass()
-			{
-				images.OnAdded -= OnImageAdded;
-				images.OnRemoved -= OnImageRemoved;
-			}
+			//~TrainingSet()
+			//{
+			//	images.OnAdded -= OnImageAdded;
+			//	images.OnRemoved -= OnImageRemoved;
+			//}
 
-			private void OnImageAdded(byte[] image)
-			{
-				EventManager.Instance.SendEvent(Event.ON_IMAGE_ADDED, image);
-			}
+			//private void OnImageAdded(byte[] image)
+			//{
+			//	EventManager.Instance.SendEvent(Event.ON_IMAGE_ADDED_TO_VISUAL_RECOGNITION_CLASS, image);
+			//}
 
-			private void OnImageRemoved(byte[] image)
-			{
-				EventManager.Instance.SendEvent(Event.ON_IMAGE_REMOVED, image);
-			}
+			//private void OnImageRemoved(byte[] image)
+			//{
+			//	EventManager.Instance.SendEvent(Event.ON_IMAGE_REMOVED_FROM_VISUAL_RECOGNITION_CLASS, image);
+			//}
 		}
 		#endregion
 
@@ -529,6 +530,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			}
 		}
 		private int m_WebCameraIndex;
+		#endregion
+
+		#region ClassifierIDs To Train
+		/// <summary>
+		/// List of classifier identifiers to train.
+		/// </summary>
+		public ObservedList<string> ClassifierIDsToTrain = new ObservedList<string>();
+
+		private void OnClassifierIDToTrainAdded(string classifierID)
+		{
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_ADDED);
+		}
+
+		private void OnClassifierIDToTrainRemoved(string classifierID)
+		{
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED);
+		}
 		#endregion
 	}
 }

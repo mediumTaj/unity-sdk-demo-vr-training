@@ -41,11 +41,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// <summary>
 		/// An image was added.
 		/// </summary>
-		public const string ON_IMAGE_ADDED = "OnImageAdded";
+		public const string ON_IMAGE_ADDED_TO_VISUAL_RECOGNITION_CLASS = "OnImageAdded";
 		/// <summary>
 		/// An image was removed.
 		/// </summary>
-		public const string ON_IMAGE_REMOVED = "OnImageRemoved";
+		public const string ON_IMAGE_REMOVED_FROM_VISUAL_RECOGNITION_CLASS = "OnImageRemoved";
 		/// <summary>
 		/// The API Key was updated.
 		/// </summary>
@@ -126,7 +126,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// The number of cameras on this device was updated.
 		/// </summary>
 		public const string ON_NUMBER_OF_WEB_CAMERAS_UPDATED = "OnNumberOfWebCamerasUpdated";
+		/// <summary>
+		/// Web camer index was updated.
+		/// </summary>
 		public const string ON_WEB_CAMERA_INDEX_UPDATED = "OnWebCameraIndexUpdated";
+		/// <summary>
+		/// Classifier to train was added.
+		/// </summary>
+		public const string ON_CLASSIFIER_TO_TRAIN_ADDED = "OnClassifierToTrainAdded";
+		/// <summary>
+		/// Classifier to train was removed.
+		/// </summary>
+		public const string ON_CLASSIFIER_TO_TRAIN_REMOVED = "OnClassifierToTrainRemoved";
 	}
 
 	/// <summary>
@@ -162,6 +173,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// The training screen.
 		/// </summary>
 		public const int TRAIN = 5;
+		/// <summary>
+		/// Create training set screen.
+		/// </summary>
+		public const int CREATE_TRAINING_SET = 6;
+		/// <summary>
+		/// Review training set screen.
+		/// </summary>
+		public const int REVIEW_TRAINING_SET = 7;
 	}
 
 	/// <summary>
@@ -169,10 +188,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	/// </summary>
 	public class Endpoint
 	{
-		/// <summary>
-		/// No endpoint.
-		/// </summary>
-		public const int NONE = -1;
 		/// <summary>
 		/// Classify.
 		/// </summary>
