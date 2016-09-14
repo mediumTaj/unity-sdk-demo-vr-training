@@ -1,9 +1,4 @@
-﻿
-
-using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
-using IBM.Watson.DeveloperCloud.Utilities;
-using System.Collections.Generic;
-/**
+﻿/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +16,9 @@ using System.Collections.Generic;
 */
 using UnityEngine;
 using UnityEngine.UI;
+using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
+using IBM.Watson.DeveloperCloud.Utilities;
+using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -66,12 +64,18 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			PopulateClassifiersToTrain();
 			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
 			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+
+			m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
 		}
 
 		void OnDisable()
 		{
 			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
 			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
 		}
 		#endregion
 
@@ -118,6 +122,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		//{
 		//	return m_AppData.ClassifierIDsToTrain.Count > 0;
 		//}
+		private bool IsTrainClassifiersButtonActive()
+		{
+			bool isActive = false;
+
+			if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new"))
+			{
+				isActive = true;
+			}
+			else if (m_AppData.TrainingSets.Count > 2)
+			{
+				isActive = true;
+			}
+			
+			return isActive;
+		}
 		#endregion
 
 		#region Public Functions
@@ -136,6 +155,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			m_AppData.AppState = AppState.CONFIG;
 		}
 
+		/// <summary>
+		/// UI Click handler for Select All button.
+		/// </summary>
 		public void OnSelectAllClassifiersButtonClicked()
 		{
 			foreach (GameObject go in m_ClassifierToTrainGameObjects)
@@ -145,7 +167,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 					toggle.isOn = true;
 			}
 		}
-
+		/// <summary>
+		/// UI click handler for Deselect All button.
+		/// </summary>
 		public void OnDeselectAllClassifiersButtonClicked()
 		{
 			foreach (GameObject go in m_ClassifierToTrainGameObjects)
@@ -154,6 +178,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				if (toggle != null)
 					toggle.isOn = false;
 			}
+		}
+
+		public void OnCreateTrainingSetButtonClicked()
+		{
+			m_AppData.AppState = AppState.CREATE_TRAINING_SET;
 		}
 		#endregion
 
@@ -167,6 +196,22 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		//{
 		//	m_DeslectAllButton.interactable = IsDeselectAllButtonEnabled();
 		//}
+
+		private void OnTrainingSetAdded(object[] args)
+		{
+			if (args[0] is AppData.TrainingSet)
+			{
+				m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
+			}
+		}
+
+		private void OnTrainingSetRemoved(object[] args)
+		{
+			if (args[0] is AppData.TrainingSet)
+			{
+				m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
+			}
+		}
 		#endregion
 	}
 }

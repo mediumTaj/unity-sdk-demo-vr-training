@@ -52,7 +52,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			Endpoints.OnRemoved += OnEndpointRemoved;
 			ClassifierIDsToTrain.OnAdded += OnClassifierIDToTrainAdded;
 			ClassifierIDsToTrain.OnRemoved += OnClassifierIDToTrainRemoved;
-
+			TrainingSets.OnAdded += OnTrainingSetAdded;
+			TrainingSets.OnRemoved += OnTrainingSetRemoved;
 
 			if (VisualRecognition == null)
                 VisualRecognition = new VisualRecognition();
@@ -70,6 +71,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			Endpoints.OnRemoved -= OnEndpointRemoved;
 			ClassifierIDsToTrain.OnAdded -= OnClassifierIDToTrainAdded;
 			ClassifierIDsToTrain.OnRemoved -= OnClassifierIDToTrainRemoved;
+			TrainingSets.OnAdded -= OnTrainingSetAdded;
+			TrainingSets.OnRemoved -= OnTrainingSetRemoved;
 		}
 		#endregion
 		
@@ -133,7 +136,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			/// <summary>
 			/// List of images as byteArrays.
 			/// </summary>
-			public ObservedList<byte[]> images = new ObservedList<byte[]>();
+			public List<byte[]> imagesData = new List<byte[]>();
+			/// <summary>
+			/// List of images as Texture2D.
+			/// </summary>
+			public List<Texture2D> images = new List<Texture2D>();
 
 			///// <summary>
 			///// VRClass Constructor.
@@ -160,13 +167,23 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			//	EventManager.Instance.SendEvent(Event.ON_IMAGE_REMOVED_FROM_VISUAL_RECOGNITION_CLASS, image);
 			//}
 		}
+
+		private void OnTrainingSetAdded(TrainingSet trainingSet)
+		{
+			EventManager.Instance.SendEvent(Event.ON_TRAINING_SET_ADDED, trainingSet);
+		}
+
+		private void OnTrainingSetRemoved(TrainingSet trainingSet)
+		{
+			EventManager.Instance.SendEvent(Event.ON_TRAINING_SET_REMOVED, trainingSet);
+		}
 		#endregion
 
-        #region Classifier IDs
-        /// <summary>
-        /// List of Classifier IDs
-        /// </summary>
-        public ObservedList<string> ClassifierIDs = new ObservedList<string>();
+		#region Classifier IDs
+		/// <summary>
+		/// List of Classifier IDs
+		/// </summary>
+		public ObservedList<string> ClassifierIDs = new ObservedList<string>();
 
 		private void OnClassifierIDAdded(string classifierID)
 		{

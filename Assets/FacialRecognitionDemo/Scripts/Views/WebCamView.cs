@@ -20,8 +20,6 @@ using System.Collections;
 using IBM.Watson.DeveloperCloud.Widgets;
 using IBM.Watson.DeveloperCloud.Utilities;
 using UnityEngine.UI;
-using IBM.Watson.DeveloperCloud.Logging;
-using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -39,6 +37,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         private AspectRatioFitter m_RawImageAspectRatioFitter;
 		[SerializeField]
 		private RectTransform m_RawImageRectTransform;
+		[SerializeField]
+		private RawImage m_RawImage;
         #endregion
 
         #region Public Properties
@@ -61,12 +61,13 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			base.Awake();
             EventManager.Instance.RegisterEventReceiver(Event.ON_WEB_CAMERA_DIMENSIONS_UPDATED, OnWebCameraDimensionsUpdated);
             EventManager.Instance.RegisterEventReceiver(Event.ON_IMAGE_TO_CLASSIFY, OnImageToClassify);
-            //Runnable.Run(DeactivateWebcam());
 		}
 
 		void OnEnable()
 		{
 			Runnable.Run(ActivateWebcam());
+
+			m_WebCamDisplayWidget.RawImage = m_RawImage;
 		}
 
 		void OnDisable()

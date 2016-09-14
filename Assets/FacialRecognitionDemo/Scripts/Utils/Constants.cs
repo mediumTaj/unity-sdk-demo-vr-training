@@ -138,6 +138,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// Classifier to train was removed.
 		/// </summary>
 		public const string ON_CLASSIFIER_TO_TRAIN_REMOVED = "OnClassifierToTrainRemoved";
+		/// <summary>
+		/// Training set has been added.
+		/// </summary>
+		public const string ON_TRAINING_SET_ADDED = "OnTrainingSetAdded";
+		/// <summary>
+		/// Training set has been removed.
+		/// </summary>
+		public const string ON_TRAINING_SET_REMOVED = "OnTrainingSetRemoved";
 	}
 
 	/// <summary>
