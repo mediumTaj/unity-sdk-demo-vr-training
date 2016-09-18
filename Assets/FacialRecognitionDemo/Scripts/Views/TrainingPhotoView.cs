@@ -45,12 +45,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private AppData.TrainingSet m_TrainingSet;
         private float m_PhotoInterval = 0.5f;
         private bool m_TakingPhoto = false;
-        public Color m_FlashColor = new Color(1f, 1f, 1f, 1f);
-        public Color m_ClearColor = new Color(1f, 1f, 1f, 0f);
-        public float m_FlashSpeed = 5f;
         #endregion
 
         #region Public Properties
+        public Color m_FlashColor = new Color(1f, 1f, 1f, 1f);
+        public Color m_ClearColor = new Color(1f, 1f, 1f, 0f);
+        public float m_FlashSpeed = 5f;
         #endregion
 
         #region Constructor and Destructor
@@ -78,18 +78,12 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 			m_WebCamDisplayWidget.RawImage = m_RawImage;
             m_TakePhotoButton.interactable = true;
-
-            //EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-            //EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
         }
 
 		void OnDisable()
 		{
 			Runnable.Run(DeactivateWebcam());
             m_TakePhotoButton.interactable = false;
-
-            //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-            //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
         }
         #endregion
 
@@ -102,11 +96,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             }
             else
             {
-                //if (m_CameraFlashImage.color.a > 0.01f)
+                if (m_CameraFlashImage.color.a > 0.01f)
                     m_CameraFlashImage.color = Color.Lerp(m_CameraFlashImage.color, m_ClearColor, m_FlashSpeed * Time.deltaTime);
-                //else
-                //    if (m_CameraFlashImage.color != m_ClearColor)
-                //        m_CameraFlashImage.color = m_ClearColor;
+                else
+                    if (m_CameraFlashImage.color != m_ClearColor)
+                        m_CameraFlashImage.color = m_ClearColor;
             }
             m_TakingPhoto = false;
         }
@@ -187,22 +181,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.AppState == AppState.PHOTO)
 				m_AppData.AppState = AppState.CLASSIFY_RESULT;
 		}
-
-		//private void OnTrainingSetAdded(object[] args)
-		//{
-		//	if(args[0] is AppData.TrainingSet)
-		//	{
-				
-		//	}
-		//}
-
-		//private void OnTrainingSetRemoved(object[] args)
-		//{
-		//	if (args[0] is AppData.TrainingSet)
-		//	{
-
-		//	}
-		//}
 		#endregion
 	}
 }

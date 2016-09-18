@@ -20,6 +20,7 @@ using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System.Collections.Generic;
 using System.Collections;
+using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -62,10 +63,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (!m_ViewStates.Contains(AppState.TRAIN))
 				m_ViewStates.Add(AppState.TRAIN);
 		}
-		#endregion
+        #endregion
 
-		#region Awake / Start / Enable / Disable
-		protected override void Awake()
+        #region Awake / Start / Enable / Disable
+        protected override void Awake()
 		{
 			base.Awake();
 			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
@@ -75,7 +76,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         }
 		void OnEnable()
         {
-            //m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
             Runnable.Run(SetTrainingButtonActive());
 
             if (m_ClassifierToTrainGameObjects.Count == 0)
@@ -126,37 +126,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			m_ClassifierToTrainGameObjects.Add(newClassifierGameObject);
 		}
 
-		//private bool IsTrainClassifiersButtonActive()
-		//{
-		//	bool isActive = false;
-
-		//	if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new"))
-		//	{
-		//		isActive = true;
-		//	}
-		//	else if (m_AppData.TrainingSets.Count >= 2)
-		//	{
-		//		isActive = true;
-		//	}
-  //          else if(m_AppData.TrainingSets.Count == 0)
-  //          {
-  //              isActive = false;
-  //          }
-			
-		//	return isActive;
-		//}
-
         private IEnumerator SetTrainingButtonActive()
         {
             yield return new WaitForSeconds(0.1f);
             
             if(m_AppData.ClassifierIDsToTrain.Count > 0)
             {
-                if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new"))
+                if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new") && AreClassNamesPopulated())
                 {
                     m_TrainClassifierButton.interactable = true;
                 }
-                else if (m_AppData.TrainingSets.Count >= 2)
+                else if (m_AppData.TrainingSets.Count >= 2 && AreClassNamesPopulated())
                 {
                     m_TrainClassifierButton.interactable = true;
                 }
@@ -196,6 +176,35 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             }
         }
 
+        private bool AreClassNamesPopulated()
+        {
+            bool arePopulated = false;
+            bool hasDuplicate = false;
+            List<string> classnames = new List<string>();
+
+            foreach (GameObject trainingSetPanelGameObject in m_TrainingSetGameObjects)
+            {
+                TrainingSetPanel trainingSetPanel = trainingSetPanelGameObject.GetComponent<TrainingSetPanel>();
+                string panelClassname = trainingSetPanel.ClassName;
+                if (!string.IsNullOrEmpty(panelClassname))
+                {
+                    if (!classnames.Contains(panelClassname))
+                        classnames.Add(panelClassname);
+                    else
+                        hasDuplicate = true;
+
+                    arePopulated = true;
+                }
+            }
+
+            return arePopulated && !hasDuplicate;
+        }
+
+        private bool IsValidTraining()
+        {
+            return true;
+            //  check for class names and duplicate class names
+        }
 		#endregion
 
 		#region Public Functions
@@ -241,18 +250,25 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			m_AppData.AppState = AppState.CREATE_TRAINING_SET;
 		}
+
+        /// <summary>
+        /// UI Click handler for Train Classifiers button.
+        /// </summary>
+        public void OnTrainClassifiersButtonClicked()
+        {
+            if (IsValidTraining())
+                Log.Debug("TrainingView", "Attempting to train!");
+        }
         #endregion
 
         #region Event Handlers
         private void OnClassifierToTrainAdded(object[] args)
         {
-            //m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
             Runnable.Run(SetTrainingButtonActive());
         }
 
         private void OnClassifierToTrainRemoved(object[] args)
         {
-            //m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
             Runnable.Run(SetTrainingButtonActive());
         }
 
@@ -260,7 +276,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (args[0] is AppData.TrainingSet)
 			{
-                //m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
                 Runnable.Run(SetTrainingButtonActive());
 
                 GameObject trainingSetPanelGameObject = Instantiate(m_TrainingSetPrefab, m_TrainingSetsHolderRectTransform) as GameObject;
@@ -275,7 +290,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (args[0] is AppData.TrainingSet)
 			{
-                //m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
                 Runnable.Run(SetTrainingButtonActive());
 
                 Destroy(m_TrainingSetGameObjects[m_TrainingSetGameObjects.Count -1]);

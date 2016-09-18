@@ -18,6 +18,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using IBM.Watson.DeveloperCloud.Logging;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -28,34 +29,64 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private RawImage m_RawImage;
 		[SerializeField]
 		private InputField m_ClassField;
-		#endregion
+        private TrainingView m_TrainingView;
+        #endregion
 
-		#region Public Properties
-		public AppData.TrainingSet TrainingSet
-		{
-			get { return m_TrainingSet; }
-			set
-			{
-				m_TrainingSet = value;
-				m_RawImage.texture = TrainingSet.images[0];
-			}
-		}
-		private AppData.TrainingSet m_TrainingSet;
+        #region Public Properties
+        /// <summary>
+        /// The panel's trainign set. Sets the image of the panel to the fist training image.
+        /// </summary>
+        public AppData.TrainingSet TrainingSet
+        {
+            get { return m_TrainingSet; }
+            set
+            {
+                m_TrainingSet = value;
+                m_RawImage.texture = TrainingSet.images[0];
+            }
+        }
+        private AppData.TrainingSet m_TrainingSet;
+
+        /// <summary>
+        /// Returns the contents of the class input field.
+        /// </summary>
+        public string ClassName
+        {
+            get
+            {
+                return m_ClassField.text;
+            }
+        }
 		#endregion
 
 		#region Constructor and Destructor
 		#endregion
 
 		#region Awake / Start / Enable / Disable
-		#endregion
+        void Start()
+        {
+            m_TrainingView = GetComponentInParent<TrainingView>();
 
-		#region Private Functions
-		#endregion
+            if (m_TrainingView == null)
+                Log.Warning("TrainingSetPanel", "No training view was found!");
+        }
+        #endregion
 
-		#region Public Functions
-		#endregion
+        #region Private Functions
+        #endregion
 
-		#region Event Handlers
-		#endregion
-	}
+        #region Public Functions
+        /// <summary>
+        /// UI Handler when Classnames are added.
+        /// </summary>
+        public void OnChangeClassname()
+        {
+            //m_TrainingView.set();
+            //TODO attach this to triggger when we edit the classname. Controller changes variable in model and triggers event to be sent. TrainingView listens for that event.
+        }
+        #endregion
+
+        #region Event Handlers
+        #endregion
+    }
 }
