@@ -149,18 +149,25 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         private IEnumerator SetTrainingButtonActive()
         {
             yield return new WaitForSeconds(0.1f);
-
-            if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new"))
+            
+            if(m_AppData.ClassifierIDsToTrain.Count > 0)
             {
-                m_TrainClassifierButton.interactable = true;
-            }
-            else if (m_AppData.TrainingSets.Count >= 2)
-            {
-                m_TrainClassifierButton.interactable = true;
-            }
-            else if (m_AppData.TrainingSets.Count == 0)
-            {
-                m_TrainClassifierButton.interactable = false;
+                if (m_AppData.TrainingSets.Count == 1 && !m_AppData.ClassifierIDsToTrain.Contains("new"))
+                {
+                    m_TrainClassifierButton.interactable = true;
+                }
+                else if (m_AppData.TrainingSets.Count >= 2)
+                {
+                    m_TrainClassifierButton.interactable = true;
+                }
+                else if (m_AppData.TrainingSets.Count == 0)
+                {
+                    m_TrainClassifierButton.interactable = false;
+                }
+                else
+                {
+                    m_TrainClassifierButton.interactable = false;
+                }
             }
             else
             {
