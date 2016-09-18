@@ -89,7 +89,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public void OnDiscardButtonClicked()
 		{
-			//m_AppData.TrainingSets.RemoveAt(m_AppData.TrainingSets.Count - 1);
 			m_AppData.TempTrainingSet = null;
 
 			ClearData();

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692546, g: 0.49678695, b: 0.5750854, a: 1}
+  m_IndirectSpecularColor: {r: 0.4469244, g: 0.4967847, b: 0.575083, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -491,6 +491,7 @@ MonoBehaviour:
   m_RawImageAspectRatioFitter: {fileID: 93742124}
   m_RawImageRectTransform: {fileID: 93742127}
   m_RawImage: {fileID: 93742125}
+  m_TakePhotoButton: {fileID: 663441867}
 --- !u!222 &71569022
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2162,8 +2163,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1347817049}
   m_HandleRect: {fileID: 1347817048}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.9999939
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6467,7 +6468,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1003564042}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

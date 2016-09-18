@@ -37,18 +37,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private RectTransform m_RawImageRectTransform;
 		[SerializeField]
 		private RawImage m_RawImage;
+        [SerializeField]
+        private Button m_TakePhotoButton;
 
 		private AppData.TrainingSet m_TrainingSet;
-		#endregion
+        private float m_PhotoInterval = 0.5f;
+        #endregion
 
-		#region Public Properties
-		#endregion
+        #region Public Properties
+        #endregion
 
-		#region Constructor and Destructor
-		/// <summary>
-		/// TrainingPhotoView Constructor.
-		/// </summary>
-		public TrainingPhotoView()
+        #region Constructor and Destructor
+        /// <summary>
+        /// TrainingPhotoView Constructor.
+        /// </summary>
+        public TrainingPhotoView()
 		{
 			if (!m_ViewStates.Contains(AppState.CREATE_TRAINING_SET))
 				m_ViewStates.Add(AppState.CREATE_TRAINING_SET);
@@ -68,18 +71,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			Runnable.Run(ActivateWebcam());
 
 			m_WebCamDisplayWidget.RawImage = m_RawImage;
+            m_TakePhotoButton.interactable = true;
 
-			//EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			//EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
-		}
+            //EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+            //EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+        }
 
 		void OnDisable()
 		{
 			Runnable.Run(DeactivateWebcam());
+            m_TakePhotoButton.interactable = false;
 
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
-		}
+            //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
+            //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
+        }
 		#endregion
 
 		#region Private Functions
@@ -135,8 +140,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public void OnTakePhotoButtonClicked()
 		{
+            m_TakePhotoButton.interactable = false;
 			m_TrainingSet = new AppData.TrainingSet();
-			Runnable.Run(TakeTrainingPhotos(0.5f));
+            Runnable.Run(TakeTrainingPhotos(m_PhotoInterval));
 		}
 		#endregion
 
