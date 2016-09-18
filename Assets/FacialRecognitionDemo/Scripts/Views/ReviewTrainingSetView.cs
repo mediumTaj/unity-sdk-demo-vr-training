@@ -61,14 +61,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			if (m_AppData.TempTrainingSet == null)
 				return;
 
-			foreach (Texture2D image in m_AppData.TempTrainingSet.images)
+            m_TrainingImagesHolderGridLayoutGroup.cellSize = new Vector2(m_TrainingImagesHolderGridLayoutGroup.cellSize.x, m_TrainingImagesHolderGridLayoutGroup.cellSize.x / m_AppData.WebCameraDimensions.GetAspectRatio());
+
+            foreach (Texture2D image in m_AppData.TempTrainingSet.images)
 			{
 				GameObject imageGO = Instantiate(m_TrainingImagePreviewGameObject, m_TrainingImagesHolderRectTransform) as GameObject;
 				m_PreviewImages.Add(imageGO);
 
 				RawImage rawImage = imageGO.GetComponent<RawImage>();
 				rawImage.texture = image;
-			}
+            }
 		}
 
 		private void ClearData()

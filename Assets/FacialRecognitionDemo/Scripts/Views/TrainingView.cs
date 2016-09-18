@@ -69,23 +69,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			base.Awake();
 			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
 			EventManager.Instance.RegisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
-		}
+        }
 		void OnEnable()
-		{
-			PopulateClassifiersToTrain();
-			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
-			//EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
+        {
+            m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
 
-			m_TrainClassifierButton.interactable = IsTrainClassifiersButtonActive();
-		}
+            if(m_ClassifierToTrainGameObjects.Count == 0)
+                PopulateClassifiersToTrain();
+        }
 
 		void OnDisable()
-		{
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, OnClassifierToTrainAdded);
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, OnClassifierToTrainRemoved);
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
-			//EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
-		}
+		{}
 		#endregion
 
 		#region Private Functions
@@ -114,9 +108,14 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			GameObject newClassifierGameObject = Instantiate(m_ClassifierToTrainPrefab, m_ClassifiersToTrainRectTransform) as GameObject;
 			ClassifierToTrain newClassifierToTrain = newClassifierGameObject.GetComponent<ClassifierToTrain>();
 			m_AppData.ClassifierIDsToTrain.Add("new");
+
+            Toggle newClassifierToggle = newClassifierGameObject.GetComponent<Toggle>();
+            if (newClassifierToggle != null)
+                newClassifierToggle.isOn = false;
+
 			GetClassifiersPerClassifierVerbose newClassifierVerbose = new GetClassifiersPerClassifierVerbose();
 			newClassifierVerbose.classifier_id = "new";
-			newClassifierVerbose.name = "New Classifier";
+			newClassifierVerbose.name = "Train New Classifier";
 			newClassifierVerbose.classes = null;
 			newClassifierToTrain.ClassifierVerbose = newClassifierVerbose;
 			m_ClassifierToTrainGameObjects.Add(newClassifierGameObject);
@@ -147,14 +146,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			return isActive;
 		}
 
-		private void ClearData()
+		private void ClearTrainingSets()
 		{
-			m_AppData.ClassifierIDsToTrain.Clear();
-			while (m_ClassifierToTrainGameObjects.Count > 0)
-			{
-				Destroy(m_ClassifierToTrainGameObjects[0]);
-				m_ClassifierToTrainGameObjects.RemoveAt(0);
-			}
+			
 
 			while(m_TrainingSetGameObjects.Count > 0)
 			{
@@ -162,6 +156,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 				m_TrainingSetGameObjects.RemoveAt(0);
 			}
 		}
+
+        private void ClearClassifiersToTrain()
+        {
+            m_AppData.ClassifierIDsToTrain.Clear();
+            while (m_ClassifierToTrainGameObjects.Count > 0)
+            {
+                Destroy(m_ClassifierToTrainGameObjects[0]);
+                m_ClassifierToTrainGameObjects.RemoveAt(0);
+            }
+        }
+
 		#endregion
 
 		#region Public Functions
@@ -170,7 +175,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// </summary>
 		public void OnOptionsButtonClicked()
 		{
-			ClearData();
+			ClearTrainingSets();
+            ClearClassifiersToTrain();
 			m_AppData.AppState = AppState.CONFIG;
 		}
 
