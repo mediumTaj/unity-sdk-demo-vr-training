@@ -39,9 +39,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private RawImage m_RawImage;
         [SerializeField]
         private Button m_TakePhotoButton;
+        [SerializeField]
+        private Image m_CameraFlashImage;
 
 		private AppData.TrainingSet m_TrainingSet;
         private float m_PhotoInterval = 0.5f;
+        private bool m_TakingPhoto = false;
+        public Color m_FlashColor = new Color(1f, 1f, 1f, 1f);
+        public Color m_ClearColor = new Color(1f, 1f, 1f, 0f);
+        public float m_FlashSpeed = 5f;
         #endregion
 
         #region Public Properties
@@ -85,10 +91,29 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_ADDED, OnTrainingSetAdded);
             //EventManager.Instance.UnregisterEventReceiver(Event.ON_TRAINING_SET_REMOVED, OnTrainingSetRemoved);
         }
-		#endregion
+        #endregion
 
-		#region Private Functions
-		private IEnumerator ActivateWebcam()
+        #region Update
+        void Update()
+        {
+            if (m_TakingPhoto)
+            {
+                m_CameraFlashImage.color = m_FlashColor;
+            }
+            else
+            {
+                //if (m_CameraFlashImage.color.a > 0.01f)
+                    m_CameraFlashImage.color = Color.Lerp(m_CameraFlashImage.color, m_ClearColor, m_FlashSpeed * Time.deltaTime);
+                //else
+                //    if (m_CameraFlashImage.color != m_ClearColor)
+                //        m_CameraFlashImage.color = m_ClearColor;
+            }
+            m_TakingPhoto = false;
+        }
+        #endregion
+
+        #region Private Functions
+        private IEnumerator ActivateWebcam()
 		{
 			yield return new WaitForSeconds(0.1f);
 			m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
@@ -108,6 +133,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			{
 				yield return new WaitForSeconds(intervalTime);
 				Log.Debug("TrainingPhotoView", "Taking photo!");
+                m_TakingPhoto = true;
 				Texture2D image = new Texture2D(m_AppData.WebCameraDimensions.Width, m_AppData.WebCameraDimensions.Height, TextureFormat.RGB24, false);
 				image.SetPixels32(m_WebCamWidget.WebCamTexture.GetPixels32());
 				image.Apply();
