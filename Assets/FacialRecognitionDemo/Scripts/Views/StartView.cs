@@ -1,4 +1,7 @@
-﻿/**
+﻿
+
+using System.IO;
+/**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +17,6 @@
 * limitations under the License.
 *
 */
-
 using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
@@ -24,36 +26,41 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 	/// </summary>
 	public class StartView : View
 	{
-		#region Private Data
-		#endregion
+        #region Private Data
+        #endregion
 
-		#region Public Properties
-		#endregion
+        #region Public Properties
+        #endregion
 
-		#region Constructor and Destructor
-		/// <summary>
-		/// The StartView Constrtuctor.
-		/// </summary>
-		public StartView()
-		{
-			if (!m_ViewStates.Contains(AppState.START))
-				m_ViewStates.Add(AppState.START);
+        #region Constructor and Destructor
+        /// <summary>
+        /// The StartView Constrtuctor.
+        /// </summary>
+        public StartView()
+        {
+            if (!m_ViewStates.Contains(AppState.START))
+                m_ViewStates.Add(AppState.START);
+        }
+        #endregion
 
-			m_AppData.VisualRecognitionTrainingDataPath = Application.streamingAssetsPath + "/VisualRecognitionTrainingData";
-		}
-		#endregion
+        #region Awake / Start / Enable / Disable
+        protected override void Awake()
+        {
+            base.Awake();
+			
+            //m_AppData.VisualRecognitionTrainingDataPath = Application.streamingAssetsPath + Path.AltDirectorySeparatorChar + "VisualRecognitionTrainingData";
+            m_AppData.VisualRecognitionTrainingDataPath = Path.Combine(Application.dataPath, "VisualRecognitionTrainingData");
+        }
+        #endregion
 
-		#region Awake / Start / Enable / Disable
-		#endregion
+        #region Private Functions
+        #endregion
 
-		#region Private Functions
-		#endregion
-
-		#region Public Functions
-		/// <summary>
-		/// UI Handler for clicking the Start button.
-		/// </summary>
-		public void OnStartButtonClicked()
+        #region Public Functions
+        /// <summary>
+        /// UI Handler for clicking the Start button.
+        /// </summary>
+        public void OnStartButtonClicked()
         {
             m_Controller.StartApplication();
         }

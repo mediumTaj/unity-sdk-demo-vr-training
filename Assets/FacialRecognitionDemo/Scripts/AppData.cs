@@ -552,8 +552,5 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, classifierID);
 		}
 		#endregion
-
-		#region Training Set Panel Class Names
-		#endregion
 	}
 }

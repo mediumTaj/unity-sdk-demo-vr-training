@@ -14,14 +14,13 @@
 * limitations under the License.
 *
 */
+
 using UnityEngine;
 using UnityEngine.UI;
 using IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3;
 using IBM.Watson.DeveloperCloud.Utilities;
 using System.Collections.Generic;
 using System.Collections;
-using IBM.Watson.DeveloperCloud.Logging;
-using Ionic.Zip;
 using System.IO;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
@@ -265,16 +264,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public void OnTrainClassifiersButtonClicked()
         {
-			if(!string.IsNullOrEmpty(m_AppData.VisualRecognitionTrainingDataPath))
-				if (!Directory.Exists(m_AppData.VisualRecognitionTrainingDataPath))
-					Directory.CreateDirectory(Application.streamingAssetsPath + "/VisualRecognitionTrainingData");
-			else
-				throw new WatsonException("Training data path is not set");
-			//File.WriteAllText(Application.streamingAssetsPath + "/VisualRecognitionTrainingData" + "/Config.json", Config.Instance.SaveConfig());
+            if (!string.IsNullOrEmpty(m_AppData.VisualRecognitionTrainingDataPath))
+            {
+                if (!Directory.Exists(m_AppData.VisualRecognitionTrainingDataPath))
+                {
+                    Directory.CreateDirectory(m_AppData.VisualRecognitionTrainingDataPath);
+                }
+            }
+            else
+            {
+                throw new WatsonException("Training data path is not set");
+            }
 
 			foreach (AppData.TrainingSet trainingSet in m_AppData.TrainingSets)
 			{
-				//	TODO Create helper class to pass in TrainingSet and return zip byte array data.
+				byte[] trainingData = Utils.GetZipByteArray(trainingSet);
 			}
         }
         #endregion
