@@ -190,13 +190,21 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 string panelClassname = trainingSetPanel.ClassName;
                 if (!string.IsNullOrEmpty(panelClassname))
                 {
-                    if (!classnames.Contains(panelClassname))
-                        classnames.Add(panelClassname);
-                    else
-                        hasDuplicate = true;
+					if (!classnames.Contains(panelClassname.ToLower()))
+						classnames.Add(panelClassname.ToLower());
+					else
+					{
+						hasDuplicate = true;
+						break;
+					}
 
                     arePopulated = true;
                 }
+				else
+				{
+					arePopulated = false;
+					break;
+				}
             }
 
             return arePopulated && !hasDuplicate;
@@ -204,8 +212,19 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
         private bool IsValidTraining()
         {
-            return true;
-            //  check for class names and duplicate class names
+			//foreach (GameObject trainingSetPanelGameObject in m_TrainingSetGameObjects)
+			//{
+			//	TrainingSetPanel trainingSetPanel = trainingSetPanelGameObject.GetComponent<TrainingSetPanel>();
+			//	string panelClassname = trainingSetPanel.ClassName;
+			//	if (!string.IsNullOrEmpty(panelClassname))
+			//	{
+			//		if (!classnames.Contains(panelClassname))
+			//			classnames.Add(panelClassname);
+			//		else
+			//			hasDuplicate = true;
+			//	}
+			//}
+			return true;
         }
 		#endregion
 
