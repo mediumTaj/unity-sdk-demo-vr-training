@@ -15,6 +15,8 @@
 *
 */
 
+using UnityEngine;
+
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
 	/// <summary>
@@ -36,6 +38,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		{
 			if (!m_ViewStates.Contains(AppState.START))
 				m_ViewStates.Add(AppState.START);
+
+			m_AppData.VisualRecognitionTrainingDataPath = Application.streamingAssetsPath + "/VisualRecognitionTrainingData";
 		}
 		#endregion
 

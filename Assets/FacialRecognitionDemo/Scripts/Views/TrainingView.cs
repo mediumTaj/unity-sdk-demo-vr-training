@@ -21,6 +21,8 @@ using IBM.Watson.DeveloperCloud.Utilities;
 using System.Collections.Generic;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Logging;
+using Ionic.Zip;
+using System.IO;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -188,6 +190,8 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             {
                 TrainingSetPanel trainingSetPanel = trainingSetPanelGameObject.GetComponent<TrainingSetPanel>();
                 string panelClassname = trainingSetPanel.ClassName;
+				trainingSetPanel.TrainingSet.className = panelClassname;
+
                 if (!string.IsNullOrEmpty(panelClassname))
                 {
 					if (!classnames.Contains(panelClassname.ToLower()))
@@ -210,22 +214,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             return arePopulated && !hasDuplicate;
         }
 
-        private bool IsValidTraining()
-        {
-			//foreach (GameObject trainingSetPanelGameObject in m_TrainingSetGameObjects)
-			//{
-			//	TrainingSetPanel trainingSetPanel = trainingSetPanelGameObject.GetComponent<TrainingSetPanel>();
-			//	string panelClassname = trainingSetPanel.ClassName;
-			//	if (!string.IsNullOrEmpty(panelClassname))
-			//	{
-			//		if (!classnames.Contains(panelClassname))
-			//			classnames.Add(panelClassname);
-			//		else
-			//			hasDuplicate = true;
-			//	}
-			//}
-			return true;
-        }
 		#endregion
 
 		#region Public Functions
@@ -277,8 +265,17 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public void OnTrainClassifiersButtonClicked()
         {
-            if (IsValidTraining())
-                Log.Debug("TrainingView", "Attempting to train!");
+			if(!string.IsNullOrEmpty(m_AppData.VisualRecognitionTrainingDataPath))
+				if (!Directory.Exists(m_AppData.VisualRecognitionTrainingDataPath))
+					Directory.CreateDirectory(Application.streamingAssetsPath + "/VisualRecognitionTrainingData");
+			else
+				throw new WatsonException("Training data path is not set");
+			//File.WriteAllText(Application.streamingAssetsPath + "/VisualRecognitionTrainingData" + "/Config.json", Config.Instance.SaveConfig());
+
+			foreach (AppData.TrainingSet trainingSet in m_AppData.TrainingSets)
+			{
+				//	TODO Create helper class to pass in TrainingSet and return zip byte array data.
+			}
         }
         #endregion
 

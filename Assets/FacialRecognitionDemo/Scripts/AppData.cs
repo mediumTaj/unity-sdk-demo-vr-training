@@ -93,13 +93,20 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
             set { m_VisualRecognition = value; }
         }
         private VisualRecognition m_VisualRecognition = null;
-        #endregion
+		#endregion
 
-        #region Views
+		#region Training Data File Path
+		/// <summary>
+		/// Training data path for Visual Recognition training data.
+		/// </summary>
+		public string VisualRecognitionTrainingDataPath { get; set; }
+		#endregion
+
+		#region Views
 		/// <summary>
 		/// A list of all views in the application. This is used for showing and hiding views depending on AppState.
 		/// </summary>
-        public List<View> Views = new List<View>();
+		public List<View> Views = new List<View>();
 		#endregion
 
 		#region Application State
@@ -146,31 +153,6 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 			/// List of images as Texture2D.
 			/// </summary>
 			public List<Texture2D> images = new List<Texture2D>();
-
-			///// <summary>
-			///// VRClass Constructor.
-			///// </summary>
-			//public TrainingSet()
-			//{
-			//	images.OnAdded += OnImageAdded;
-			//	images.OnRemoved += OnImageRemoved;
-			//}
-
-			//~TrainingSet()
-			//{
-			//	images.OnAdded -= OnImageAdded;
-			//	images.OnRemoved -= OnImageRemoved;
-			//}
-
-			//private void OnImageAdded(byte[] image)
-			//{
-			//	EventManager.Instance.SendEvent(Event.ON_IMAGE_ADDED_TO_VISUAL_RECOGNITION_CLASS, image);
-			//}
-
-			//private void OnImageRemoved(byte[] image)
-			//{
-			//	EventManager.Instance.SendEvent(Event.ON_IMAGE_REMOVED_FROM_VISUAL_RECOGNITION_CLASS, image);
-			//}
 		}
 
 		private void OnTrainingSetAdded(TrainingSet trainingSet)
