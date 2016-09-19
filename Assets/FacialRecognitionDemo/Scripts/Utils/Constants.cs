@@ -146,6 +146,10 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		/// Training set has been removed.
 		/// </summary>
 		public const string ON_TRAINING_SET_REMOVED = "OnTrainingSetRemoved";
+		/// <summary>
+		/// Updating classname on training view.
+		/// </summary>
+		public const string ON_CLASSNAME_UPDATED = "OnClassnameUpdated";
 	}
 
 	/// <summary>

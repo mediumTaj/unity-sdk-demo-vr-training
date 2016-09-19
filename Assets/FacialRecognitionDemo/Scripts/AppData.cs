@@ -562,13 +562,16 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 
 		private void OnClassifierIDToTrainAdded(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_ADDED);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_ADDED, classifierID);
 		}
 
 		private void OnClassifierIDToTrainRemoved(string classifierID)
 		{
-			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED);
+			EventManager.Instance.SendEvent(Event.ON_CLASSIFIER_TO_TRAIN_REMOVED, classifierID);
 		}
+		#endregion
+
+		#region Training Set Panel Class Names
 		#endregion
 	}
 }

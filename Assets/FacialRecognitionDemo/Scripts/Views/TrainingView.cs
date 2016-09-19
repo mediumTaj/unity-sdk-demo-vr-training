@@ -77,13 +77,15 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		void OnEnable()
         {
             Runnable.Run(SetTrainingButtonActive());
-
+			EventManager.Instance.RegisterEventReceiver(Event.ON_CLASSNAME_UPDATED, HandleClassnameUpdated);
             if (m_ClassifierToTrainGameObjects.Count == 0)
                 PopulateClassifiersToTrain();
         }
 
 		void OnDisable()
-		{}
+		{
+			EventManager.Instance.UnregisterEventReceiver(Event.ON_CLASSNAME_UPDATED, HandleClassnameUpdated);
+		}
 		#endregion
 
 		#region Private Functions
@@ -295,6 +297,11 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
                 Destroy(m_TrainingSetGameObjects[m_TrainingSetGameObjects.Count -1]);
 				m_TrainingSetGameObjects.RemoveAt(m_TrainingSetGameObjects.Count - 1);
 			}
+		}
+
+		private void HandleClassnameUpdated(object[] args)
+		{
+			Runnable.Run(SetTrainingButtonActive());
 		}
 		#endregion
 	}

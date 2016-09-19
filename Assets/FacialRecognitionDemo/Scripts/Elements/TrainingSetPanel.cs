@@ -19,6 +19,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using IBM.Watson.DeveloperCloud.Logging;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 {
@@ -29,7 +30,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private RawImage m_RawImage;
 		[SerializeField]
 		private InputField m_ClassField;
-        private TrainingView m_TrainingView;
+		private VisualRecognitionController m_Controller;
         #endregion
 
         #region Public Properties
@@ -65,10 +66,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		#region Awake / Start / Enable / Disable
         void Start()
         {
-            m_TrainingView = GetComponentInParent<TrainingView>();
-
-            if (m_TrainingView == null)
-                Log.Warning("TrainingSetPanel", "No training view was found!");
+			m_Controller = VisualRecognitionController.Instance;
         }
         #endregion
 
@@ -81,8 +79,9 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         /// </summary>
         public void OnChangeClassname()
         {
-            //m_TrainingView.set();
-            //TODO attach this to triggger when we edit the classname. Controller changes variable in model and triggers event to be sent. TrainingView listens for that event.
+			//	Directly invoking EventManager to dispatch an event to Training View here. 
+			//	It does not make sense to complicate this with the Model and Controller since we are not storing any data.
+			EventManager.Instance.SendEvent(Event.ON_CLASSNAME_UPDATED);
         }
         #endregion
 
