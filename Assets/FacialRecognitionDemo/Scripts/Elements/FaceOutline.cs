@@ -109,7 +109,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
 		private void UpdateRect()
 		{
 			PanelPosition = new Vector2((float)FaceResult.face_location.left, -(float)FaceResult.face_location.top);
-			OutlineDimensions = new Vector2((float)FaceResult.face_location.width, (float)FaceResult.face_location.height);
+			OutlineDimensions = new Vector2((float)FaceResult.face_location.width, (float)FaceResult.face_location.height) * 0.8f;
 		}
 
 		private void UpdateText()

@@ -110,7 +110,7 @@ namespace IBM.Watson.DeveloperCloud.Demos.FacialRecognition
         private IEnumerator ActivateWebcam()
 		{
 			yield return new WaitForSeconds(0.1f);
-			m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
+			//m_AppData.WebCameraDimensions = new AppData.CameraDimensions(640, 480);
 			m_WebCamWidget.ActivateWebCam();
 		}
 
